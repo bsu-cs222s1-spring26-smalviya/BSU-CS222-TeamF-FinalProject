@@ -11,9 +11,8 @@ public class ConsoleUI {
         System.out.println("Please enter your name");
         String name = scanner.nextLine();
         System.out.println("Please enter your Canvas LMS Access Token");
-        String token = scanner.nextLine();
-        User user = new User(name, token);
-        CanvasService canvasService = new CanvasService(user);
+        String canvasToken = scanner.nextLine();
+        WisePlannerKernel wisePlannerKernel = new WisePlannerKernel(name, canvasToken);
         CanvasOutputFormatter canvasOutputFormatter = new CanvasOutputFormatter();
         while (true) {
             System.out.println("Main Menu");
@@ -25,8 +24,7 @@ public class ConsoleUI {
                 case 0:
                     return;
                 case 1:
-                    canvasService.accessCourses();
-                    System.out.print(canvasOutputFormatter.getCoursesOutput(canvasService.courses));
+                    System.out.print(canvasOutputFormatter.getCoursesOutput(wisePlannerKernel.getCourses()));
                 default:
                     continue;
             }
