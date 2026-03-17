@@ -6,14 +6,18 @@ import java.util.List;
 
 public class CanvasService {
     private User user;
-    public List<Course> courses;
+    private List<Course> courses;
 
     public CanvasService(User user) {
         this.user = user;
     }
 
-    public void accessCourses() throws IOException, URISyntaxException {
+    public void updateCourses() throws IOException, URISyntaxException {
         CourseParser courseParser = new CourseParser(new CanvasConnector(user).fetchCourses());
         courses = courseParser.getCourses();
+    }
+
+    public List<Course> getCourses() {
+        return this.courses;
     }
 }
