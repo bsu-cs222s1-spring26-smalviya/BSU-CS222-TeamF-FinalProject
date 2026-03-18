@@ -6,12 +6,12 @@ import java.util.List;
 public class TaskManager {
     private List<Task> taskList = new ArrayList<>();
 
-    public void addTask(String title, String note, String courseName) throws Exception {
+    public void addTask(String timestamp, String title, String content) throws Exception {
         if (title == null || title.trim().isEmpty()) {
             throw new Exception("Error: Task title cannot be empty!");
         }
-        Task newTask = new Task(title, note, courseName);
-        taskList.add(newTask);
+        Task task = new Task(timestamp, title, content);
+        taskList.add(task);
     }
 
     public void deleteTask(int index) throws IndexOutOfBoundsException {
@@ -21,7 +21,7 @@ public class TaskManager {
         taskList.remove(index);
     }
 
-    public List<Task> getAllTasks() {
+    public List<Task> getTaskList() {
         return taskList;
     }
 }
