@@ -23,4 +23,15 @@ public class CanvasConnector {
         connection.connect();
         return new String(connection.getInputStream().readAllBytes(), Charset.defaultCharset());
     }
+
+    public String fetchAssignments(String courseId) throws IOException, URISyntaxException {
+        String encodedUrlString = "https://canvas.instructure.com/api/v1/courses/" +
+                courseId + "/assignments?access_token=" +
+                URLEncoder.encode(user.getCanvasToken(), Charset.defaultCharset());
+        URI uri = new URI(encodedUrlString);
+        URLConnection connection = uri.toURL().openConnection();
+        connection.setRequestProperty("User-Agent", "Final Project (qingyang.ran@bsu.edu)");
+        connection.connect();
+        return new String(connection.getInputStream().readAllBytes(), Charset.defaultCharset());
+    }
 }

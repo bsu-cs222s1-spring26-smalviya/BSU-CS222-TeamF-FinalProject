@@ -19,4 +19,8 @@ public class WisePlannerKernel {
         canvasService.updateCourses();
         return canvasService.getCourses();
     }
+
+    public List<Assignment> getAssignments(String courseId) throws IOException, URISyntaxException {
+        return canvasService.getAssignments(courseId);
+    }
 }

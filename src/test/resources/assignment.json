@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "name": "Read Chapter 5",
+    "description": "Read and summarize chapter 5",
+    "due_at": "2026-04-01T23:59:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Lab Report",
+    "description": "Write up your lab findings",
+    "due_at": "2026-04-05T23:59:00Z"
+  }
+]

@@ -12,4 +12,14 @@ public class CanvasOutputFormatter {
         }
         return output.toString();
     }
+
+    public String getAssignmentsOutput(List<Assignment> assignments) {
+        StringBuilder output = new StringBuilder();
+        output.append("Assignments\n");
+        output.append("ID\tName\tDue Date\tDescription\n");
+        for (Assignment a : assignments) {
+            output.append(a.getId() + "\t" + a.getName() + "\t" + a.getDueAt() + "\t" + a.getDescription() + "\n");
+        }
+        return output.toString();
+    }
 }

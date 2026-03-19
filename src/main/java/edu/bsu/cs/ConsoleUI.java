@@ -2,6 +2,7 @@ package edu.bsu.cs;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI {
@@ -20,6 +21,7 @@ public class ConsoleUI {
             System.out.println("Main Menu");
             System.out.println("(1) Courses");
             System.out.println("(2) Task");
+            System.out.println("(3) Assignments");
             System.out.println("(0) Exit");
             System.out.println("Please enter your choice");
             int choice = Integer.parseInt(scanner.nextLine());
@@ -56,6 +58,16 @@ public class ConsoleUI {
                             }
                             break;
                         case 3:
+                            System.out.println("Enter a Course ID to view its assignments:");
+                            String directCourseId = scanner.nextLine();
+                            try {
+                                List<Assignment> assignments = wisePlannerKernel.getAssignments(directCourseId);
+                                System.out.print(canvasOutputFormatter.getAssignmentsOutput(assignments));
+                            } catch (Exception e) {
+                                System.out.println("Error: Could not load assignments. " + e.getMessage());
+                            }
+                            break;
+                        case 4:
                             System.out.println("Please enter the index");
                             int index = Integer.parseInt(scanner.nextLine());
                             wisePlannerKernel.taskManager.deleteTask(index - 1);
