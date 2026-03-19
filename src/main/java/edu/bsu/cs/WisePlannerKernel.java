@@ -7,10 +7,12 @@ import java.util.List;
 public class WisePlannerKernel {
     User user;
     CanvasService canvasService;
+    TaskManager taskManager;
 
     public WisePlannerKernel(String name, String canvasToken) {
         user = new User(name, canvasToken);
         canvasService = new CanvasService(user);
+        taskManager = new TaskManager();
     }
 
     public List<Course> getCourses() throws IOException, URISyntaxException {

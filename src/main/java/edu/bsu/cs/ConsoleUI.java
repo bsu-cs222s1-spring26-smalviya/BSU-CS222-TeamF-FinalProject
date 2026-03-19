@@ -14,7 +14,6 @@ public class ConsoleUI {
         String canvasToken = scanner.nextLine();
         WisePlannerKernel wisePlannerKernel = new WisePlannerKernel(name, canvasToken);
         CanvasOutputFormatter canvasOutputFormatter = new CanvasOutputFormatter();
-        TaskManager taskManager = new TaskManager();
         TaskOutputFormatter taskOutputFormatter = new TaskOutputFormatter();
 
         while (true) {
@@ -41,7 +40,7 @@ public class ConsoleUI {
                         case 0:
                             break;
                         case 1:
-                            System.out.println(taskOutputFormatter.getTaskOutput(taskManager.getTaskList()));
+                            System.out.println(taskOutputFormatter.getTaskOutput(wisePlannerKernel.taskManager.getTaskList()));
                             break;
                         case 2:
                             System.out.println("Please enter task start time");
@@ -51,7 +50,7 @@ public class ConsoleUI {
                             System.out.println("Please enter task content");
                             String content = scanner.nextLine();
                             try {
-                                taskManager.addTask(timestamp, title, content);
+                                wisePlannerKernel.taskManager.addTask(timestamp, title, content);
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
@@ -59,7 +58,7 @@ public class ConsoleUI {
                         case 3:
                             System.out.println("Please enter the index");
                             int index = Integer.parseInt(scanner.nextLine());
-                            taskManager.deleteTask(index - 1);
+                            wisePlannerKernel.taskManager.deleteTask(index - 1);
                             break;
                     }
                     break;
