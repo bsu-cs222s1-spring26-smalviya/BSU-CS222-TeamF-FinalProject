@@ -9,7 +9,7 @@ public class ConsoleUI {
     Scanner scanner = new Scanner(System.in);
 
     public void show() throws IOException, URISyntaxException {
-        System.out.println("Please enter your name");
+        System.out.println("Please enter your name: ");
         String name = scanner.nextLine();
         System.out.println("Please enter your Canvas LMS Access Token");
         String canvasToken = scanner.nextLine();
@@ -30,6 +30,16 @@ public class ConsoleUI {
                     return;
                 case 1:
                     System.out.print(canvasOutputFormatter.getCoursesOutput(wisePlannerKernel.getCourses()));
+                    System.out.println("Enter a Course ID to view its assignments, or 0 to go back:");
+                    String courseId = scanner.nextLine();
+                    if (!courseId.equals("0")) {
+                        try {
+                            List<Assignment> assignments = wisePlannerKernel.getAssignments(courseId);
+                            System.out.print(canvasOutputFormatter.getAssignmentsOutput(assignments));
+                        } catch (Exception e) {
+                            System.out.println("Error: Could not load assignments. " + e.getMessage());
+                        }
+                    }
                     break;
                 case 2:
                     System.out.println("(1) View Tasks");
@@ -58,20 +68,20 @@ public class ConsoleUI {
                             }
                             break;
                         case 3:
-                            System.out.println("Enter a Course ID to view its assignments:");
-                            String directCourseId = scanner.nextLine();
-                            try {
-                                List<Assignment> assignments = wisePlannerKernel.getAssignments(directCourseId);
-                                System.out.print(canvasOutputFormatter.getAssignmentsOutput(assignments));
-                            } catch (Exception e) {
-                                System.out.println("Error: Could not load assignments. " + e.getMessage());
-                            }
-                            break;
-                        case 4:
                             System.out.println("Please enter the index");
                             int index = Integer.parseInt(scanner.nextLine());
                             wisePlannerKernel.taskManager.deleteTask(index - 1);
                             break;
+                    }
+                    break;
+                case 3:
+                    System.out.println("Enter a Course ID to view its assignments:");
+                    String directCourseId = scanner.nextLine();
+                    try {
+                        List<Assignment> assignments = wisePlannerKernel.getAssignments(directCourseId);
+                        System.out.print(canvasOutputFormatter.getAssignmentsOutput(assignments));
+                    } catch (Exception e) {
+                        System.out.println("Error: Could not load assignments. " + e.getMessage());
                     }
                     break;
                 default:
