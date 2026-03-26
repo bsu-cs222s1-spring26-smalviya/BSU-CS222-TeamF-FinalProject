@@ -18,7 +18,9 @@ public class ConsoleUI {
         TaskOutputFormatter taskOutputFormatter = new TaskOutputFormatter();
 
         while (true) {
-            System.out.println("Main Menu");
+            System.out.println("**********************************************************************");
+            System.out.println("*                             Main Menu                              *");
+            System.out.println("**********************************************************************");
             System.out.println("(1) Courses");
             System.out.println("(2) Task");
             System.out.println("(3) Assignments");
