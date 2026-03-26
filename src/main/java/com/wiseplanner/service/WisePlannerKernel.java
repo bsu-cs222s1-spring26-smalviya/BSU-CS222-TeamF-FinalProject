@@ -9,8 +9,8 @@ public class WisePlannerKernel {
     public CanvasService canvasService;
     public TaskManager taskManager;
 
-    public WisePlannerKernel(String name, String canvasToken) {
-        user = new User(name, canvasToken);
+    public WisePlannerKernel(User user) {
+        this.user = user;
         canvasService = new CanvasService(user);
         taskManager = new TaskManager();
     }
