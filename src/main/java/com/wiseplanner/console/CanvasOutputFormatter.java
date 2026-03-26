@@ -37,7 +37,6 @@ public class CanvasOutputFormatter {
         return output.toString();
     }
 
-
     private String stripHtml(String html) {
         if (html == null || html.equals("null")) {
             return "No Description";

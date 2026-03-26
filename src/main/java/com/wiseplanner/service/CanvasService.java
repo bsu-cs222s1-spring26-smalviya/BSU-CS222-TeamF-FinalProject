@@ -26,12 +26,12 @@ public class CanvasService {
         AssignmentParser parser = new AssignmentParser(jsonData);
         assignments = parser.getAssignments();
 
-        // Sort by due date (nulls last)
-        assignments.sort((a, b) -> {
-            if (a.getDue_at().equals("null")) return 1;
-            if (b.getDue_at().equals("null")) return -1;
-            return a.getDue_at().compareTo(b.getDue_at());
-        });
+        // Sort by due date (nulls last) BUG: Crash when no due date.
+//        assignments.sort((a, b) -> {
+//            if (a.getDue_at().equals("null")) return 1;
+//            if (b.getDue_at().equals("null")) return -1;
+//            return a.getDue_at().compareTo(b.getDue_at());
+//        });
 
         return this.assignments;
     }
