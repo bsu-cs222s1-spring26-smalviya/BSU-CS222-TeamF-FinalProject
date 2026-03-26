@@ -19,7 +19,7 @@ public class CanvasConnector {
                 URLEncoder.encode(user.getCanvasToken(), Charset.defaultCharset());
         URI uri = new URI(encodedUrlString);
         URLConnection connection = uri.toURL().openConnection();
-        connection.setRequestProperty("User-Agent", "Final Project (qingyang.ran@bsu.edu)");
+        connection.setRequestProperty("User-Agent", "Final Project" + user.getName());
         connection.connect();
         return new String(connection.getInputStream().readAllBytes(), Charset.defaultCharset());
     }
@@ -30,7 +30,7 @@ public class CanvasConnector {
                 URLEncoder.encode(user.getCanvasToken(), Charset.defaultCharset());
         URI uri = new URI(encodedUrlString);
         URLConnection connection = uri.toURL().openConnection();
-        connection.setRequestProperty("User-Agent", "Final Project (qingyang.ran@bsu.edu)");
+        connection.setRequestProperty("User-Agent", "Final Project" + user.getName());
         connection.connect();
         return new String(connection.getInputStream().readAllBytes(), Charset.defaultCharset());
     }
