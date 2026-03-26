@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseParser {
-    private List<Course> courses = new ArrayList<>();
+    private List<Course> courses;
 
     public CourseParser(String jsonData) {
         Type listType = new TypeToken<List<Course>>() {

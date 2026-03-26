@@ -28,15 +28,14 @@ public class CanvasOutputFormatter {
         output.append("----------------------------------------------------------------------\n");
         for (Assignment a : assignments) {
             String cleanDescription = stripHtml(a.getDescription());
-            String dueDate = (a.getDueAt() == null || a.getDueAt().equals("null"))
+            String dueDate = (a.getDue_at() == null || a.getDue_at().equals("null"))
                     ? "No Due Date"
-                    : a.getDueAt();
+                    : a.getDue_at();
             output.append(String.format("%-20s | %-25s | %s\n",
                     a.getName(), dueDate, cleanDescription));
         }
         return output.toString();
     }
-
 
     private String stripHtml(String html) {
         if (html == null || html.equals("null")) {

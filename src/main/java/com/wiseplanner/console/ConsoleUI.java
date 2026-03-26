@@ -1,12 +1,12 @@
 package com.wiseplanner.console;
 
 import com.google.gson.Gson;
+import com.wiseplanner.exception.NetworkException;
 import com.wiseplanner.service.Assignment;
 import com.wiseplanner.service.User;
 import com.wiseplanner.service.WisePlannerKernel;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -21,7 +21,7 @@ public class ConsoleUI {
     TaskOutputFormatter taskOutputFormatter = new TaskOutputFormatter();
     Gson gson = new Gson();
 
-    public void show() throws IOException, URISyntaxException {
+    public void show() {
 
         //Initialize User Data
         String userPath = System.getProperty("user.home");
@@ -32,7 +32,7 @@ public class ConsoleUI {
             try (BufferedReader bufferedReader = new BufferedReader(new FileReader(userDataFile))) {
                 user = gson.fromJson(bufferedReader, User.class);
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("[Error] File read failed, unable to read user data.");
             }
         } else {
             System.out.println("Please enter your name: ");
@@ -45,7 +45,7 @@ public class ConsoleUI {
             try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(userDataFile))) {
                 bufferedWriter.write(userJson);
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("[Error] File write failed, unable to write user data.");
             }
         }
         wisePlannerKernel = new WisePlannerKernel(user);
@@ -65,15 +65,19 @@ public class ConsoleUI {
                 case 0:
                     return;
                 case 1:
-                    System.out.print(canvasOutputFormatter.getCoursesOutput(wisePlannerKernel.getCourses()));
+                    try {
+                        System.out.print(canvasOutputFormatter.getCoursesOutput(wisePlannerKernel.canvasService.getCourses()));
+                    } catch (NetworkException e) {
+                        System.err.println("[Error] " + e.getMessage());
+                    }
                     System.out.println("Enter a Course ID to view its assignments, or 0 to go back:");
                     String courseId = scanner.nextLine();
                     if (!courseId.equals("0")) {
                         try {
-                            List<Assignment> assignments = wisePlannerKernel.getAssignments(courseId);
+                            List<Assignment> assignments = wisePlannerKernel.canvasService.getAssignments(courseId);
                             System.out.print(canvasOutputFormatter.getAssignmentsOutput(assignments));
-                        } catch (Exception e) {
-                            System.out.println("Error: Could not load assignments. " + e.getMessage());
+                        } catch (NetworkException e) {
+                            System.err.println("[Error] " + e.getMessage());
                         }
                     }
                     break;
@@ -97,16 +101,16 @@ public class ConsoleUI {
                             String title = scanner.nextLine();
                             System.out.println("Please enter task content");
                             String content = scanner.nextLine();
-                            try {
-                                wisePlannerKernel.taskManager.addTask(timestamp, title, content);
-                            } catch (Exception e) {
-                                System.out.println(e.getMessage());
-                            }
+                            wisePlannerKernel.taskManager.addTask(timestamp, title, content);
                             break;
                         case 3:
                             System.out.println("Please enter the index");
                             int index = Integer.parseInt(scanner.nextLine());
-                            wisePlannerKernel.taskManager.deleteTask(index - 1);
+                            try {
+                                wisePlannerKernel.taskManager.deleteTask(index - 1);
+                            } catch (IndexOutOfBoundsException e) {
+                                System.err.println("[Error] " + e.getMessage());
+                            }
                             break;
                     }
                     break;
@@ -114,10 +118,10 @@ public class ConsoleUI {
                     System.out.println("Enter a Course ID to view its assignments:");
                     String directCourseId = scanner.nextLine();
                     try {
-                        List<Assignment> assignments = wisePlannerKernel.getAssignments(directCourseId);
+                        List<Assignment> assignments = wisePlannerKernel.canvasService.getAssignments(directCourseId);
                         System.out.print(canvasOutputFormatter.getAssignmentsOutput(assignments));
-                    } catch (Exception e) {
-                        System.out.println("Error: Could not load assignments. " + e.getMessage());
+                    } catch (NetworkException e) {
+                        System.err.println("[Error] " + e.getMessage());
                     }
                     break;
                 default:
