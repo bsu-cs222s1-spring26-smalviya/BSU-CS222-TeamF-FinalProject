@@ -1,5 +1,7 @@
 package com.wiseplanner.service;
 
+import com.wiseplanner.model.User;
+
 public class WisePlannerKernel {
     public User user;
     public CanvasService canvasService;

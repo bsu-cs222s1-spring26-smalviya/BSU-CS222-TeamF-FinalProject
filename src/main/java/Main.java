@@ -1,5 +1,5 @@
 import com.wiseplanner.console.ConsoleUI;
-import com.wiseplanner.gui.Dashboard;
+import com.wiseplanner.gui.App;
 import javafx.application.Application;
 
 public class Main {
@@ -12,7 +12,7 @@ public class Main {
         }
         //GUI Mode
         else {
-            Application.launch(Dashboard.class, args);
+            Application.launch(App.class, args);
         }
     }
 }

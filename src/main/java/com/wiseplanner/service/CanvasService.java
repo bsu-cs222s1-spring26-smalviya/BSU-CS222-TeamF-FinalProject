@@ -1,9 +1,10 @@
 package com.wiseplanner.service;
 
 import com.wiseplanner.exception.NetworkException;
+import com.wiseplanner.model.Assignment;
+import com.wiseplanner.model.Course;
+import com.wiseplanner.model.User;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 
 public class CanvasService {

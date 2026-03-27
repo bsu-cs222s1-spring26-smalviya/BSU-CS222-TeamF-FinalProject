@@ -1,7 +1,7 @@
 package com.wiseplanner.console;
 
-import com.wiseplanner.service.Assignment;
-import com.wiseplanner.service.Course;
+import com.wiseplanner.model.Assignment;
+import com.wiseplanner.model.Course;
 
 import java.util.List;
 

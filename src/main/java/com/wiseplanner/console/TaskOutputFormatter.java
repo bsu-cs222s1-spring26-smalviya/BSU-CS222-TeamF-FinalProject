@@ -1,6 +1,6 @@
 package com.wiseplanner.console;
 
-import com.wiseplanner.service.Task;
+import com.wiseplanner.model.Task;
 
 import java.util.List;
 

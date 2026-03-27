@@ -2,6 +2,7 @@ package com.wiseplanner.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.wiseplanner.model.Assignment;
 
 import java.lang.reflect.Type;
 import java.util.List;

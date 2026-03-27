@@ -1,4 +1,4 @@
-package com.wiseplanner.service;
+package com.wiseplanner.model;
 
 public class User {
     private String name;

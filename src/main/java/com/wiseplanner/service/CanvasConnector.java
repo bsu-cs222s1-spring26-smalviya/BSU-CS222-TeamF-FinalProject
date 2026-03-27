@@ -1,6 +1,7 @@
 package com.wiseplanner.service;
 
 import com.wiseplanner.exception.NetworkException;
+import com.wiseplanner.model.User;
 
 import java.io.IOException;
 import java.net.URI;

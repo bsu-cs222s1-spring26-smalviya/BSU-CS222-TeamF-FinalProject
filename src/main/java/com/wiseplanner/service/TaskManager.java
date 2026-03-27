@@ -1,5 +1,7 @@
 package com.wiseplanner.service;
 
+import com.wiseplanner.model.Task;
+
 import java.util.ArrayList;
 import java.util.List;
 

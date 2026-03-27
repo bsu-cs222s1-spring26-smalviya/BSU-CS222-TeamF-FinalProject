@@ -2,8 +2,8 @@ package com.wiseplanner.console;
 
 import com.google.gson.Gson;
 import com.wiseplanner.exception.NetworkException;
-import com.wiseplanner.service.Assignment;
-import com.wiseplanner.service.User;
+import com.wiseplanner.model.Assignment;
+import com.wiseplanner.model.User;
 import com.wiseplanner.service.WisePlannerKernel;
 
 import java.io.*;
