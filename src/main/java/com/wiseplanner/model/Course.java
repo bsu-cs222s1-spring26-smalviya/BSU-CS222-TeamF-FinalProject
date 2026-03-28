@@ -1,8 +1,11 @@
 package com.wiseplanner.model;
 
+import java.util.List;
+
 public class Course {
     private String id;
     private String name;
+    private List<Assignment> assignments;
 
     public Course(String id, String name) {
         this.id = id;
@@ -23,5 +26,13 @@ public class Course {
 
     public String getName() {
         return this.name;
+    }
+
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments = assignments;
+    }
+
+    public List<Assignment> getAssignments() {
+        return assignments;
     }
 }

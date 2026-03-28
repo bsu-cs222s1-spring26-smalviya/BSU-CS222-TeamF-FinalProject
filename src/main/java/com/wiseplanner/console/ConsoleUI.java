@@ -5,9 +5,8 @@ import com.wiseplanner.exception.FileReadException;
 import com.wiseplanner.exception.FileWriteException;
 import com.wiseplanner.exception.NetworkException;
 import com.wiseplanner.service.UserManager;
-import com.wiseplanner.service.WisePlannerKernel;
+import com.wiseplanner.core.WisePlannerKernel;
 
-import java.io.*;
 import java.util.Scanner;
 
 public class ConsoleUI {
@@ -56,7 +55,8 @@ public class ConsoleUI {
                 // Courses
                 case 1:
                     try {
-                        System.out.print(canvasOutputFormatter.getCoursesOutput(wisePlannerKernel.canvasService.getCourses()));
+                        wisePlannerKernel.canvas().updateCourses();
+                        System.out.print(canvasOutputFormatter.getCoursesOutput(wisePlannerKernel.canvas().getCourses()));
                     } catch (NetworkException e) {
                         System.err.println("[Error] " + e.getMessage());
                     }
@@ -73,7 +73,8 @@ public class ConsoleUI {
                         // View Assignment
                         case 1:
                             try {
-                                System.out.print(canvasOutputFormatter.getAssignmentsOutput(wisePlannerKernel.canvasService.getAssignments(wisePlannerKernel.canvasService.getCourses().get(courseIndex - 1))));
+                                wisePlannerKernel.canvas().updateAssignments(wisePlannerKernel.canvas().getCourses().get(courseIndex - 1));
+                                System.out.print(canvasOutputFormatter.getAssignmentsOutput(wisePlannerKernel.canvas().getCourses().get(courseIndex - 1).getAssignments()));
                             } catch (NetworkException e) {
                                 System.err.println("[Error] " + e.getMessage());
                             }
@@ -94,7 +95,7 @@ public class ConsoleUI {
                             break;
                         // View Tasks
                         case 1:
-                            System.out.println(taskOutputFormatter.getTaskOutput(wisePlannerKernel.taskManager.getTaskList()));
+                            System.out.println(taskOutputFormatter.getTaskOutput(wisePlannerKernel.task().getTaskList()));
                             break;
                         // Add Task
                         case 2:
@@ -104,14 +105,14 @@ public class ConsoleUI {
                             String title = scanner.nextLine();
                             System.out.println("Please enter task content");
                             String content = scanner.nextLine();
-                            wisePlannerKernel.taskManager.addTask(timestamp, title, content);
+                            wisePlannerKernel.task().addTask(timestamp, title, content);
                             break;
                         // Delete Task
                         case 3:
                             System.out.println("Please enter the index");
                             int index = Integer.parseInt(scanner.nextLine());
                             try {
-                                wisePlannerKernel.taskManager.deleteTask(index - 1);
+                                wisePlannerKernel.task().deleteTask(index - 1);
                             } catch (IndexOutOfBoundsException e) {
                                 System.err.println("[Error] " + e.getMessage());
                             }

@@ -2,7 +2,7 @@ package com.wiseplanner.gui;
 
 import com.google.gson.Gson;
 import com.wiseplanner.model.User;
-import com.wiseplanner.service.WisePlannerKernel;
+import com.wiseplanner.core.WisePlannerKernel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

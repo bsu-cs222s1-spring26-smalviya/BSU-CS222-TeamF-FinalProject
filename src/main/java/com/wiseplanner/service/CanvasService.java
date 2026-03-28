@@ -9,17 +9,29 @@ import java.util.List;
 
 public class CanvasService {
     private User user;
+    private List<Course> courses;
 
     public CanvasService(User user) {
         this.user = user;
     }
 
-    public List<Course> getCourses() throws NetworkException {
-        CourseParser courseParser = new CourseParser(new CanvasConnector(user).fetchCourses());
-        return courseParser.getCourses();
+    public void updateAll() {
+        updateCourses();
+        for (Course i : courses) {
+            updateAssignments(i);
+        }
     }
 
-    public List<Assignment> getAssignments(Course course) throws NetworkException {
+    public void updateCourses() throws NetworkException {
+        CourseParser courseParser = new CourseParser(new CanvasConnector(user).fetchCourses());
+        courses = courseParser.getCourses();
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void updateAssignments(Course course) throws NetworkException {
         String jsonData = new CanvasConnector(user).fetchAssignments(course);
         AssignmentParser parser = new AssignmentParser(jsonData);
 
@@ -30,6 +42,6 @@ public class CanvasService {
 //            return a.getDue_at().compareTo(b.getDue_at());
 //        });
 
-        return parser.getAssignments();
+        course.setAssignments(parser.getAssignments());
     }
 }
