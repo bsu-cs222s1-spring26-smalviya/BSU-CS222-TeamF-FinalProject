@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "title": "Hear ye",
+    "message": "Henceforth, all assignments must be...",
+    "posted_at": "2017-01-31T22:00:00Z",
+    "delayed_post_at": null,
+    "context_code": "course_2"
+  }
+]

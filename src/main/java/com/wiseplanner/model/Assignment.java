@@ -5,6 +5,7 @@ public class Assignment {
     private String name;
     private String description;
     private String due_at;
+    private Submission submission;
 
     public Assignment(String id, String name, String description, String due_at) {
         this.id = id;
@@ -27,5 +28,13 @@ public class Assignment {
 
     public String getDue_at() {
         return due_at;
+    }
+
+    public void setSubmission(Submission submission) {
+        this.submission = submission;
+    }
+
+    public Submission getSubmission() {
+        return submission;
     }
 }

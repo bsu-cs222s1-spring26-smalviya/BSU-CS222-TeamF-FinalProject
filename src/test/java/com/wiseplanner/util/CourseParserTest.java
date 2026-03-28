@@ -1,4 +1,4 @@
-package com.wiseplanner.service;
+package com.wiseplanner.util;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

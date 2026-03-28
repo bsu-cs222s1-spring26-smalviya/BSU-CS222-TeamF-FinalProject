@@ -1,7 +1,9 @@
 package com.wiseplanner.console;
 
+import com.wiseplanner.model.Announcement;
 import com.wiseplanner.model.Assignment;
 import com.wiseplanner.model.Course;
+import com.wiseplanner.util.AnnouncementParser;
 
 import java.util.List;
 
@@ -24,15 +26,18 @@ public class CanvasOutputFormatter {
         output.append("**********************************************************************\n");
         output.append("*                            Assignments                             *\n");
         output.append("**********************************************************************\n");
-        output.append(String.format("%-20s | %-25s | %s\n", "Name", "Due Date", "Description"));
+        output.append(String.format("%-20s | %-25s | %s   %s   %s   %s\n", "Name", "Due Date", "Description", "Workflow State", "Late", "Missing"));
         output.append("----------------------------------------------------------------------\n");
         for (Assignment a : assignments) {
             String cleanDescription = stripHtml(a.getDescription());
             String dueDate = (a.getDue_at() == null || a.getDue_at().equals("null"))
                     ? "No Due Date"
                     : a.getDue_at();
-            output.append(String.format("%-20s | %-25s | %s\n",
-                    a.getName(), dueDate, cleanDescription));
+            output.append(String.format("%-20s | %-25s | %s | %s | %s | %s\n",
+                    a.getName(), dueDate, cleanDescription,
+                    a.getSubmission().getWorkflow_state(),
+                    a.getSubmission().getLate(),
+                    a.getSubmission().getMissing()));
         }
         return output.toString();
     }
@@ -49,5 +54,19 @@ public class CanvasOutputFormatter {
         }
 
         return cleaned;
+    }
+
+    public String getAnnouncementsOutput(List<Announcement> announcements) {
+        StringBuilder output = new StringBuilder();
+        output.append("**********************************************************************\n");
+        output.append("*                            Announcements                             *\n");
+        output.append("**********************************************************************\n");
+        output.append(String.format("%s | %s | %s |  %s\n", "ID", "Title", "Message", "Posted at"));
+        for (Announcement i : announcements) {
+            String cleanMessage = stripHtml(i.getMessage());
+            output.append(String.format("%s | %s | %s |  %s\n",
+                    i.getId(), i.getTitle(), cleanMessage, i.getPosted_at()));
+        }
+        return output.toString();
     }
 }

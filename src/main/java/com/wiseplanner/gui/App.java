@@ -2,7 +2,7 @@ package com.wiseplanner.gui;
 
 import com.google.gson.Gson;
 import com.wiseplanner.model.User;
-import com.wiseplanner.service.WisePlannerKernel;
+import com.wiseplanner.core.WisePlannerKernel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -60,7 +60,7 @@ public class App extends Application {
                 System.err.println("[Error] File write failed, unable to write user data.");
             }
         }
-        wisePlannerKernel = new WisePlannerKernel(user);
+        wisePlannerKernel = new WisePlannerKernel();
 
         primaryStage.show();
     }

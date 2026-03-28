@@ -23,7 +23,7 @@ public class UserManager {
         userDataPath = Paths.get(userPath, DATA_FOLDER, USER_DATA_FILE);
     }
 
-    public boolean isLogin() throws FileReadException, FileWriteException, FileCorruptionException {
+    public boolean isLogin() throws FileReadException, FileCorruptionException {
         File userDataFile = userDataPath.toFile();
         if (userDataFile.exists()) {
             try (BufferedReader bufferedReader = new BufferedReader(new FileReader(userDataFile))) {
