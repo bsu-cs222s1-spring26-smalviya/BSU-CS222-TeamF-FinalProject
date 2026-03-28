@@ -1,9 +1,11 @@
 package com.wiseplanner.service;
 
 import com.wiseplanner.exception.NetworkException;
-import com.wiseplanner.model.Assignment;
 import com.wiseplanner.model.Course;
 import com.wiseplanner.model.User;
+import com.wiseplanner.util.AssignmentParser;
+import com.wiseplanner.util.CanvasConnector;
+import com.wiseplanner.util.CourseParser;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ public class CanvasService {
         this.user = user;
     }
 
-    public void updateAll() {
+    public void updateAll() throws NetworkException {
         updateCourses();
         for (Course i : courses) {
             updateAssignments(i);

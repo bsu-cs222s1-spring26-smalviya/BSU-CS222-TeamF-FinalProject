@@ -4,40 +4,40 @@ import com.wiseplanner.exception.FileCorruptionException;
 import com.wiseplanner.exception.FileReadException;
 import com.wiseplanner.exception.FileWriteException;
 import com.wiseplanner.exception.NetworkException;
-import com.wiseplanner.service.UserManager;
 import com.wiseplanner.core.WisePlannerKernel;
 
 import java.util.Scanner;
 
 public class ConsoleUI {
     Scanner scanner = new Scanner(System.in);
-    WisePlannerKernel wisePlannerKernel;
+    WisePlannerKernel wisePlannerKernel = new WisePlannerKernel();
     CanvasOutputFormatter canvasOutputFormatter = new CanvasOutputFormatter();
     TaskOutputFormatter taskOutputFormatter = new TaskOutputFormatter();
 
     public void show() {
-        UserManager userManager = new UserManager();
         try {
-            if (userManager.isLogin()) {
-                wisePlannerKernel = new WisePlannerKernel(userManager.getUser());
-            } else {
+            if (!wisePlannerKernel.user().isLogin()) {
                 System.out.println("Please enter your name: ");
                 String name = scanner.nextLine();
                 System.out.println("Please enter your Canvas LMS Access Token");
                 String canvasToken = scanner.nextLine();
-                userManager.setUser(name, canvasToken);
-                wisePlannerKernel = new WisePlannerKernel(userManager.getUser());
+                wisePlannerKernel.user().setUser(name, canvasToken);
             }
-        } catch (FileCorruptionException | FileReadException | FileWriteException e) {
+        } catch (FileCorruptionException | FileReadException e) {
             System.err.println("[Error] " + e.getMessage());
             System.out.println("Please enter your name: ");
             String name = scanner.nextLine();
             System.out.println("Please enter your Canvas LMS Access Token");
             String canvasToken = scanner.nextLine();
-            userManager.setUser(name, canvasToken);
-            wisePlannerKernel = new WisePlannerKernel(userManager.getUser());
+            wisePlannerKernel.user().setUser(name, canvasToken);
+        } catch (FileWriteException e) {
+            System.err.println("[Error] " + e.getMessage());
         }
-
+        try {
+            wisePlannerKernel.initialize();
+        } catch (FileReadException e) {
+            System.err.println("[Error] " + e.getMessage());
+        }
         //Console User Interface
         while (true) {
             System.out.println("**********************************************************************");
@@ -105,7 +105,11 @@ public class ConsoleUI {
                             String title = scanner.nextLine();
                             System.out.println("Please enter task content");
                             String content = scanner.nextLine();
-                            wisePlannerKernel.task().addTask(timestamp, title, content);
+                            try {
+                                wisePlannerKernel.task().addTask(timestamp, title, content);
+                            } catch (FileWriteException e) {
+                                System.err.println("[Error] " + e.getMessage());
+                            }
                             break;
                         // Delete Task
                         case 3:
@@ -113,7 +117,7 @@ public class ConsoleUI {
                             int index = Integer.parseInt(scanner.nextLine());
                             try {
                                 wisePlannerKernel.task().deleteTask(index - 1);
-                            } catch (IndexOutOfBoundsException e) {
+                            } catch (IndexOutOfBoundsException | FileWriteException e) {
                                 System.err.println("[Error] " + e.getMessage());
                             }
                             break;

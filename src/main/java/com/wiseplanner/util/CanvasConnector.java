@@ -1,7 +1,6 @@
-package com.wiseplanner.service;
+package com.wiseplanner.util;
 
 import com.wiseplanner.exception.NetworkException;
-import com.wiseplanner.model.Assignment;
 import com.wiseplanner.model.Course;
 import com.wiseplanner.model.User;
 

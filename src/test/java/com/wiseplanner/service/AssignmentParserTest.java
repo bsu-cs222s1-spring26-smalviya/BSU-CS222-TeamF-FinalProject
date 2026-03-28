@@ -1,5 +1,6 @@
 package com.wiseplanner.service;
 
+import com.wiseplanner.util.AssignmentParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -60,7 +60,7 @@ public class App extends Application {
                 System.err.println("[Error] File write failed, unable to write user data.");
             }
         }
-        wisePlannerKernel = new WisePlannerKernel(user);
+        wisePlannerKernel = new WisePlannerKernel();
 
         primaryStage.show();
     }

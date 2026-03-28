@@ -1,4 +1,4 @@
-package com.wiseplanner.service;
+package com.wiseplanner.util;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
