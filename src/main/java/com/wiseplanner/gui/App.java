@@ -41,7 +41,7 @@ public class App extends Application {
         if (!wisePlannerKernel.user().isLogin()) {
             showLogin();
         }
-        controller.setWisePlannerKernel(wisePlannerKernel);
+        controller.setKernel(wisePlannerKernel);
         primaryStage.show();
     }
 }

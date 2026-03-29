@@ -1,6 +1,7 @@
 package com.wiseplanner.gui.controller;
 
 import com.wiseplanner.core.WisePlannerKernel;
+import com.wiseplanner.model.Course;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +15,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.util.Objects;
 
-public class MainWindowController {
+public class MainWindowController extends BaseController {
 
     @FXML
     private BorderPane borderPane;
@@ -39,12 +40,7 @@ public class MainWindowController {
 
     @FXML
     void onCoursesButtonClick(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/Courses.fxml")));
-        Parent node = loader.load();
-        CoursesController controller = loader.getController();
-        controller.setWisePlannerKernel(wisePlannerKernel);
-        controller.setCoursesTable();
-        pagePane.getChildren().setAll(node);
+        showCoursesPage();
     }
 
     @FXML
@@ -57,11 +53,36 @@ public class MainWindowController {
 
     }
 
-    WisePlannerKernel wisePlannerKernel;
-
-    public void setWisePlannerKernel(WisePlannerKernel wisePlannerKernel) {
-        this.wisePlannerKernel = wisePlannerKernel;
-        wisePlannerKernel.initialize();
+    public void setKernel(WisePlannerKernel kernel) {
+        super.setKernel(kernel);
+        kernel.initialize();
     }
 
+    public void changePage(Parent node) {
+        pagePane.getChildren().setAll(node);
+    }
+
+    public void showCoursesPage() throws IOException {
+        FXMLLoader loader = new FXMLLoader(
+                Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/Courses.fxml"))
+        );
+        Parent node = loader.load();
+        CoursesController controller = loader.getController();
+        controller.setKernel(kernel);
+        controller.setMainWindowController(this);
+        controller.loadCourses();
+        changePage(node);
+    }
+
+    public void showCourseContextPage(Course course) throws IOException {
+        FXMLLoader loader = new FXMLLoader(
+                Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/CourseContext.fxml"))
+        );
+        Parent node = loader.load();
+        CourseContextController controller = loader.getController();
+        controller.setKernel(kernel);
+        controller.setMainWindowController(this);
+        controller.setCourse(course);
+        changePage(node);
+    }
 }
