@@ -50,8 +50,14 @@ public class CourseContextController extends BaseController {
     }
 
     @FXML
-    void onAnnouncementsBtnClick(ActionEvent event) {
-
+    void onAnnouncementsBtnClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/Announcements.fxml")));
+        Parent node = loader.load();
+        AnnouncementsController controller = loader.getController();
+        controller.setKernel(kernel);
+        controller.setCourse(course);
+        controller.loadAnnouncements();
+        changeContext(node);
     }
 
     @FXML
@@ -67,7 +73,7 @@ public class CourseContextController extends BaseController {
         changeContext(node);
     }
 
-    public void changeContext(Parent node){
+    public void changeContext(Parent node) {
         courseContextPane.getChildren().setAll(node);
     }
 }
