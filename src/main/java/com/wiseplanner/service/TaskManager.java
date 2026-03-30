@@ -2,7 +2,6 @@ package com.wiseplanner.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.wiseplanner.exception.FileCorruptionException;
 import com.wiseplanner.exception.FileReadException;
 import com.wiseplanner.exception.FileWriteException;
 import com.wiseplanner.model.Task;
@@ -27,8 +26,8 @@ public class TaskManager {
         taskDataPath = Paths.get(userPath, DATA_FOLDER, TASK_DATA_FILE);
     }
 
-    public void addTask(String timestamp, String title, String content) throws FileWriteException {
-        Task task = new Task(timestamp, title, content);
+    public void addTask(String deadline, String title, String content) throws FileWriteException {
+        Task task = new Task(deadline, title, content);
         taskList.add(task);
         saveTask();
     }

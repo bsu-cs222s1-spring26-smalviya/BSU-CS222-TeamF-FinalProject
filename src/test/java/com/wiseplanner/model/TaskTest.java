@@ -8,8 +8,8 @@ public class TaskTest {
 
     @Test
     public void testSetTimestamp() {
-        task.setTimestamp("2026-01-26T23:51:24Z");
-        Assertions.assertEquals("2026-01-26T23:51:24Z", task.getTimestamp());
+        task.setDeadline("2026-01-26T23:51:24Z");
+        Assertions.assertEquals("2026-01-26T23:51:24Z", task.getDeadline());
     }
 
     @Test

@@ -109,14 +109,14 @@ public class ConsoleUI {
                             break;
                         // Add Task
                         case 2:
-                            System.out.println("Please enter task start time");
-                            String timestamp = scanner.nextLine();
+                            System.out.println("Please enter task deadline");
+                            String deadline = scanner.nextLine();
                             System.out.println("Please enter task title");
                             String title = scanner.nextLine();
                             System.out.println("Please enter task content");
                             String content = scanner.nextLine();
                             try {
-                                wisePlannerKernel.task().addTask(timestamp, title, content);
+                                wisePlannerKernel.task().addTask(deadline, title, content);
                             } catch (FileWriteException e) {
                                 System.err.println("[Error] " + e.getMessage());
                             }
