@@ -8,13 +8,13 @@
 
 <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1302.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.CourseContextController">
    <children>
-      <Label fx:id="courseNameLabel" layoutX="14.0" layoutY="14.0" prefHeight="82.0" prefWidth="1279.0" text="Course">
+      <Label fx:id="courseNameLabel" prefHeight="82.0" prefWidth="1279.0" text="Course">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Button fx:id="assignmentsBtn" layoutX="14.0" layoutY="108.0" mnemonicParsing="false" onAction="#onAssignmentsBtnClick" text="Assignments" />
-      <Button fx:id="announcementsButton" layoutX="14.0" layoutY="141.0" mnemonicParsing="false" onAction="#onAnnouncementsBtnClick" text="Announcements" />
-      <StackPane fx:id="courseContextPane" layoutX="207.0" layoutY="108.0" prefHeight="570.0" prefWidth="1077.0" />
+      <Button fx:id="assignmentsBtn" layoutY="71.0" mnemonicParsing="false" onAction="#onAssignmentsBtnClick" text="Assignments" />
+      <Button fx:id="announcementsButton" layoutY="94.0" mnemonicParsing="false" onAction="#onAnnouncementsBtnClick" text="Announcements" />
+      <StackPane fx:id="courseContextPane" layoutX="115.0" layoutY="68.0" prefHeight="635.0" prefWidth="1186.0" />
    </children>
 </AnchorPane>
