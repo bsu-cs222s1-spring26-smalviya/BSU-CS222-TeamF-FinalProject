@@ -2,6 +2,8 @@ package com.wiseplanner.gui.controller;
 
 import com.wiseplanner.model.Assignment;
 import com.wiseplanner.model.Course;
+import com.wiseplanner.model.Submission;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -30,6 +32,9 @@ public class AssignmentsController extends BaseController {
 
     @FXML
     private TableColumn<Assignment, String> nameColumn;
+
+    @FXML
+    private TableColumn<Assignment, String> workflow_stateColumn;
 
     private Course course;
     private final ObservableList<Assignment> assignments = FXCollections.observableArrayList();
@@ -70,7 +75,16 @@ public class AssignmentsController extends BaseController {
                 }
             }
         });
-        assignmentsTable.getColumns().setAll(idColumn, nameColumn, descriptionColumn, dueColumn);
+        workflow_stateColumn.setCellValueFactory(cellData -> {
+            Assignment assignment = cellData.getValue();
+            Submission submission = assignment.getSubmission();
+            if (submission != null && submission.getWorkflow_state() != null) {
+                return new SimpleStringProperty(submission.getWorkflow_state());
+            } else {
+                return new SimpleStringProperty("N/A");
+            }
+        });
+        assignmentsTable.getColumns().setAll(idColumn, nameColumn, descriptionColumn, dueColumn, workflow_stateColumn);
         tableConfigured = true;
     }
 

@@ -1,22 +1,22 @@
 package com.wiseplanner.model;
 
 public class Task {
-    private String timestamp;
+    private String deadline;
     private String title;
     private String content;
 
-    public Task(String timestamp, String title, String content) {
-        this.timestamp = timestamp;
+    public Task(String deadline, String title, String content) {
+        this.deadline = deadline;
         this.title = title;
         this.content = content;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
     }
 
-    public String getTimestamp() {
-        return this.timestamp;
+    public String getDeadline() {
+        return this.deadline;
     }
 
     public void setTitle(String title) {
@@ -38,6 +38,6 @@ public class Task {
     @Override
     public String toString() {
         return String.format("%s %s %s\n",
-                timestamp, title, content);
+                deadline, title, content);
     }
 }

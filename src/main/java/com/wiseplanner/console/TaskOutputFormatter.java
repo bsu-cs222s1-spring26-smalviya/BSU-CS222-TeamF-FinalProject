@@ -8,7 +8,7 @@ public class TaskOutputFormatter {
     public String getTaskOutput(List<Task> taskList) {
         StringBuilder output = new StringBuilder();
         output.append("Task\n" +
-                "Timestamp\tTitle\tContent\n");
+                "Deadline\tTitle\tContent\n");
         for (Task i : taskList) {
             output.append(i);
         }
