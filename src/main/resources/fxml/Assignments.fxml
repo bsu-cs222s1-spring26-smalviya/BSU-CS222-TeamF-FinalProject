@@ -10,8 +10,9 @@
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="154.39996945858002" text="ID" />
           <TableColumn fx:id="nameColumn" minWidth="0.0" prefWidth="297.5999755859375" text="Name" />
-            <TableColumn fx:id="descriptionColumn" prefWidth="588.8000183105469" text="Description" />
-            <TableColumn fx:id="dueColumn" minWidth="0.0" prefWidth="146.4000244140625" text="Due" />
+            <TableColumn fx:id="descriptionColumn" prefWidth="477.5998840332031" text="Description" />
+            <TableColumn fx:id="dueColumn" minWidth="0.0" prefWidth="150.4000244140625" text="Due" />
+            <TableColumn fx:id="workflow_stateColumn" prefWidth="100.800048828125" text="Workflow State" />
         </columns>
       </TableView>
    </children>
