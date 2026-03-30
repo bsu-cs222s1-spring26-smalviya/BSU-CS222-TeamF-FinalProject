@@ -36,7 +36,7 @@ public class CanvasService {
     }
 
     public void updateAssignments(Course course) throws NetworkException {
-        String jsonData = new CanvasConnector(user).fetchAssignments(course);
+        List<String> jsonData = new CanvasConnector(user).fetchAssignments(course);
         AssignmentParser parser = new AssignmentParser(jsonData);
 
         // Sort by due date (nulls last) BUG: Crash when no due date.
