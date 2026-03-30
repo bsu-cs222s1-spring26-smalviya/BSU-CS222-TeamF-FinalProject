@@ -11,6 +11,12 @@ public class WisePlannerKernel {
     private UserManager userManager = new UserManager();
     private CanvasService canvasService;
     private TaskManager taskManager;
+    private static WisePlannerKernel instance;
+
+    public static WisePlannerKernel getInstance() {
+        if (instance == null) instance = new WisePlannerKernel();
+        return instance;
+    }
 
     public void initialize() throws FileReadException {
         canvasService = new CanvasService(userManager.getUser());

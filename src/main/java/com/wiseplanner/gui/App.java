@@ -1,8 +1,8 @@
 package com.wiseplanner.gui;
 
-import com.google.gson.Gson;
-import com.wiseplanner.model.User;
 import com.wiseplanner.core.WisePlannerKernel;
+import com.wiseplanner.gui.controller.LoginController;
+import com.wiseplanner.gui.controller.MainWindowController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,58 +10,38 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 public class App extends Application {
-    WisePlannerKernel wisePlannerKernel;
-    public static final String DATA_FOLDER = ".wiseplanner";
-    public static final String USER_DATA_FILE = "user.json";
-    User user = null;
-    Gson gson = new Gson();
-
-    public App() {
-    }
+    WisePlannerKernel wisePlannerKernel = new WisePlannerKernel();
 
     private void showLogin() throws IOException {
         Stage loginStage = new Stage();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/Login.fxml")));
-        loginStage.setTitle("Wise Planner");
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/Login.fxml"));
+        Parent root = loader.load();
+        LoginController controller = loader.getController();
+        loginStage.setTitle("Login");
         loginStage.setScene(new Scene(root));
-        loginStage.show();
+        loginStage.showAndWait();
+        if (controller.isLoginSuccessful()) {
+            String name = controller.getName();
+            String canvasToken = controller.getCanvasToken();
+            wisePlannerKernel.user().setUser(name, canvasToken);
+        }
     }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/MainWindow.fxml")));
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/MainWindow.fxml")));
+        Parent root = loader.load();
+        MainWindowController controller = loader.getController();
         primaryStage.setTitle("Wise Planner");
         primaryStage.setScene(new Scene(root));
-
-
-        String userPath = System.getProperty("user.home");
-        Path userDataPath = Paths.get(userPath, DATA_FOLDER, USER_DATA_FILE);
-        File userDataFile = userDataPath.toFile();
-
-        if (userDataFile.exists()) {
-            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(userDataFile))) {
-                user = gson.fromJson(bufferedReader, User.class);
-            } catch (IOException e) {
-                System.err.println("[Error] File read failed, unable to read user data.");
-            }
-        } else {
+        // Check if login was successful
+        if (!wisePlannerKernel.user().isLogin()) {
             showLogin();
-            //user = new User(name, canvasToken);
-            userDataFile.getParentFile().mkdirs();
-            String userJson = gson.toJson(user);
-            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(userDataFile))) {
-                bufferedWriter.write(userJson);
-            } catch (IOException e) {
-                System.err.println("[Error] File write failed, unable to write user data.");
-            }
         }
-        wisePlannerKernel = new WisePlannerKernel();
-
+        controller.setKernel(wisePlannerKernel);
         primaryStage.show();
     }
 }

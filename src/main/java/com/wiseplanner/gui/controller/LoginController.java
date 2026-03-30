@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class LoginController {
 
@@ -29,7 +30,26 @@ public class LoginController {
 
     @FXML
     void onLoginButtonClick(ActionEvent event) {
-
+        name = nameField.getText();
+        canvasToken = canvasTokenField.getText();
+        isLoginSuccessful = true;
+        Stage stage = (Stage) loginButton.getScene().getWindow();
+        stage.close();
     }
 
+    private boolean isLoginSuccessful = false;
+    private String name;
+    private String canvasToken;
+
+    public boolean isLoginSuccessful() {
+        return isLoginSuccessful;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCanvasToken() {
+        return canvasToken;
+    }
 }
