@@ -13,7 +13,14 @@ This version provides a command-line interface to synchronize academic responsib
 
 **How to Run：**
 
-To run the application, locate Main.java (or your entry class) in IntelliJ, Right-Click, and select Run 'Main.main()'.
+To run the application, use Gradle command for GUI 
+```Bash
+run
+```
+use for CLI
+```Bash
+run --args="--console"
+```
 
 **User Guide：**
 
