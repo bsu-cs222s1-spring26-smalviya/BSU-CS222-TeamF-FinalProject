@@ -45,9 +45,14 @@ public class AnnouncementsController extends BaseController {
     }
 
     public void loadAnnouncements() {
-        kernel.canvas().updateAnnouncements(course);
-        announcements.setAll(course.getAnnouncements());
-        announcementsTable.setItems(announcements);
+        try{
+            kernel.canvas().updateAnnouncements(course);
+            announcements.setAll(course.getAnnouncements());
+            announcementsTable.setItems(announcements);
+        } catch (Exception e) {
+            System.err.println("[Error] " + e.getMessage());
+        }
+
     }
 
     public void configureTable() {
