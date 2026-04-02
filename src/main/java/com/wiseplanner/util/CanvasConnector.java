@@ -59,8 +59,8 @@ public class CanvasConnector {
 
     public String fetchAnnouncements(Course course) throws NetworkException {
         try {
-            String encodedUrlString = "https://canvas.instructure.com/api/v1/announcements?context_codes%5B%5D=course_" +
-                    course.getId() + "&access_token=" + URLEncoder.encode(user.getCanvasToken(), Charset.defaultCharset());
+            String encodedUrlString = "https://canvas.instructure.com/api/v1/courses/" +
+                    course.getId() + "/discussion_topics?only_announcements=true&access_token=" + URLEncoder.encode(user.getCanvasToken(), Charset.defaultCharset());
             URI uri = new URI(encodedUrlString);
             URLConnection connection = uri.toURL().openConnection();
             connection.setRequestProperty("Authorization", "Bearer " + user.getCanvasToken());
