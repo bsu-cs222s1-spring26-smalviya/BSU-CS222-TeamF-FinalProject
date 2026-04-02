@@ -61,15 +61,12 @@ public class CanvasConnector {
         try {
             String encodedUrlString = "https://canvas.instructure.com/api/v1/announcements?context_codes%5B%5D=course_" +
                     course.getId() + "&access_token=" + URLEncoder.encode(user.getCanvasToken(), Charset.defaultCharset());
-            System.out.println("Fetching URL: " + encodedUrlString);
             URI uri = new URI(encodedUrlString);
             URLConnection connection = uri.toURL().openConnection();
             connection.setRequestProperty("Authorization", "Bearer " + user.getCanvasToken());
             connection.setRequestProperty("User-Agent", "Final Project " + user.getName());
             connection.connect();
-            String response = new String(connection.getInputStream().readAllBytes(), Charset.defaultCharset());
-            System.out.println("RAW JSON: " + response);
-            return response;
+            return new String(connection.getInputStream().readAllBytes(),Charset.defaultCharset());
         } catch (URISyntaxException | IOException e) {
             throw new NetworkException("Network connection failed, unable to retrieve announcements information.");
         }

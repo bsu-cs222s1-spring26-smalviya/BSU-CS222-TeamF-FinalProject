@@ -44,8 +44,14 @@ public class MainWindowController extends BaseController {
     }
 
     @FXML
-    void onSettingsButtonClick(ActionEvent event) {
-
+    void onSettingsButtonClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(
+                Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/Settings.fxml"))
+        );
+        Parent node = loader.load();
+        SettingsController controller = loader.getController();
+        controller.setKernel(kernel);
+        changePage(node);
     }
 
     @FXML
