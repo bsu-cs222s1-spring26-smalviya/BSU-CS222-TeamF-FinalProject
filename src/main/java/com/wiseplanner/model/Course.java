@@ -5,6 +5,8 @@ import java.util.List;
 public class Course {
     private String id;
     private String name;
+    private String course_code;
+    private String enrollment_term_id;
     private List<Assignment> assignments;
     private List<Announcement> announcements;
 
@@ -44,4 +46,10 @@ public class Course {
     public List<Announcement> getAnnouncements() {
         return announcements;
     }
+
+    public String getCourse_code() {return course_code;}
+    public void setCourse_code(String course_code) {this.course_code = course_code;}
+
+    public String getEnrollment_term_id() {return enrollment_term_id;}
+    public void setEnrollment_term_id(String enrollment_term_id) {this.enrollment_term_id = enrollment_term_id;}
 }

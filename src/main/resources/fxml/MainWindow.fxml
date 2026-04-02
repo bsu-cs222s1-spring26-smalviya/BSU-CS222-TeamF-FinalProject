@@ -21,6 +21,9 @@
                   <Insets left="20.0" />
                </HBox.margin>
             </Label>
+            <Button fx:id="backButton" text="Back" onAction="#onBackButtonClick" prefHeight="36.0" prefWidth="80.0">
+               <HBox.margin><Insets left="20.0" top="14.0"/></HBox.margin>
+            </Button>
          </children></HBox>
    </top>
    <left>

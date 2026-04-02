@@ -1,44 +1,29 @@
 package com.wiseplanner.gui.controller;
 
-import com.wiseplanner.core.WisePlannerKernel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+
+import java.io.IOException;
+import java.util.Objects;
 
 public class SettingsController extends BaseController {
 
-    @FXML
-    private TextField nameField;
+    private MainWindowController mainWindowController;
 
-    @FXML
-    private TextField tokenField;
-
-    @FXML
-    private Label statusLabel;
-
-    @Override
-    public void setKernel(WisePlannerKernel kernel) {
-        super.setKernel(kernel);
-        nameField.setText(kernel.user().getUser().getName());
-        tokenField.setText(kernel.user().getUser().getCanvasToken());
+    public void setMainWindowController(MainWindowController mainWindowController) {
+        this.mainWindowController = mainWindowController;
     }
 
     @FXML
-    void onSaveButtonClick(ActionEvent event) {
-        String newName = nameField.getText().trim();
-        String newToken = tokenField.getText().trim();
-
-        if (newName.isEmpty() || newToken.isEmpty()) {
-            statusLabel.setStyle("-fx-text-fill: red;");
-            statusLabel.setText("Name and token cannot be empty.");
-            return;
-        }
-
-        kernel.user().setUser(newName, newToken);
-        kernel.initialize();
-
-        statusLabel.setStyle("-fx-text-fill: green;");
-        statusLabel.setText("Saved successfully!");
+    void onUserSettingsButtonClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(
+                Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/UserSettings.fxml"))
+        );
+        Parent node = loader.load();
+        UserSettingsController controller = loader.getController();
+        controller.setKernel(kernel);
+        mainWindowController.changePage(node);
     }
 }
