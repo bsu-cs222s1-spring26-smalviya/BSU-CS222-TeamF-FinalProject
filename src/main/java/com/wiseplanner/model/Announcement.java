@@ -1,10 +1,14 @@
 package com.wiseplanner.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Announcement {
     private String id;
     private String title;
-    private String message;
     private String posted_at;
+
+    @SerializedName("body")
+    private String message;
 
     public Announcement(String id, String title, String message, String posted_at) {
         this.id = id;

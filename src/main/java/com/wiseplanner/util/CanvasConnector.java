@@ -66,7 +66,9 @@ public class CanvasConnector {
             connection.setRequestProperty("Authorization", "Bearer " + user.getCanvasToken());
             connection.setRequestProperty("User-Agent", "Final Project " + user.getName());
             connection.connect();
-            return new String(connection.getInputStream().readAllBytes(), Charset.defaultCharset());
+            String response = new String(connection.getInputStream().readAllBytes(), Charset.defaultCharset());
+            System.out.println("RAW JSON: " + response);
+            return response;
         } catch (URISyntaxException | IOException e) {
             throw new NetworkException("Network connection failed, unable to retrieve announcements information.");
         }
