@@ -7,14 +7,14 @@ public class TaskTest {
     private Task task = new Task("2026-01-25T23:51:24Z", "Complete User Story 4", "Software Engineering");
 
     @Test
-    public void testSetTimestamp() {
+    public void testSetDeadline() {
         task.setDeadline("2026-01-26T23:51:24Z");
         Assertions.assertEquals("2026-01-26T23:51:24Z", task.getDeadline());
     }
 
     @Test
-    public void testGetTimestamp() {
-        Assertions.assertEquals("2026-01-25T23:51:24Z", "2026-01-25T23:51:24Z");
+    public void testGetDeadline() {
+        Assertions.assertEquals("2026-01-25T23:51:24Z", task.getDeadline());
     }
 
     @Test
