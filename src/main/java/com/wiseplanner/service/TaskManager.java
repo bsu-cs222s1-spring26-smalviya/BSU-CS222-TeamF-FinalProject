@@ -2,6 +2,7 @@ package com.wiseplanner.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.wiseplanner.exception.DeleteException;
 import com.wiseplanner.exception.FileReadException;
 import com.wiseplanner.exception.FileWriteException;
 import com.wiseplanner.model.Task;
@@ -38,6 +39,14 @@ public class TaskManager {
         }
         taskList.remove(index);
         saveTask();
+    }
+
+    public void deleteTask(Task task) {
+        if (taskList.remove(task)) {
+            saveTask();
+        } else {
+            throw new DeleteException("Task deletion failed, task not found.");
+        }
     }
 
     public List<Task> getTaskList() {
