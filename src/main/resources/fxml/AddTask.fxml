@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="489.0" prefWidth="415.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.AddTaskController">
+   <children>
+      <DatePicker fx:id="deadlineDate" layoutX="12.0" layoutY="39.0" prefHeight="23.0" prefWidth="153.0" />
+      <Spinner fx:id="deadlineHour" editable="true" layoutX="193.0" layoutY="39.0" prefHeight="23.0" prefWidth="78.0" />
+      <Spinner fx:id="deadlineMinute" editable="true" layoutX="293.0" layoutY="39.0" prefHeight="23.0" prefWidth="78.0" />
+      <TextArea fx:id="contentTextArea" layoutX="12.0" layoutY="160.0" prefHeight="284.0" prefWidth="390.0" />
+      <TextField fx:id="titleTextField" layoutX="12.0" layoutY="102.0" prefHeight="23.0" prefWidth="390.0" />
+      <Label fx:id="deadlineLabel" layoutX="12.0" layoutY="14.0" text="Deadline" />
+      <Label fx:id="titleLabel" layoutX="12.0" layoutY="78.0" text="Title" />
+      <Label fx:id="contentLabel" layoutX="12.0" layoutY="138.0" text="Content" />
+      <Button fx:id="okButton" layoutX="215.0" layoutY="452.0" mnemonicParsing="false" onAction="#onOKButtonClick" text="OK" />
+      <Button fx:id="cancelButton" layoutX="151.0" layoutY="452.0" mnemonicParsing="false" onAction="#onCancelButtonClick" text="Cancel" />
+   </children>
+</AnchorPane>
