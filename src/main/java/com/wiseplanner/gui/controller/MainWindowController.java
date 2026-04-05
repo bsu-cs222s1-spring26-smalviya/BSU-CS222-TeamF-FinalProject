@@ -65,8 +65,14 @@ public class MainWindowController extends BaseController {
     }
 
     @FXML
-    void onTasksButtonClick(ActionEvent event) {
-
+    void onTasksButtonClick(ActionEvent event) throws IOException {
+        history.clear();
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/Tasks.fxml")));
+        Parent node = loader.load();
+        TasksController controller = loader.getController();
+        controller.setKernel(kernel);
+        controller.loadTasks();
+        changePage(node);
     }
 
     @FXML
