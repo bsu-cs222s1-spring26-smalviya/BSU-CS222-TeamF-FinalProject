@@ -5,24 +5,37 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1302.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.TasksController">
-   <children>
-      <Label fx:id="titleLabel" layoutX="18.0" layoutY="14.0" prefHeight="63.0" prefWidth="170.0" text="Tasks">
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Label>
-      <TableView fx:id="tasksTable" layoutX="18.0" layoutY="123.0" prefHeight="566.0" prefWidth="1266.0">
-        <columns>
-          <TableColumn fx:id="titleColumn" prefWidth="368.79999923706055" text="Title" />
-          <TableColumn fx:id="contentColumn" prefWidth="599.199951171875" text="Content" />
-            <TableColumn fx:id="deadlineColumn" prefWidth="212.79998779296875" text="Deadline" />
-            <TableColumn fx:id="deleteColumn" prefWidth="81.5999755859375" />
-        </columns>
-      </TableView>
-      <Button fx:id="addButton" layoutX="1244.0" layoutY="93.0" mnemonicParsing="false" text="Add" />
-   </children>
-</AnchorPane>
+    <AnchorPane fx:id="anchorPane" prefHeight="704.0" prefWidth="1302.0" style="-fx-background-color: #f5f7fb;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.TasksController">
+        <children>
+            <VBox layoutX="24.0" layoutY="24.0" prefHeight="656.0" prefWidth="1254.0" spacing="18.0">
+                <children>
+                    <HBox alignment="CENTER_LEFT" prefHeight="62.0" prefWidth="1254.0">
+                        <children>
+                            <Label fx:id="titleLabel" text="To-do List">
+                                <font>
+                                    <Font size="36.0" />
+                                </font>
+                            </Label>
+                            <Pane prefHeight="0.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
+                            <Button fx:id="addButton" mnemonicParsing="false" prefHeight="36.0" prefWidth="120.0" style="-fx-background-color: #2f80ed; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 18;" text="+ Add Task" />
+                        </children>
+                    </HBox>
+                    <Label text="Manage your daily tasks and deadlines in one place." textFill="#6b7280" />
+                    <TableView fx:id="tasksTable" prefHeight="566.0" prefWidth="1254.0" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #e5e7eb;">
+                        <columns>
+                            <TableColumn fx:id="titleColumn" prefWidth="300.0" text="Title" />
+                            <TableColumn fx:id="contentColumn" prefWidth="620.0" text="Description" />
+                            <TableColumn fx:id="deadlineColumn" prefWidth="230.0" text="Deadline" />
+                            <TableColumn fx:id="deleteColumn" prefWidth="100.0" />
+                        </columns>
+                    </TableView>
+                </children>
+            </VBox>
+        </children>
+    </AnchorPane>

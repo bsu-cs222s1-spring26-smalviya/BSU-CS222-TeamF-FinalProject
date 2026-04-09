@@ -1,5 +1,7 @@
 package com.wiseplanner.model;
 
+import java.util.Objects;
+
 public class Task {
     private String deadline;
     private String title;
@@ -39,5 +41,24 @@ public class Task {
     public String toString() {
         return String.format("%s %s %s\n",
                 deadline, title, content);
+
+}
+
+@Override
+public boolean equals(Object object) {
+    if (this == object) {
+        return true;
     }
+    if (!(object instanceof Task task)) {
+        return false;
+    }
+    return Objects.equals(deadline, task.deadline)
+            && Objects.equals(title, task.title)
+            && Objects.equals(content, task.content);
+}
+
+@Override
+public int hashCode() {
+    return Objects.hash(deadline, title, content);
+}
 }

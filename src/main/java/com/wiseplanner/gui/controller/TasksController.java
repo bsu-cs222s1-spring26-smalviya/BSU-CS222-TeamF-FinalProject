@@ -4,10 +4,18 @@ import com.wiseplanner.model.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
+
+import java.io.IOException;
+import java.util.Objects;
 
 public class TasksController extends BaseController {
 
@@ -41,6 +49,7 @@ public class TasksController extends BaseController {
     @FXML
     private void initialize() {
         configureTable();
+        addButton.setOnAction(event -> onAddButtonClick());
     }
 
     public void loadTasks() {
@@ -86,5 +95,23 @@ public class TasksController extends BaseController {
         });
         tasksTable.getColumns().setAll(titleColumn, contentColumn, deadlineColumn, deleteColumn);
         tableConfigured = true;
+    }
+
+    private void onAddButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/AddTask.fxml")));
+            Parent root = loader.load();
+            AddTaskController addTaskController = loader.getController();
+            addTaskController.setKernel(kernel);
+            addTaskController.setOnTaskCreated(tasks::add);
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Add Task");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException ignored) {
+        }
     }
 }
