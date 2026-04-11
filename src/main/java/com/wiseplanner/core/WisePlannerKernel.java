@@ -4,6 +4,7 @@ import com.wiseplanner.exception.FileCorruptionException;
 import com.wiseplanner.exception.FileReadException;
 import com.wiseplanner.model.User;
 import com.wiseplanner.service.CanvasService;
+import com.wiseplanner.service.ScheduleManager;
 import com.wiseplanner.service.TaskManager;
 import com.wiseplanner.service.UserManager;
 
@@ -11,6 +12,7 @@ public class WisePlannerKernel {
     private UserManager userManager = new UserManager();
     private CanvasService canvasService;
     private TaskManager taskManager;
+    private ScheduleManager scheduleManager;
     private static WisePlannerKernel instance;
 
     public static WisePlannerKernel getInstance() {
@@ -22,6 +24,8 @@ public class WisePlannerKernel {
         canvasService = new CanvasService(userManager.getUser());
         taskManager = new TaskManager();
         taskManager.loadTask();
+        scheduleManager = new ScheduleManager();
+        scheduleManager.loadSchedule();
     }
 
     public UserManager user() {
@@ -34,5 +38,9 @@ public class WisePlannerKernel {
 
     public TaskManager task() {
         return taskManager;
+    }
+
+    public ScheduleManager schedule() {
+        return scheduleManager;
     }
 }
