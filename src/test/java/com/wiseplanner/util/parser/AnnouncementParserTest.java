@@ -1,6 +1,5 @@
-package com.wiseplanner.util;
+package com.wiseplanner.util.parser;
 
-import com.wiseplanner.util.parser.AnnouncementParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
