@@ -1,6 +1,6 @@
 package com.wiseplanner.service;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.wiseplanner.exception.DeleteException;
 import com.wiseplanner.exception.FileReadException;
@@ -11,8 +11,12 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ScheduleManager {
     private static final String DATA_FOLDER = ".wiseplanner";
@@ -20,19 +24,33 @@ public class ScheduleManager {
     private Path scheduleDataPath;
     private String userPath;
     private List<Schedule> scheduleList;
-    Gson gson = new Gson();
+    Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalTime.class, (JsonSerializer<LocalTime>) (src, typeOfSrc, context) ->
+                    new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_TIME)))
+            .registerTypeAdapter(LocalTime.class, (JsonDeserializer<LocalTime>) (json, typeOfT, context) ->
+                    LocalTime.parse(json.getAsString(), DateTimeFormatter.ISO_LOCAL_TIME))
+            .create();
 
     public ScheduleManager() {
         this.userPath = System.getProperty("user.home");
         this.scheduleDataPath = Paths.get(userPath, DATA_FOLDER, SCHEDULE_DATA_FILE);
     }
 
-    public void addSchedule(Schedule schedule) {
+    public void addSchedule(String name, Set<DayOfWeek> dayOfWeeks, LocalTime startTime, LocalTime endTime) throws FileWriteException {
+        Schedule schedule = new Schedule(name, dayOfWeeks, startTime, endTime);
         scheduleList.add(schedule);
         saveSchedule();
     }
 
-    public void deleteSchedule(int index) {
+    public void addSchedule(String name, Set<DayOfWeek> dayOfWeeks, LocalTime startTime, LocalTime endTime, String professor, String location) throws FileWriteException {
+        Schedule schedule = new Schedule(name, dayOfWeeks, startTime, endTime);
+        schedule.setProfessor(professor);
+        schedule.setLocation(location);
+        scheduleList.add(schedule);
+        saveSchedule();
+    }
+
+    public void deleteSchedule(int index) throws IndexOutOfBoundsException, FileWriteException {
         if (index < 0 || index >= scheduleList.size()) {
             throw new IndexOutOfBoundsException("Schedule deletion failed, invalid schedule index.");
         }
@@ -40,7 +58,7 @@ public class ScheduleManager {
         saveSchedule();
     }
 
-    public void deleteSchedule(Schedule schedule) {
+    public void deleteSchedule(Schedule schedule) throws DeleteException {
         if (scheduleList.remove(schedule)) {
             saveSchedule();
         } else {
