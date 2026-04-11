@@ -3,10 +3,10 @@ package com.wiseplanner.service;
 import com.wiseplanner.exception.NetworkException;
 import com.wiseplanner.model.Course;
 import com.wiseplanner.model.User;
-import com.wiseplanner.util.AnnouncementParser;
-import com.wiseplanner.util.AssignmentParser;
+import com.wiseplanner.util.parser.AnnouncementParser;
+import com.wiseplanner.util.parser.AssignmentParser;
 import com.wiseplanner.util.CanvasConnector;
-import com.wiseplanner.util.CourseParser;
+import com.wiseplanner.util.parser.CourseParser;
 
 import java.util.List;
 

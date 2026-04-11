@@ -1,4 +1,4 @@
-package com.wiseplanner.util;
+package com.wiseplanner.util.parser;
 
 import com.google.gson.Gson;
 import com.wiseplanner.model.Submission;

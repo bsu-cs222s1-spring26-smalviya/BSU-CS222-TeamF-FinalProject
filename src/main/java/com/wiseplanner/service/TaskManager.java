@@ -41,7 +41,7 @@ public class TaskManager {
         saveTask();
     }
 
-    public void deleteTask(Task task) {
+    public void deleteTask(Task task) throws DeleteException {
         if (taskList.remove(task)) {
             saveTask();
         } else {
