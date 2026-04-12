@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="584.0" prefWidth="446.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.ScheduleDetailController">
+   <children>
+      <Button fx:id="okButton" layoutX="392.0" layoutY="544.0" mnemonicParsing="false" onAction="#onOkButtonClick" text="OK" />
+      <Button fx:id="cancelButton" layoutX="323.0" layoutY="544.0" mnemonicParsing="false" onAction="#onCancelButtonClick" text="Cancel" />
+      <Label fx:id="titleLabel" layoutX="14.0" layoutY="14.0" prefHeight="47.0" prefWidth="320.0" text="Schedule Detail">
+         <font>
+            <Font size="36.0" />
+         </font></Label>
+      <TextField fx:id="nameField" layoutX="15.0" layoutY="102.0" prefHeight="23.0" prefWidth="411.0" />
+      <Label fx:id="nameLabel" layoutX="14.0" layoutY="79.0" text="Name" />
+      <Label fx:id="dayOfWeeksLabel" layoutX="20.0" layoutY="138.0" text="Class on" />
+      <GridPane fx:id="dayOfWeeksPane" layoutX="17.0" layoutY="162.0" prefHeight="106.0" prefWidth="411.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <CheckBox fx:id="mondayBox" mnemonicParsing="false" text="Monday" />
+            <CheckBox fx:id="tuesdayBox" mnemonicParsing="false" text="Tuesday" GridPane.columnIndex="1" />
+            <CheckBox fx:id="wednesdayBox" mnemonicParsing="false" text="Wednesday" GridPane.rowIndex="1" />
+            <CheckBox fx:id="thursdayBox" mnemonicParsing="false" text="Thursday" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <CheckBox fx:id="fridayBox" mnemonicParsing="false" text="Friday" GridPane.rowIndex="2" />
+            <CheckBox fx:id="saturdayBox" mnemonicParsing="false" text="Saturday" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <CheckBox fx:id="sundayBox" mnemonicParsing="false" text="Sunday" GridPane.rowIndex="3" />
+         </children>
+      </GridPane>
+      <Spinner fx:id="startTimeHourSpinner" editable="true" layoutX="16.0" layoutY="309.0" prefHeight="23.0" prefWidth="90.0" />
+      <Spinner fx:id="startTimeMinuteSpinner" editable="true" layoutX="223.0" layoutY="309.0" prefHeight="23.0" prefWidth="90.0" />
+      <Spinner fx:id="endTimeHourSpinner" editable="true" layoutX="16.0" layoutY="375.0" prefHeight="23.0" prefWidth="90.0" />
+      <Spinner fx:id="endTimeMinuteSpinner" editable="true" layoutX="223.0" layoutY="375.0" prefHeight="23.0" prefWidth="90.0" />
+      <TextField fx:id="professorField" layoutX="15.0" layoutY="440.0" prefHeight="23.0" prefWidth="411.0" />
+      <TextField fx:id="locationField" layoutX="17.0" layoutY="507.0" prefHeight="23.0" prefWidth="411.0" />
+      <Label fx:id="startTimeLabel" layoutX="19.0" layoutY="284.0" text="Start time" />
+      <Label fx:id="endTimeLabel" layoutX="18.0" layoutY="348.0" text="End time" />
+      <Label fx:id="professorLabel" layoutX="17.0" layoutY="414.0" text="Professor" />
+      <Label fx:id="locationLabel" layoutX="19.0" layoutY="480.0" text="Location" />
+      <Label layoutX="114.0" layoutY="313.0" text="H" />
+      <Label layoutX="319.0" layoutY="313.0" text="M" />
+      <Label layoutX="114.0" layoutY="379.0" text="H" />
+      <Label layoutX="319.0" layoutY="379.0" text="M" />
+   </children>
+</AnchorPane>

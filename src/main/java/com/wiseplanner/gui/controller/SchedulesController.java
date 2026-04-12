@@ -5,14 +5,21 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 public class SchedulesController extends BaseController {
 
@@ -45,8 +52,17 @@ public class SchedulesController extends BaseController {
     }
 
     @FXML
-    void onAddButtonClick(ActionEvent event) {
-
+    void onAddButtonClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/ScheduleDetail.fxml")));
+        Parent root = loader.load();
+        ScheduleDetailController controller = loader.getController();
+        controller.setKernel(kernel);
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        controller.setMode(ScheduleDetailController.ViewMode.ADD);
+        stage.showAndWait();
+        drawTable();
     }
 
     public void loadSchedules() {
