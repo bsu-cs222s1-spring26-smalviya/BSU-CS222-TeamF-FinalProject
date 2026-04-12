@@ -13,6 +13,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -52,9 +53,6 @@ public class TasksController extends BaseController {
     @FXML
     private Label titleLabel;
 
-    @FXML
-    private TableColumn<Task, Void> viewColumn;
-
     private final ObservableList<Task> tasks = FXCollections.observableArrayList();
     private boolean tableConfigured = false;
 
@@ -75,10 +73,19 @@ public class TasksController extends BaseController {
             return;
         }
         tasksTable.setItems(tasks);
+        tasksTable.setRowFactory(table -> {
+            TableRow<Task> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    openTaskDetail(TaskDetailController.Mode.VIEW, row.getItem());
+                }
+            });
+            return row;
+        });
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         contentColumn.setCellValueFactory(new PropertyValueFactory<>("content"));
         deadlineColumn.setCellValueFactory(new PropertyValueFactory<>("deadline"));
-        viewColumn.setCellFactory(createActionCellFactory("View", task -> openTaskDetail(TaskDetailController.Mode.VIEW, task)));
+
         modifyColumn.setCellFactory(createActionCellFactory("Modify", task -> openTaskDetail(TaskDetailController.Mode.MODIFY, task)));
         deleteColumn.setCellFactory(createActionCellFactory("Delete", task -> {
                 Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -93,7 +100,7 @@ public class TasksController extends BaseController {
                 });
             }));
 
-        tasksTable.getColumns().setAll(titleColumn, contentColumn, deadlineColumn, viewColumn, modifyColumn, deleteColumn);
+        tasksTable.getColumns().setAll(titleColumn, contentColumn, deadlineColumn, modifyColumn, deleteColumn);
             tableConfigured = true;
         }
 
