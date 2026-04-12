@@ -7,7 +7,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -35,6 +41,9 @@ public class TasksController extends BaseController {
     private TableColumn<Task, Void> deleteColumn;
 
     @FXML
+    private TableColumn<Task, Void> modifyColumn;
+
+    @FXML
     private TableView<Task> tasksTable;
 
     @FXML
@@ -43,13 +52,16 @@ public class TasksController extends BaseController {
     @FXML
     private Label titleLabel;
 
+    @FXML
+    private TableColumn<Task, Void> viewColumn;
+
     private final ObservableList<Task> tasks = FXCollections.observableArrayList();
     private boolean tableConfigured = false;
 
     @FXML
     private void initialize() {
         configureTable();
-        addButton.setOnAction(event -> onAddButtonClick());
+        addButton.setOnAction(event -> openTaskDetail(TaskDetailController.Mode.ADD, null));
     }
 
     public void loadTasks() {
@@ -66,52 +78,75 @@ public class TasksController extends BaseController {
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         contentColumn.setCellValueFactory(new PropertyValueFactory<>("content"));
         deadlineColumn.setCellValueFactory(new PropertyValueFactory<>("deadline"));
-        deleteColumn.setCellFactory(new Callback<>() {
-            @Override
-            public TableCell<Task, Void> call(TableColumn<Task, Void> param) {
-                return new TableCell<>() {
-                    private final Button deleteButton = new Button("Delete");
-
-                    {
-                        deleteButton.setOnAction(event -> {
-                            Task task = getTableView().getItems().get(getIndex());
-                            kernel.task().deleteTask(task);
-                            tasks.remove(task);
-                        });
-                        deleteButton.setMaxWidth(Double.MAX_VALUE);
+        viewColumn.setCellFactory(createActionCellFactory("View", task -> openTaskDetail(TaskDetailController.Mode.VIEW, task)));
+        modifyColumn.setCellFactory(createActionCellFactory("Modify", task -> openTaskDetail(TaskDetailController.Mode.MODIFY, task)));
+        deleteColumn.setCellFactory(createActionCellFactory("Delete", task -> {
+                Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmAlert.setTitle("Confirm Delete");
+                confirmAlert.setHeaderText("Delete this task?");
+                confirmAlert.setContentText(task.getTitle());
+                confirmAlert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        kernel.task().deleteTask(task);
+                        tasks.remove(task);
                     }
+                });
+            }));
 
-                    @Override
-                    protected void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(deleteButton);
-                        }
+        tasksTable.getColumns().setAll(titleColumn, contentColumn, deadlineColumn, viewColumn, modifyColumn, deleteColumn);
+            tableConfigured = true;
+        }
+
+        private Callback<TableColumn<Task, Void>, TableCell<Task, Void>> createActionCellFactory(String text,
+                java.util.function.Consumer<Task> action) {
+            return param -> new TableCell<>() {
+                private final Button actionButton = new Button(text);
+
+                {
+                    actionButton.setOnAction(event -> {
+                        Task task = getTableView().getItems().get(getIndex());
+                        action.accept(task);
+                        tasksTable.refresh();
+                    });
+                    actionButton.setMaxWidth(Double.MAX_VALUE);
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(actionButton);
                     }
-                };
+                }
+            };
+        }
+
+        private void openTaskDetail(TaskDetailController.Mode mode, Task task) {
+            try {
+                FXMLLoader loader = new FXMLLoader(
+                        Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/TaskDetail.fxml")));
+                Parent root = loader.load();
+                TaskDetailController taskDetailController = loader.getController();
+                taskDetailController.setKernel(kernel);
+                taskDetailController.setOnTaskCreated(tasks::add);
+
+                if (mode == TaskDetailController.Mode.ADD) {
+                    taskDetailController.setupForAdd();
+                } else if (mode == TaskDetailController.Mode.MODIFY && task != null) {
+                    taskDetailController.setupForModify(task);
+                } else if (mode == TaskDetailController.Mode.VIEW && task != null) {
+                    taskDetailController.setupForView(task);
+                }
+
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setTitle(mode == TaskDetailController.Mode.ADD ? "Add Task" : "Task Detail");
+                stage.setScene(new Scene(root));
+                stage.showAndWait();
+                tasksTable.refresh();
+            } catch (IOException ignored) {
             }
-        });
-        tasksTable.getColumns().setAll(titleColumn, contentColumn, deadlineColumn, deleteColumn);
-        tableConfigured = true;
-    }
-
-    private void onAddButtonClick() {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/AddTask.fxml")));
-            Parent root = loader.load();
-            AddTaskController addTaskController = loader.getController();
-            addTaskController.setKernel(kernel);
-            addTaskController.setOnTaskCreated(tasks::add);
-
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Add Task");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-        } catch (IOException ignored) {
         }
     }
-}
