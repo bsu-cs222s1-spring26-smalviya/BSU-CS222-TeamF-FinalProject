@@ -5,10 +5,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -105,9 +102,11 @@ public class SchedulesController extends BaseController {
     }
 
     private void createCourseNode(Schedule schedule, DayOfWeek day) {
+        String normalStyle = "-fx-background-color: derive(#4A90E2, 80%); -fx-background-radius: 4; -fx-border-color: #4A90E2; -fx-border-width: 0 0 0 4;";
+        String selectedStyle = "-fx-background-color: derive(#4A90E2, 80%); -fx-background-radius: 4; -fx-border-color: #4A90E2; -fx-border-width: 2; -fx-border-radius: 4;";
         VBox node = new VBox();
         node.getStyleClass().add("course-card");
-        node.setStyle("-fx-background-color: derive(#4A90E2, 80%); -fx-background-radius: 4; -fx-border-color: #4A90E2; -fx-border-width: 0 0 0 4;");
+        node.setStyle(normalStyle);
         Label name = new Label(schedule.getName());
         name.setStyle("-fx-font-weight: bold; -fx-padding: 5;");
         Label info = new Label(schedule.getStartTime() + " - " + schedule.getEndTime() + "\n" +
@@ -125,6 +124,19 @@ public class SchedulesController extends BaseController {
         int dayIndex = day.getValue() - 1;
         node.setLayoutX(TIME_COLUMN_WIDTH + dayIndex * dayWidth + 2);
         node.setPrefWidth(dayWidth - 4);
+        // Right-click Menu
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem deleteItem = new MenuItem("Delete");
+        deleteItem.setOnAction(event -> {
+            kernel.schedule().deleteSchedule(schedule);
+            drawTable();
+        });
+        contextMenu.getItems().addAll(deleteItem);
+        node.setOnContextMenuRequested(event -> {
+            contextMenu.show(node, event.getScreenX(), event.getScreenY());
+            node.setStyle(selectedStyle);
+        });
+        contextMenu.setOnHidden(e -> node.setStyle(normalStyle));
         schedulesTable.getChildren().add(node);
     }
 }
