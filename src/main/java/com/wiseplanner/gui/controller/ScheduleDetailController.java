@@ -130,11 +130,39 @@ public class ScheduleDetailController extends BaseController {
                 break;
             case MODIFY:
                 this.currentMode = ViewMode.MODIFY;
-                stage.setTitle("View Schedule");
-                titleLabel.setText("View Schedule");
+                stage.setTitle("Modify Schedule");
+                titleLabel.setText("Modify Schedule");
                 break;
             case VIEW:
                 this.currentMode = ViewMode.VIEW;
+                stage.setTitle("View Schedule");
+                titleLabel.setText("View Schedule");
+                nameField.setEditable(false);
+                mondayBox.setDisable(true);
+                mondayBox.setOpacity(1.0);
+                tuesdayBox.setDisable(true);
+                tuesdayBox.setOpacity(1.0);
+                wednesdayBox.setDisable(true);
+                wednesdayBox.setOpacity(1.0);
+                thursdayBox.setDisable(true);
+                thursdayBox.setOpacity(1.0);
+                fridayBox.setDisable(true);
+                fridayBox.setOpacity(1.0);
+                saturdayBox.setDisable(true);
+                saturdayBox.setOpacity(1.0);
+                sundayBox.setDisable(true);
+                sundayBox.setOpacity(1.0);
+                startTimeHourSpinner.setDisable(true);
+                startTimeHourSpinner.setOpacity(1.0);
+                startTimeMinuteSpinner.setDisable(true);
+                startTimeMinuteSpinner.setOpacity(1.0);
+                endTimeHourSpinner.setDisable(true);
+                endTimeHourSpinner.setOpacity(1.0);
+                endTimeMinuteSpinner.setDisable(true);
+                endTimeMinuteSpinner.setOpacity(1.0);
+                professorField.setEditable(false);
+                locationField.setEditable(false);
+                cancelButton.setVisible(false);
                 break;
         }
     }

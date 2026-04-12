@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -140,6 +141,27 @@ public class SchedulesController extends BaseController {
         int dayIndex = day.getValue() - 1;
         node.setLayoutX(TIME_COLUMN_WIDTH + dayIndex * dayWidth + 2);
         node.setPrefWidth(dayWidth - 4);
+        // Click to view detail
+        node.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/ScheduleDetail.fxml")));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                ScheduleDetailController controller = loader.getController();
+                controller.setKernel(kernel);
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setScene(new Scene(root));
+                controller.setMode(ScheduleDetailController.ViewMode.VIEW);
+                controller.setSchedule(schedule);
+                stage.showAndWait();
+                drawTable();
+            }
+        });
         // Right-click Menu
         ContextMenu contextMenu = new ContextMenu();
         MenuItem modifyItem = new MenuItem("Modify");
