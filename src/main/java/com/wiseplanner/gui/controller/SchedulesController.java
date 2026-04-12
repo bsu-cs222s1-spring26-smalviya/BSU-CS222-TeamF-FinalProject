@@ -110,7 +110,9 @@ public class SchedulesController extends BaseController {
         node.setStyle("-fx-background-color: derive(#4A90E2, 80%); -fx-background-radius: 4; -fx-border-color: #4A90E2; -fx-border-width: 0 0 0 4;");
         Label name = new Label(schedule.getName());
         name.setStyle("-fx-font-weight: bold; -fx-padding: 5;");
-        Label info = new Label(schedule.getStartTime() + " - " + schedule.getEndTime() + "\n" + (schedule.getLocation() != null ? schedule.getLocation() : ""));
+        Label info = new Label(schedule.getStartTime() + " - " + schedule.getEndTime() + "\n" +
+                (schedule.getProfessor() != null ? schedule.getProfessor() : "") + "\n" +
+                (schedule.getLocation() != null ? schedule.getLocation() : ""));
         info.setStyle("-fx-font-size: 10px; -fx-padding: 0 5 5 5;");
         node.getChildren().addAll(name, info);
         // Initialize Layout
