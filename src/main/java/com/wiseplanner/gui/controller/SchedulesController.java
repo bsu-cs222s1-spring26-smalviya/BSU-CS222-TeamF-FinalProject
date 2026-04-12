@@ -142,12 +142,31 @@ public class SchedulesController extends BaseController {
         node.setPrefWidth(dayWidth - 4);
         // Right-click Menu
         ContextMenu contextMenu = new ContextMenu();
+        MenuItem modifyItem = new MenuItem("Modify");
         MenuItem deleteItem = new MenuItem("Delete");
+        modifyItem.setOnAction(event -> {
+            FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/ScheduleDetail.fxml")));
+            Parent root = null;
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            ScheduleDetailController controller = loader.getController();
+            controller.setKernel(kernel);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            controller.setMode(ScheduleDetailController.ViewMode.MODIFY);
+            controller.setSchedule(schedule);
+            stage.showAndWait();
+            drawTable();
+        });
         deleteItem.setOnAction(event -> {
             kernel.schedule().deleteSchedule(schedule);
             drawTable();
         });
-        contextMenu.getItems().addAll(deleteItem);
+        contextMenu.getItems().addAll(modifyItem, deleteItem);
         node.setOnContextMenuRequested(event -> {
             contextMenu.show(node, event.getScreenX(), event.getScreenY());
             node.setStyle(selectedStyle);

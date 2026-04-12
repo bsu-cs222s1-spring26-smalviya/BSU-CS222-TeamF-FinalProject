@@ -99,6 +99,8 @@ public class ScheduleDetailController extends BaseController {
     void onOkButtonClick(ActionEvent event) {
         if (currentMode == ViewMode.ADD) {
             addSchedule();
+        } else if (currentMode == ViewMode.MODIFY) {
+            modifySchedule();
         }
         closeWindow();
     }
@@ -112,21 +114,24 @@ public class ScheduleDetailController extends BaseController {
     }
 
     private ViewMode currentMode;
+    private Schedule currentSchedule;
 
     public enum ViewMode {
         ADD, MODIFY, VIEW
     }
 
     public void setMode(ViewMode mode) {
+        Stage stage = (Stage) okButton.getScene().getWindow();
         switch (mode) {
             case ADD:
                 this.currentMode = ViewMode.ADD;
-                Stage stage = (Stage) okButton.getScene().getWindow();
                 stage.setTitle("Add Schedule");
                 titleLabel.setText("Add Schedule");
                 break;
             case MODIFY:
                 this.currentMode = ViewMode.MODIFY;
+                stage.setTitle("View Schedule");
+                titleLabel.setText("View Schedule");
                 break;
             case VIEW:
                 this.currentMode = ViewMode.VIEW;
@@ -154,6 +159,50 @@ public class ScheduleDetailController extends BaseController {
                     professorField.getText(),
                     locationField.getText()
             );
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid input. Please check your input.", ButtonType.OK);
+            alert.showAndWait();
+        }
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.currentSchedule = schedule;
+        nameField.setText(schedule.getName());
+        for (DayOfWeek day : schedule.getDayOfWeeks()) {
+            if (day == DayOfWeek.MONDAY) mondayBox.setSelected(true);
+            if (day == DayOfWeek.TUESDAY) tuesdayBox.setSelected(true);
+            if (day == DayOfWeek.WEDNESDAY) wednesdayBox.setSelected(true);
+            if (day == DayOfWeek.THURSDAY) thursdayBox.setSelected(true);
+            if (day == DayOfWeek.FRIDAY) fridayBox.setSelected(true);
+            if (day == DayOfWeek.SATURDAY) saturdayBox.setSelected(true);
+            if (day == DayOfWeek.SUNDAY) sundayBox.setSelected(true);
+        }
+        startTimeHourSpinner.getValueFactory().setValue(schedule.getStartTime().getHour());
+        startTimeMinuteSpinner.getValueFactory().setValue(schedule.getStartTime().getMinute());
+        endTimeHourSpinner.getValueFactory().setValue(schedule.getEndTime().getHour());
+        endTimeMinuteSpinner.getValueFactory().setValue(schedule.getEndTime().getMinute());
+        professorField.setText(schedule.getProfessor());
+        locationField.setText(schedule.getLocation());
+    }
+
+    private void modifySchedule() {
+        Set<DayOfWeek> dayOfWeekSet = new HashSet<>();
+        if (mondayBox.isSelected()) dayOfWeekSet.add(DayOfWeek.MONDAY);
+        if (tuesdayBox.isSelected()) dayOfWeekSet.add(DayOfWeek.TUESDAY);
+        if (wednesdayBox.isSelected()) dayOfWeekSet.add(DayOfWeek.WEDNESDAY);
+        if (thursdayBox.isSelected()) dayOfWeekSet.add(DayOfWeek.THURSDAY);
+        if (fridayBox.isSelected()) dayOfWeekSet.add(DayOfWeek.FRIDAY);
+        if (saturdayBox.isSelected()) dayOfWeekSet.add(DayOfWeek.SATURDAY);
+        if (sundayBox.isSelected()) dayOfWeekSet.add(DayOfWeek.SUNDAY);
+        LocalTime startTime = LocalTime.of(startTimeHourSpinner.getValue(), startTimeMinuteSpinner.getValue());
+        LocalTime endTime = LocalTime.of(endTimeHourSpinner.getValue(), endTimeMinuteSpinner.getValue());
+        if (!nameField.getText().isBlank() && !dayOfWeekSet.isEmpty()) {
+            currentSchedule.setName(nameField.getText());
+            currentSchedule.setDayOfWeeks(dayOfWeekSet);
+            currentSchedule.setStartTime(startTime);
+            currentSchedule.setEndTime(endTime);
+            currentSchedule.setProfessor(professorField.getText());
+            currentSchedule.setLocation(locationField.getText());
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid input. Please check your input.", ButtonType.OK);
             alert.showAndWait();
