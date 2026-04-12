@@ -31,6 +31,9 @@ public class MainWindowController extends BaseController {
     private StackPane pagePane;
 
     @FXML
+    private Button schedulesButton;
+
+    @FXML
     private Button settingsButton;
 
     @FXML
@@ -49,6 +52,17 @@ public class MainWindowController extends BaseController {
     void onCoursesButtonClick(ActionEvent event) throws IOException {
         history.clear(); // clear history when navigating from the sidebar
         showCoursesPage();
+    }
+
+    @FXML
+    void onSchedulesButtonClick(ActionEvent event) throws IOException {
+        history.clear();
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/Schedules.fxml")));
+        Parent node = loader.load();
+        SchedulesController controller = loader.getController();
+        controller.setKernel(kernel);
+        controller.loadSchedules();
+        changePage(node);
     }
 
     @FXML
