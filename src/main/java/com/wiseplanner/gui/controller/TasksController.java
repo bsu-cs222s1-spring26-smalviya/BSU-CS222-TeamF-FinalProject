@@ -75,8 +75,16 @@ public class TasksController extends BaseController {
                     {
                         deleteButton.setOnAction(event -> {
                             Task task = getTableView().getItems().get(getIndex());
-                            kernel.task().deleteTask(task);
-                            tasks.remove(task);
+                            Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                            confirmAlert.setTitle("Confirm Delete");
+                            confirmAlert.setHeaderText("Delete this task?");
+                            confirmAlert.setContentText(task.getTitle());
+                            confirmAlert.showAndWait().ifPresent(response -> {
+                                if (response == ButtonType.OK) {
+                                    kernel.task().deleteTask(task);
+                                    tasks.remove(task);
+                                }
+                            });
                         });
                         deleteButton.setMaxWidth(Double.MAX_VALUE);
                     }
