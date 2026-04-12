@@ -154,9 +154,19 @@ public class TaskDetailController {
         boolean editable = mode != Mode.VIEW;
         titleTextField.setEditable(editable);
         contentTextArea.setEditable(editable);
-        deadlineDate.setDisable(!editable);
-        deadlineHour.setDisable(!editable);
-        deadlineMinute.setDisable(!editable);
+
+        deadlineDate.setDisable(false);
+        deadlineHour.setDisable(false);
+        deadlineMinute.setDisable(false);
+        deadlineDate.setMouseTransparent(!editable);
+        deadlineHour.setMouseTransparent(!editable);
+        deadlineMinute.setMouseTransparent(!editable);
+        deadlineDate.setFocusTraversable(editable);
+        deadlineHour.setFocusTraversable(editable);
+        deadlineMinute.setFocusTraversable(editable);
+        deadlineDate.setOpacity(1.0);
+        deadlineHour.setOpacity(1.0);
+        deadlineMinute.setOpacity(1.0);
 
         cancelButton.setManaged(mode != Mode.VIEW);
         cancelButton.setVisible(mode != Mode.VIEW);
