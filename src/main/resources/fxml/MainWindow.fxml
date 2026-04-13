@@ -9,10 +9,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.MainWindowController">
+<BorderPane fx:id="borderPane" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.MainWindowController">
    <top>
-      <HBox fx:id="topBar" prefHeight="64.0" prefWidth="1366.0" BorderPane.alignment="CENTER">
+      <HBox fx:id="topBar" prefHeight="64.0" BorderPane.alignment="CENTER">
          <children>
+            <Button fx:id="backButton" onAction="#onBackButtonClick" prefHeight="36.0" prefWidth="36.0" text="←">
+               <HBox.margin><Insets left="20.0" top="14.0" /></HBox.margin>
+            </Button>
             <Label prefHeight="114.0" prefWidth="238.0" text="Wise Planner">
                <font>
                   <Font size="36.0" />
@@ -21,21 +24,18 @@
                   <Insets left="20.0" />
                </HBox.margin>
             </Label>
-            <Button fx:id="backButton" onAction="#onBackButtonClick" prefHeight="36.0" prefWidth="80.0" text="Back">
-               <HBox.margin><Insets left="20.0" top="14.0" /></HBox.margin>
-            </Button>
          </children></HBox>
    </top>
    <left>
-      <VBox fx:id="navigationBar" prefHeight="688.0" prefWidth="64.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="navigationBar" prefHeight="704.0" prefWidth="80.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="coursesButton" mnemonicParsing="false" onAction="#onCoursesButtonClick" prefHeight="64.0" prefWidth="64.0" text="Courses" />
-            <Button fx:id="tasksButton" mnemonicParsing="false" onAction="#onTasksButtonClick" prefHeight="64.0" prefWidth="64.0" text="Tasks" />
-            <Button fx:id="schedulesButton" mnemonicParsing="false" onAction="#onSchedulesButtonClick" prefHeight="64.0" prefWidth="64.0" text="Schedules" />
-            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#onSettingsButtonClick" prefHeight="64.0" prefWidth="64.0" text="Settings" />
+            <Button fx:id="coursesButton" mnemonicParsing="false" onAction="#onCoursesButtonClick" prefHeight="64.0" prefWidth="80.0" text="Courses" />
+            <Button fx:id="tasksButton" mnemonicParsing="false" onAction="#onTasksButtonClick" prefHeight="64.0" prefWidth="80.0" text="Tasks" />
+            <Button fx:id="schedulesButton" mnemonicParsing="false" onAction="#onSchedulesButtonClick" prefHeight="64.0" prefWidth="80.0" text="Schedules" />
+            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#onSettingsButtonClick" prefHeight="64.0" prefWidth="80.0" text="Settings" />
          </children></VBox>
    </left>
    <center>
-      <StackPane fx:id="pagePane" prefHeight="150.0" prefWidth="1444.0" BorderPane.alignment="CENTER" />
+      <StackPane fx:id="pagePane" prefWidth="1242.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

@@ -1,41 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<AnchorPane fx:id="anchorPane" prefHeight="704.0" prefWidth="1302.0" style="-fx-background-color: #f5f7fb;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.TasksController">
-    <children>
-        <VBox layoutX="24.0" layoutY="24.0" prefHeight="656.0" prefWidth="1254.0" spacing="18.0">
+
+<BorderPane fx:id="anchorPane" prefHeight="704.0" prefWidth="1302.0" style="-fx-background-color: #f5f7fb;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.TasksController">
+    <top>
+        <VBox spacing="18.0" BorderPane.alignment="CENTER">
             <children>
-                <HBox alignment="CENTER_LEFT" prefHeight="62.0" prefWidth="1254.0">
+                <HBox alignment="CENTER_LEFT">
                     <children>
                         <Label fx:id="titleLabel" text="To-do List">
                             <font>
                                 <Font size="36.0" />
                             </font>
                         </Label>
-                        <Pane prefHeight="0.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
+                        <Pane HBox.hgrow="ALWAYS" />
                         <Button fx:id="addButton" mnemonicParsing="false" prefHeight="36.0" prefWidth="120.0" style="-fx-background-color: #2f80ed; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 18;" text="+ Add Task" />
                     </children>
                 </HBox>
                 <Label text="Manage your daily tasks and deadlines in one place." textFill="#6b7280" />
-                <TableView fx:id="tasksTable" prefHeight="566.0" prefWidth="1254.0" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #e5e7eb;">
-                    <columns>
-                        <TableColumn fx:id="titleColumn" prefWidth="230.0" text="Title" />
-                        <TableColumn fx:id="contentColumn" prefWidth="500.0" text="Description" />
-                        <TableColumn fx:id="deadlineColumn" prefWidth="190.0" text="Deadline" />
-                        <TableColumn fx:id="viewColumn" prefWidth="110.0" text="View" />
-                        <TableColumn fx:id="modifyColumn" prefWidth="110.0" text="Modify" />
-                        <TableColumn fx:id="deleteColumn" prefWidth="110.0" text="Delete" />
-                    </columns>
-                </TableView>
             </children>
+            <padding>
+                <Insets top="24.0" right="24.0" bottom="18.0" left="24.0"/>
+            </padding>
         </VBox>
-    </children>
-</AnchorPane>
+    </top>
+    <center>
+        <TableView fx:id="tasksTable" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #e5e7eb;">
+            <columns>
+                <TableColumn fx:id="titleColumn" prefWidth="230.0" text="Title" />
+                <TableColumn fx:id="contentColumn" prefWidth="500.0" text="Description" />
+                <TableColumn fx:id="deadlineColumn" prefWidth="190.0" text="Deadline" />
+                <TableColumn fx:id="viewColumn" prefWidth="110.0" text="View" />
+                <TableColumn fx:id="modifyColumn" prefWidth="110.0" text="Modify" />
+                <TableColumn fx:id="deleteColumn" prefWidth="110.0" text="Delete" />
+            </columns>
+            <BorderPane.margin>
+                <Insets right="24.0" bottom="24.0" left="24.0"/>
+            </BorderPane.margin>
+        </TableView>
+    </center>
+</BorderPane>
