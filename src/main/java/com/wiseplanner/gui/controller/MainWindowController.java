@@ -106,6 +106,7 @@ public class MainWindowController extends BaseController {
 
     // Call this when navigating forward — saves current page to history
     public void changePage(Parent node) {
+        stretchToFill(node);
         if (!pagePane.getChildren().isEmpty()) {
             history.push((Parent) pagePane.getChildren().get(0));
         }

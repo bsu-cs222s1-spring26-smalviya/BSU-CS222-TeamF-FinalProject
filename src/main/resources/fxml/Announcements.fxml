@@ -4,10 +4,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="1186.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.AnnouncementsController">
+<AnchorPane fx:id="anchorPane" prefHeight="635.0" prefWidth="1186.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.AnnouncementsController">
    <children>
-      <TableView fx:id="announcementsTable" prefHeight="635.0" prefWidth="1186.0">
+      <TableView fx:id="announcementsTable" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="178.39999997615814" text="ID" />
           <TableColumn fx:id="titleColumn" prefWidth="264.800048828125" text="Title" />

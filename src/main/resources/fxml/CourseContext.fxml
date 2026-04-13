@@ -1,20 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1302.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.CourseContextController">
-   <children>
-      <Label fx:id="courseNameLabel" prefHeight="82.0" prefWidth="1279.0" text="Course">
+<BorderPane fx:id="anchorPane" prefHeight="704.0" prefWidth="1302.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.CourseContextController">
+   <top>
+      <Label fx:id="courseNameLabel" text="Course" BorderPane.alignment="CENTER_LEFT">
          <font>
             <Font size="36.0" />
          </font>
+         <BorderPane.margin>
+            <Insets top="14.0" right="16.0" bottom="16.0" left="16.0" />
+         </BorderPane.margin>
       </Label>
-      <Button fx:id="assignmentsBtn" layoutY="71.0" mnemonicParsing="false" onAction="#onAssignmentsBtnClick" text="Assignments" />
-      <Button fx:id="announcementsButton" layoutY="94.0" mnemonicParsing="false" onAction="#onAnnouncementsBtnClick" text="Announcements" />
-      <StackPane fx:id="courseContextPane" layoutX="115.0" layoutY="68.0" prefHeight="635.0" prefWidth="1186.0" />
-   </children>
-</AnchorPane>
+   </top>
+   <left>
+      <VBox spacing="12.0" BorderPane.alignment="TOP_LEFT">
+         <children>
+            <Button fx:id="assignmentsBtn" mnemonicParsing="false" onAction="#onAssignmentsBtnClick" prefWidth="120.0" text="Assignments" />
+            <Button fx:id="announcementsButton" mnemonicParsing="false" onAction="#onAnnouncementsBtnClick" prefWidth="120.0" text="Announcements" />
+         </children>
+         <padding>
+            <Insets top="0.0" right="12.0" bottom="16.0" left="16.0" />
+         </padding>
+      </VBox>
+   </left>
+   <center>
+      <StackPane fx:id="courseContextPane" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets right="16.0" bottom="16.0" />
+         </BorderPane.margin>
+      </StackPane>
+   </center>
+</BorderPane>

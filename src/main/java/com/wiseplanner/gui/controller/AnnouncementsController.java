@@ -60,6 +60,7 @@ public class AnnouncementsController extends BaseController {
             return;
         }
         announcementsTable.setItems(announcements);
+        announcementsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         messageColumn.setCellValueFactory(new PropertyValueFactory<>("message"));
         posted_atColumn.setCellValueFactory(new PropertyValueFactory<>("posted_at"));

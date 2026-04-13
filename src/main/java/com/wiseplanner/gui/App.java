@@ -22,6 +22,8 @@ public class App extends Application {
         LoginController controller = loader.getController();
         loginStage.setTitle("Login");
         loginStage.setScene(new Scene(root));
+        loginStage.setMinWidth(300);
+        loginStage.setMinHeight(220);
         loginStage.showAndWait();
         if (controller.isLoginSuccessful()) {
             String name = controller.getName();
@@ -36,7 +38,9 @@ public class App extends Application {
         Parent root = loader.load();
         MainWindowController controller = loader.getController();
         primaryStage.setTitle("Wise Planner");
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(new Scene(root, 1366, 768));
+        primaryStage.setMinWidth(960);
+        primaryStage.setMinHeight(600);
         // Check if login was successful
         if (!wisePlannerKernel.user().isLogin()) {
             showLogin();
