@@ -26,9 +26,9 @@
                <children>
                   <DatePicker fx:id="deadlineDate" prefHeight="34.0" prefWidth="184.0" />
                   <Spinner fx:id="deadlineHour" editable="true" prefHeight="34.0" prefWidth="72.0" />
-                  <Label text="时" />
+                  <Label text="H" />
                   <Spinner fx:id="deadlineMinute" editable="true" prefHeight="34.0" prefWidth="72.0" />
-                  <Label text="分" />
+                  <Label text="M" />
                </children>
             </HBox>
             <Label fx:id="titleLabel" text="Title" />
