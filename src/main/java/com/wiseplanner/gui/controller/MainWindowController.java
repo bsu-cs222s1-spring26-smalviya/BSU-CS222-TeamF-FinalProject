@@ -3,6 +3,7 @@ package com.wiseplanner.gui.controller;
 import com.wiseplanner.core.WisePlannerKernel;
 import com.wiseplanner.exception.FileReadException;
 import com.wiseplanner.model.Course;
+import com.wiseplanner.model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +12,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.*;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -45,12 +51,17 @@ public class MainWindowController extends BaseController {
     @FXML
     private Button backButton;
 
-    // Stack works like a history — last page in, first page out
+    @FXML
+    private Label userNameLabel;
+
+    @FXML
+    private Label avatarLabel;
+
     private final Stack<Parent> history = new Stack<>();
 
     @FXML
     void onCoursesButtonClick(ActionEvent event) throws IOException {
-        history.clear(); // clear history when navigating from the sidebar
+        history.clear();
         showCoursesPage();
     }
 
@@ -107,10 +118,10 @@ public class MainWindowController extends BaseController {
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.showAndWait();
         }
+        updateUserBadge();
         updateBackButton();
     }
 
-    // Call this when navigating forward — saves current page to history
     public void changePage(Parent node) {
         stretchToFill(node);
         if (!pagePane.getChildren().isEmpty()) {
@@ -120,11 +131,26 @@ public class MainWindowController extends BaseController {
         updateBackButton();
     }
 
-    // Hides the back button when there's nothing to go back to
     private void updateBackButton() {
         if (backButton != null) {
             backButton.setVisible(!history.isEmpty());
+            backButton.setManaged(!history.isEmpty());
         }
+    }
+
+    private void updateUserBadge() {
+        if (userNameLabel == null || avatarLabel == null || kernel == null) {
+            return;
+        }
+
+        User user = kernel.user().getUser();
+        String displayName = "User";
+        if (user != null && user.getName() != null && !user.getName().isBlank()) {
+            displayName = user.getName().trim();
+        }
+
+        userNameLabel.setText(displayName);
+        avatarLabel.setText(displayName.substring(0, 1).toUpperCase());
     }
 
     public void showCoursesPage() throws IOException {

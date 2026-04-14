@@ -20,6 +20,10 @@
         <Button text="User Settings" onAction="#onUserSettingsButtonClick" maxWidth="1.7976931348623157E308" prefWidth="200.0">
             <VBox.margin><Insets left="10.0" right="10.0" top="10.0"/></VBox.margin>
         </Button>
+
+        <Button text="About" onAction="#onAboutButtonClick" maxWidth="1.7976931348623157E308" prefWidth="200.0">
+            <VBox.margin><Insets left="10.0" right="10.0" top="10.0"/></VBox.margin>
+        </Button>
     </children>
     <padding>
         <Insets right="10.0" bottom="10.0"/>
