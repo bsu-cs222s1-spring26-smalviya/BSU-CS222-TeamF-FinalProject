@@ -5,6 +5,7 @@ import com.wiseplanner.model.Course;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -45,13 +46,23 @@ public class AnnouncementsController extends BaseController {
     }
 
     public void loadAnnouncements() {
-        try{
-            kernel.canvas().updateAnnouncements(course);
-            announcements.setAll(course.getAnnouncements());
-            announcementsTable.setItems(announcements);
-        } catch (Exception e) {
-            System.err.println("[Error] " + e.getMessage());
-        }
+        announcementsTable.setDisable(true);
+        announcementsTable.setPlaceholder(new Label("Loading..."));
+        runAsync(
+                () -> {
+                    kernel.canvas().updateAnnouncements(course);
+                    return course.getAnnouncements();
+                },
+                result -> {
+                    announcements.setAll(result);
+                    announcementsTable.setItems(announcements);
+                    announcementsTable.setDisable(false);
+                    announcementsTable.setPlaceholder(new Label("Empty"));
+                },
+                error -> {
+
+                }
+        );
 
     }
 

@@ -63,9 +63,23 @@ public class TasksController extends BaseController {
     }
 
     public void loadTasks() {
-        kernel.task().loadTask();
-        tasks.setAll(kernel.task().getTaskList());
-        tasksTable.setItems(tasks);
+        tasksTable.setDisable(true);
+        tasksTable.setPlaceholder(new Label("Loading..."));
+        runAsync(
+                () -> {
+                    kernel.task().loadTask();
+                    return kernel.task().getTaskList();
+                },
+                result -> {
+                    tasks.setAll(kernel.task().getTaskList());
+                    tasksTable.setItems(tasks);
+                    tasksTable.setDisable(false);
+                    tasksTable.setPlaceholder(new Label("Empty"));
+                },
+                error -> {
+
+                }
+        );
     }
 
     public void configureTable() {

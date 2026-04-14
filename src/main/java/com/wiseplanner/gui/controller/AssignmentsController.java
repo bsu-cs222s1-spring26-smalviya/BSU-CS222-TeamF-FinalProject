@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -50,9 +51,23 @@ public class AssignmentsController extends BaseController {
     }
 
     public void loadAssignments() {
-        kernel.canvas().updateAssignments(course);
-        assignments.setAll(course.getAssignments());
-        assignmentsTable.setItems(assignments);
+        assignmentsTable.setDisable(true);
+        assignmentsTable.setPlaceholder(new Label("Loading..."));
+        runAsync(
+                () -> {
+                    kernel.canvas().updateAssignments(course);
+                    return course.getAssignments();
+                },
+                result -> {
+                    assignments.setAll(result);
+                    assignmentsTable.setItems(assignments);
+                    assignmentsTable.setDisable(false);
+                    assignmentsTable.setPlaceholder(new Label("Empty"));
+                },
+                error -> {
+
+                }
+        );
     }
 
     public void configureTable() {

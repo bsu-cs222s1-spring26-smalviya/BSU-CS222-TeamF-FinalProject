@@ -67,15 +67,27 @@ public class SchedulesController extends BaseController {
     }
 
     public void loadSchedules() {
-        kernel.schedule().loadSchedule();
-        schedulesTable.widthProperty().addListener((obs, oldVal, newVal) -> drawTable());
-        scrollPane.viewportBoundsProperty().addListener((obs, oldVal, newVal) -> {
-            schedulesTable.setPrefWidth(Math.max(newVal.getWidth(), 600));
-            drawTable();
-        });
-        hourHeight.addListener((obs, oldVal, newVal) -> drawTable());
-        schedulesTable.setPrefWidth(Math.max(scrollPane.getViewportBounds().getWidth(), 600));
-        drawTable();
+        schedulesTable.setDisable(true);
+        runAsync(
+                () -> {
+                    kernel.schedule().loadSchedule();
+                    return null;
+                },
+                result -> {
+                    schedulesTable.widthProperty().addListener((obs, oldVal, newVal) -> drawTable());
+                    scrollPane.viewportBoundsProperty().addListener((obs, oldVal, newVal) -> {
+                        schedulesTable.setPrefWidth(Math.max(newVal.getWidth(), 600));
+                        drawTable();
+                    });
+                    hourHeight.addListener((obs, oldVal, newVal) -> drawTable());
+                    schedulesTable.setPrefWidth(Math.max(scrollPane.getViewportBounds().getWidth(), 600));
+                    drawTable();
+                    schedulesTable.setDisable(false);
+                },
+                error -> {
+
+                }
+        );
     }
 
     private void drawTable() {

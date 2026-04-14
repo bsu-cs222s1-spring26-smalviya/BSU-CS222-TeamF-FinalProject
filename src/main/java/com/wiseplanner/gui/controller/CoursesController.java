@@ -30,15 +30,27 @@ public class CoursesController extends BaseController {
     }
 
     public void loadCourses() {
-        kernel.canvas().updateCourses();
-        List<Course> courses = kernel.canvas().getCourses();
-        cardsPane.getChildren().clear();
-        for (int i = 0; i < courses.size(); i++) {
-            Course course = courses.get(i);
-            String color = CARD_COLORS[i % CARD_COLORS.length];
-            VBox card = createCourseCard(course, color);
-            cardsPane.getChildren().add(card);
-        }
+        cardsPane.setDisable(true);
+        runAsync(
+                () -> {
+                    kernel.canvas().updateCourses();
+                    return kernel.canvas().getCourses();
+                },
+                result -> {
+                    cardsPane.getChildren().clear();
+                    for (int i = 0; i < result.size(); i++) {
+                        Course course = result.get(i);
+                        String color = CARD_COLORS[i % CARD_COLORS.length];
+                        VBox card = createCourseCard(course, color);
+                        cardsPane.getChildren().add(card);
+                    }
+                    cardsPane.setDisable(false);
+                },
+                error -> {
+
+                }
+        );
+
     }
 
     private VBox createCourseCard(Course course, String color) {
