@@ -20,7 +20,7 @@ public class ConsoleUI {
     TaskOutputFormatter taskOutputFormatter = new TaskOutputFormatter();
     ScheduleOutputFormatter scheduleOutputFormatter = new ScheduleOutputFormatter();
 
-    private void handleLogin() {
+    private void handleLogin() throws FileWriteException {
         System.out.println("Please enter your name: ");
         String name = scanner.nextLine();
         System.out.println("Please enter your Canvas LMS Access Token");
@@ -34,6 +34,62 @@ public class ConsoleUI {
             return Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
             return -1; //
+        }
+    }
+
+    private void showSettingsMenu() {
+        while (true) {
+            System.out.println("(1) Change User Name\n(2) Change Canvas Token\n(3) Log Out\n(0) Back\nPlease enter your choice:");
+            int choice = safeReadInt();
+
+            switch (choice) {
+                case 0:
+                    return;
+                case 1:
+                    System.out.println("Please enter new user name:");
+                    String newName = scanner.nextLine();
+                    if (newName.isBlank()) {
+                        System.out.println("User name cannot be empty.");
+                        break;
+                    }
+                    try {
+                        String currentToken = wisePlannerKernel.user().getUser().getCanvasToken();
+                        wisePlannerKernel.user().setUser(newName, currentToken);
+                        wisePlannerKernel.initialize();
+                        System.out.println("User name updated successfully.");
+                    } catch (FileWriteException | FileReadException e) {
+                        System.err.println("[Error] " + e.getMessage());
+                    }
+                    break;
+                case 2:
+                    System.out.println("Please enter new Canvas LMS Access Token:");
+                    String newToken = scanner.nextLine();
+                    if (newToken.isBlank()) {
+                        System.out.println("Canvas token cannot be empty.");
+                        break;
+                    }
+                    try {
+                        String currentName = wisePlannerKernel.user().getUser().getName();
+                        wisePlannerKernel.user().setUser(currentName, newToken);
+                        wisePlannerKernel.initialize();
+                        System.out.println("Canvas token updated successfully.");
+                    } catch (FileWriteException | FileReadException e) {
+                        System.err.println("[Error] " + e.getMessage());
+                    }
+                    break;
+                case 3:
+                    try {
+                        wisePlannerKernel.user().logout();
+                        System.out.println("Logged out successfully.");
+                    } catch (FileWriteException e) {
+                        System.err.println("[Error] " + e.getMessage());
+                    }
+                    System.exit(0);
+                    return;
+                default:
+                    System.out.println("Invalid input, please try again.");
+                    break;
+            }
         }
     }
 
@@ -56,19 +112,18 @@ public class ConsoleUI {
             System.err.println("[Error] " + e.getMessage());
         }
 
-        // Console User Interface
         while (true) {
             System.out.println("\n**********************************************************************");
             System.out.println("*                             Main Menu                              *");
             System.out.println("**********************************************************************");
-            System.out.println("(1) Courses\n(2) Tasks\n(3) Schedules\n(0) Exit\nPlease enter your choice:");
+            System.out.println("(1) Courses\n(2) Tasks\n(3) Schedules\n(4) Settings\n(0) Exit\nPlease enter your choice:");
 
             int choice = safeReadInt();
             switch (choice) {
-                case 0: // Exit
+                case 0:
                     return;
 
-                case 1: // Courses
+                case 1:
                     try {
                         wisePlannerKernel.canvas().updateCourses();
                         System.out.print(canvasOutputFormatter.getCoursesOutput(wisePlannerKernel.canvas().getCourses()));
@@ -89,9 +144,9 @@ public class ConsoleUI {
 
                     var selectedCourse = wisePlannerKernel.canvas().getCourses().get(courseIndex - 1);
                     switch (choice_course) {
-                        case 0: // Back
+                        case 0:
                             break;
-                        case 1: // View Assignments
+                        case 1:
                             try {
                                 wisePlannerKernel.canvas().updateAssignments(selectedCourse);
                                 System.out.print(canvasOutputFormatter.getAssignmentsOutput(selectedCourse.getAssignments()));
@@ -99,7 +154,7 @@ public class ConsoleUI {
                                 System.err.println("[Error] " + e.getMessage());
                             }
                             break;
-                        case 2: // View Announcements
+                        case 2:
                             try {
                                 wisePlannerKernel.canvas().updateAnnouncements(selectedCourse);
                                 System.out.println(canvasOutputFormatter.getAnnouncementsOutput(selectedCourse.getAnnouncements()));
@@ -110,16 +165,16 @@ public class ConsoleUI {
                     }
                     break;
 
-                case 2: // Tasks
+                case 2:
                     System.out.println("(1) View Tasks\n(2) Add Task\n(3) Delete Task\n(0) Back\nPlease enter your choice:");
                     int choice_task = safeReadInt();
                     switch (choice_task) {
-                        case 0: // Back
+                        case 0:
                             break;
-                        case 1: // View Tasks
+                        case 1:
                             System.out.println(taskOutputFormatter.getTaskOutput(wisePlannerKernel.task().getTaskList()));
                             break;
-                        case 2: // Add Task
+                        case 2:
                             System.out.println("Please enter task deadline:");
                             String deadline = scanner.nextLine();
                             System.out.println("Please enter task title:");
@@ -132,7 +187,7 @@ public class ConsoleUI {
                                 System.err.println("[Error] " + e.getMessage());
                             }
                             break;
-                        case 3: // Delete Task
+                        case 3:
                             System.out.println("Please enter the index:");
                             int index = safeReadInt();
                             try {
@@ -147,16 +202,16 @@ public class ConsoleUI {
                             break;
                     }
                     break;
-                case 3: // Schedules
+                case 3:
                     System.out.println("(1) View Schedules\n(2) Add Schedule\n(3) Delete Schedule\n(0) Back\nPlease enter your choice:");
                     int choice_schedule = safeReadInt();
                     switch (choice_schedule) {
-                        case 0: // Back
+                        case 0:
                             break;
-                        case 1: // View Schedules
+                        case 1:
                             System.out.println(scheduleOutputFormatter.getScheduleOutput(wisePlannerKernel.schedule().getScheduleList()));
                             break;
-                        case 2: // Add Schedule
+                        case 2:
                             System.out.println("Please enter schedule name:");
                             String name = scanner.nextLine();
                             System.out.println("Please enter start time:");
@@ -192,7 +247,7 @@ public class ConsoleUI {
                                 System.err.println("[Error] " + e.getMessage());
                             }
                             break;
-                        case 3: // Delete Schedule
+                        case 3:
                             System.out.println("Please enter the index:");
                             int index = safeReadInt();
                             try {
@@ -206,6 +261,9 @@ public class ConsoleUI {
                             }
                             break;
                     }
+                    break;
+                case 4:
+                    showSettingsMenu();
                     break;
                 default:
                     System.out.println("Invalid input, please try again.");

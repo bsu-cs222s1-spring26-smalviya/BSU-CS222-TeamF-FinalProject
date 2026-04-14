@@ -9,6 +9,7 @@ import com.wiseplanner.model.User;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.Files;
 
 public class UserManager {
     private static final String DATA_FOLDER = ".wiseplanner";
@@ -54,5 +55,15 @@ public class UserManager {
 
     public User getUser() {
         return user;
+    }
+
+    public void logout() throws FileWriteException {
+        File userDataFile = userDataPath.toFile();
+        try {
+            Files.deleteIfExists(userDataFile.toPath());
+            user = null;
+        } catch (IOException e) {
+            throw new FileWriteException("File delete failed, unable to remove user data.");
+        }
     }
 }
