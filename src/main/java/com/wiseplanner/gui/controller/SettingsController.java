@@ -26,4 +26,13 @@ public class SettingsController extends BaseController {
         controller.setKernel(kernel);
         mainWindowController.changePage(node);
     }
+
+    @FXML
+    void onAboutButtonClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(
+                Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/About.fxml"))
+        );
+        Parent node = loader.load();
+        mainWindowController.changePage(node);
+    }
 }
