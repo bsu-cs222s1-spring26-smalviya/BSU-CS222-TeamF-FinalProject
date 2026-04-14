@@ -1,11 +1,13 @@
 package com.wiseplanner.gui.controller;
 
+import com.wiseplanner.exception.FileWriteException;
 import com.wiseplanner.model.Schedule;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.time.DayOfWeek;
@@ -182,14 +184,20 @@ public class ScheduleDetailController extends BaseController {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid input. Please check your input.", ButtonType.OK);
             alert.showAndWait();
         } else {
-            kernel.schedule().addSchedule(
-                    nameField.getText(),
-                    dayOfWeekSet,
-                    startTime,
-                    endTime,
-                    professorField.getText(),
-                    locationField.getText()
-            );
+            try {
+                kernel.schedule().addSchedule(
+                        nameField.getText(),
+                        dayOfWeekSet,
+                        startTime,
+                        endTime,
+                        professorField.getText(),
+                        locationField.getText()
+                );
+            } catch (FileWriteException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                alert.showAndWait();
+            }
         }
     }
 
@@ -234,7 +242,13 @@ public class ScheduleDetailController extends BaseController {
             currentSchedule.setEndTime(endTime);
             currentSchedule.setProfessor(professorField.getText());
             currentSchedule.setLocation(locationField.getText());
-            kernel.schedule().saveSchedule();
+            try {
+                kernel.schedule().saveSchedule();
+            } catch (FileWriteException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                alert.showAndWait();
+            }
         }
     }
 

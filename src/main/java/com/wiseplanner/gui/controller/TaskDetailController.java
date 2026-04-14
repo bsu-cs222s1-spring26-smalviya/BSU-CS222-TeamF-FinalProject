@@ -5,13 +5,8 @@ import com.wiseplanner.exception.FileWriteException;
 import com.wiseplanner.model.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
@@ -121,16 +116,34 @@ public class TaskDetailController {
 
         try {
             if (mode == Mode.ADD) {
-                kernel.task().addTask(formattedDeadline, title, content);
+                try {
+                    kernel.task().addTask(formattedDeadline, title, content);
+                } catch (FileWriteException e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                    alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                    alert.showAndWait();
+                }
                 if (onTaskCreated != null) {
                     int lastIndex = kernel.task().getTaskList().size() - 1;
-                    onTaskCreated.accept(kernel.task().getTaskList().get(lastIndex));
+                    try {
+                        onTaskCreated.accept(kernel.task().getTaskList().get(lastIndex));
+                    } catch (IndexOutOfBoundsException e) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Internal Program Error (Index Out of Bounds)", ButtonType.OK);
+                        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                        alert.showAndWait();
+                    }
                 }
             } else if (mode == Mode.MODIFY && selectedTask != null) {
                 selectedTask.setDeadline(formattedDeadline);
                 selectedTask.setTitle(title);
                 selectedTask.setContent(content);
-                kernel.task().saveTask();
+                try {
+                    kernel.task().saveTask();
+                } catch (FileWriteException e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                    alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                    alert.showAndWait();
+                }
             }
             closeWindow();
         } catch (FileWriteException ignored) {
