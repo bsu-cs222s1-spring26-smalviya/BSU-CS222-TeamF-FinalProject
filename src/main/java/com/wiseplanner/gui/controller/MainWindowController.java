@@ -1,13 +1,17 @@
 package com.wiseplanner.gui.controller;
 
 import com.wiseplanner.core.WisePlannerKernel;
+import com.wiseplanner.exception.FileReadException;
 import com.wiseplanner.model.Course;
 import com.wiseplanner.model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.layout.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -107,7 +111,13 @@ public class MainWindowController extends BaseController {
 
     public void setKernel(WisePlannerKernel kernel) {
         super.setKernel(kernel);
-        kernel.initialize();
+        try {
+            kernel.initialize();
+        } catch (FileReadException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.showAndWait();
+        }
         updateUserBadge();
         updateBackButton();
     }

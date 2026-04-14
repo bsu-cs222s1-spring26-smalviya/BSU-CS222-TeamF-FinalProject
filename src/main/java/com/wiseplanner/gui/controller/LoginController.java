@@ -2,9 +2,8 @@ package com.wiseplanner.gui.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -32,9 +31,15 @@ public class LoginController {
     void onLoginButtonClick(ActionEvent event) {
         name = nameField.getText();
         canvasToken = canvasTokenField.getText();
-        isLoginSuccessful = true;
-        Stage stage = (Stage) loginButton.getScene().getWindow();
-        stage.close();
+        if (name.isBlank() || canvasToken.isBlank()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid input. Please check your input.", ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.showAndWait();
+        } else {
+            isLoginSuccessful = true;
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            stage.close();
+        }
     }
 
     private boolean isLoginSuccessful = false;

@@ -1,5 +1,6 @@
 package com.wiseplanner.gui.controller;
 
+import com.wiseplanner.exception.DeleteException;
 import com.wiseplanner.model.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +18,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -63,9 +65,26 @@ public class TasksController extends BaseController {
     }
 
     public void loadTasks() {
-        kernel.task().loadTask();
-        tasks.setAll(kernel.task().getTaskList());
-        tasksTable.setItems(tasks);
+        tasksTable.setDisable(true);
+        tasksTable.setPlaceholder(new Label("Loading..."));
+        runAsync(
+                () -> {
+                    kernel.task().loadTask();
+                    return kernel.task().getTaskList();
+                },
+                result -> {
+                    tasks.setAll(kernel.task().getTaskList());
+                    tasksTable.setItems(tasks);
+                    tasksTable.setDisable(false);
+                    tasksTable.setPlaceholder(new Label("Empty"));
+                },
+                error -> {
+                    tasksTable.setPlaceholder(new Label("Failed to load Tasks"));
+                    Alert alert = new Alert(Alert.AlertType.ERROR, error.getMessage(), ButtonType.OK);
+                    alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                    alert.showAndWait();
+                }
+        );
     }
 
     public void configureTable() {
@@ -95,8 +114,14 @@ public class TasksController extends BaseController {
             confirmAlert.setContentText(task.getTitle());
             confirmAlert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    kernel.task().deleteTask(task);
-                    tasks.remove(task);
+                    try {
+                        kernel.task().deleteTask(task);
+                        tasks.remove(task);
+                    } catch (DeleteException e) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                        alert.showAndWait();
+                    }
                 }
             });
         }));

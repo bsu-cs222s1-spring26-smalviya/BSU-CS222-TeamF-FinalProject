@@ -1,5 +1,6 @@
 package com.wiseplanner.gui.controller;
 
+import com.wiseplanner.exception.DeleteException;
 import com.wiseplanner.model.Schedule;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -11,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -67,15 +69,29 @@ public class SchedulesController extends BaseController {
     }
 
     public void loadSchedules() {
-        kernel.schedule().loadSchedule();
-        schedulesTable.widthProperty().addListener((obs, oldVal, newVal) -> drawTable());
-        scrollPane.viewportBoundsProperty().addListener((obs, oldVal, newVal) -> {
-            schedulesTable.setPrefWidth(Math.max(newVal.getWidth(), 600));
-            drawTable();
-        });
-        hourHeight.addListener((obs, oldVal, newVal) -> drawTable());
-        schedulesTable.setPrefWidth(Math.max(scrollPane.getViewportBounds().getWidth(), 600));
-        drawTable();
+        schedulesTable.setDisable(true);
+        runAsync(
+                () -> {
+                    kernel.schedule().loadSchedule();
+                    return null;
+                },
+                result -> {
+                    schedulesTable.widthProperty().addListener((obs, oldVal, newVal) -> drawTable());
+                    scrollPane.viewportBoundsProperty().addListener((obs, oldVal, newVal) -> {
+                        schedulesTable.setPrefWidth(Math.max(newVal.getWidth(), 600));
+                        drawTable();
+                    });
+                    hourHeight.addListener((obs, oldVal, newVal) -> drawTable());
+                    schedulesTable.setPrefWidth(Math.max(scrollPane.getViewportBounds().getWidth(), 600));
+                    drawTable();
+                    schedulesTable.setDisable(false);
+                },
+                error -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, error.getMessage(), ButtonType.OK);
+                    alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                    alert.showAndWait();
+                }
+        );
     }
 
     private void drawTable() {
@@ -190,7 +206,13 @@ public class SchedulesController extends BaseController {
             drawTable();
         });
         deleteItem.setOnAction(event -> {
-            kernel.schedule().deleteSchedule(schedule);
+            try {
+                kernel.schedule().deleteSchedule(schedule);
+            } catch (DeleteException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                alert.showAndWait();
+            }
             drawTable();
         });
         contextMenu.getItems().addAll(modifyItem, deleteItem);
