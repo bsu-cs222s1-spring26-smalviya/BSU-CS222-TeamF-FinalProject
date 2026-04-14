@@ -178,7 +178,10 @@ public class ScheduleDetailController extends BaseController {
         if (sundayBox.isSelected()) dayOfWeekSet.add(DayOfWeek.SUNDAY);
         LocalTime startTime = LocalTime.of(startTimeHourSpinner.getValue(), startTimeMinuteSpinner.getValue());
         LocalTime endTime = LocalTime.of(endTimeHourSpinner.getValue(), endTimeMinuteSpinner.getValue());
-        if (!nameField.getText().isBlank() || !dayOfWeekSet.isEmpty()) {
+        if (nameField.getText().isBlank() || dayOfWeekSet.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid input. Please check your input.", ButtonType.OK);
+            alert.showAndWait();
+        } else {
             kernel.schedule().addSchedule(
                     nameField.getText(),
                     dayOfWeekSet,
@@ -187,9 +190,6 @@ public class ScheduleDetailController extends BaseController {
                     professorField.getText(),
                     locationField.getText()
             );
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid input. Please check your input.", ButtonType.OK);
-            alert.showAndWait();
         }
     }
 
@@ -224,16 +224,17 @@ public class ScheduleDetailController extends BaseController {
         if (sundayBox.isSelected()) dayOfWeekSet.add(DayOfWeek.SUNDAY);
         LocalTime startTime = LocalTime.of(startTimeHourSpinner.getValue(), startTimeMinuteSpinner.getValue());
         LocalTime endTime = LocalTime.of(endTimeHourSpinner.getValue(), endTimeMinuteSpinner.getValue());
-        if (!nameField.getText().isBlank() && !dayOfWeekSet.isEmpty()) {
+        if (nameField.getText().isBlank() || dayOfWeekSet.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid input. Please check your input.", ButtonType.OK);
+            alert.showAndWait();
+        } else {
             currentSchedule.setName(nameField.getText());
             currentSchedule.setDayOfWeeks(dayOfWeekSet);
             currentSchedule.setStartTime(startTime);
             currentSchedule.setEndTime(endTime);
             currentSchedule.setProfessor(professorField.getText());
             currentSchedule.setLocation(locationField.getText());
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid input. Please check your input.", ButtonType.OK);
-            alert.showAndWait();
+            kernel.schedule().saveSchedule();
         }
     }
 
