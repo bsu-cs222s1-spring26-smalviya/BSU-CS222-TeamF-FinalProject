@@ -1,0 +1,38 @@
+#coursesButton {
+    -fx-graphic: url("../images/course.png");
+    -fx-content-display: top;
+}
+#coursesButton .image-view{
+    -fx-fit-width:48px;
+    -fx-fit-height:48px;
+}
+
+#tasksButton{
+    -fx-graphic: url("../images/task.png");
+    -fx-content-display: top;
+}
+
+#tasksButton .image-view{
+    -fx-fit-width:48px;
+    -fx-fit-height:48px;
+}
+
+#schedulesButton{
+    -fx-graphic: url("../images/schedule.png");
+    -fx-content-display: top;
+}
+
+#schedulesButton .image-view{
+    -fx-fit-width:48px;
+    -fx-fit-height:48px;
+}
+
+#settingsButton{
+    -fx-graphic: url("../images/setting.png");
+    -fx-content-display: top;
+}
+
+#settingsButton .image-view{
+    -fx-fit-width:48px;
+    -fx-fit-height:48px;
+}

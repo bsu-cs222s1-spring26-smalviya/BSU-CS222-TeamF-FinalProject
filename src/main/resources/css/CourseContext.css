@@ -1,0 +1,19 @@
+#assignmentsBtn{
+    -fx-graphic: url("../images/assignment.png");
+    -fx-content-display: left;
+}
+
+#assignmentsBtn .image-view{
+    -fx-fit-width:36px;
+    -fx-fit-height:36px;
+}
+
+#announcementsButton{
+    -fx-graphic: url("../images/announcement.png");
+    -fx-content-display: left;
+}
+
+#announcementsButton .image-view{
+    -fx-fit-width:36px;
+    -fx-fit-height:36px;
+}

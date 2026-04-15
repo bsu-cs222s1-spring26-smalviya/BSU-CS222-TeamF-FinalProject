@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="anchorPane" prefHeight="704.0" prefWidth="1302.0"
@@ -20,11 +21,13 @@
         </Label>
     </top>
     <center>
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
+        <ScrollPane fx:id="coursesScrollPane" fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
             <content>
-                <FlowPane fx:id="cardsPane" hgap="20.0" vgap="20.0" prefWrapLength="1000.0">
-                    <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/></padding>
-                </FlowPane>
+                <StackPane fx:id="contentPane">
+                    <FlowPane fx:id="cardsPane" hgap="20.0" vgap="20.0" prefWrapLength="1000.0" StackPane.alignment="TOP_LEFT">
+                        <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/></padding>
+                    </FlowPane>
+                </StackPane>
             </content>
         </ScrollPane>
     </center>

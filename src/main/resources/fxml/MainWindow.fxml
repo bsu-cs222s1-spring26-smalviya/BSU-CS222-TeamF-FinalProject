@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.MainWindowController">
+<BorderPane fx:id="borderPane" prefHeight="768.0" prefWidth="1366.0" stylesheets="@../css/MainWindow.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.MainWindowController">
    <top>
       <HBox fx:id="topBar" alignment="CENTER_LEFT" prefHeight="64.0" spacing="12.0" BorderPane.alignment="CENTER">
          <children>
@@ -35,7 +35,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="avatarLabel" alignment="CENTER" prefHeight="36.0" prefWidth="36.0" style="-fx-background-color: #4F6BED; -fx-background-radius: 18; -fx-text-fill: white; -fx-font-size: 16; -fx-font-weight: bold;" text="U" />
+                  <Label fx:id="avatarLabel" alignment="CENTER" prefHeight="36.0" prefWidth="36.0" style="-fx-background-radius: 18;" />
                </children>
                <HBox.margin>
                   <Insets right="20.0" />
@@ -47,10 +47,10 @@
    <left>
       <VBox fx:id="navigationBar" prefHeight="704.0" prefWidth="80.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="coursesButton" mnemonicParsing="false" onAction="#onCoursesButtonClick" prefHeight="64.0" prefWidth="80.0" text="Courses" />
-            <Button fx:id="tasksButton" mnemonicParsing="false" onAction="#onTasksButtonClick" prefHeight="64.0" prefWidth="80.0" text="Tasks" />
-            <Button fx:id="schedulesButton" mnemonicParsing="false" onAction="#onSchedulesButtonClick" prefHeight="64.0" prefWidth="80.0" text="Schedules" />
-            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#onSettingsButtonClick" prefHeight="64.0" prefWidth="80.0" text="Settings" />
+            <Button fx:id="coursesButton" mnemonicParsing="false" onAction="#onCoursesButtonClick" prefHeight="64.0" prefWidth="238.0" text="Courses" />
+            <Button fx:id="tasksButton" mnemonicParsing="false" onAction="#onTasksButtonClick" prefHeight="64.0" prefWidth="238.0" text="Tasks" />
+            <Button fx:id="schedulesButton" mnemonicParsing="false" onAction="#onSchedulesButtonClick" prefHeight="64.0" prefWidth="238.0" text="Schedules" />
+            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#onSettingsButtonClick" prefHeight="64.0" prefWidth="238.0" text="Settings" />
          </children>
       </VBox>
    </left>
