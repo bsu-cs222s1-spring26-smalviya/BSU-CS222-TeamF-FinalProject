@@ -2,22 +2,30 @@ package com.wiseplanner.gui.controller;
 
 import com.wiseplanner.exception.DeleteException;
 import com.wiseplanner.model.Schedule;
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
+import javafx.animation.RotateTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
@@ -39,12 +47,21 @@ public class SchedulesController extends BaseController {
     private ScrollPane scrollPane;
 
     @FXML
+    private StackPane contentPane;
+
+    @FXML
     private Slider zoomSlider;
+
+    private StackPane placeholderOverlay;
 
     private final DoubleProperty hourHeight = new SimpleDoubleProperty(80.0);
     private final int START_HOUR = 7;
     private final int END_HOUR = 21;
     private final double TIME_COLUMN_WIDTH = 60.0;
+
+    private enum PlaceholderMode {
+        LOADING, EMPTY, FAILED
+    }
 
     @FXML
     public void initialize() {
@@ -52,6 +69,14 @@ public class SchedulesController extends BaseController {
         zoomSlider.setMax(250.0);
         zoomSlider.setValue(80.0);
         hourHeight.bind(zoomSlider.valueProperty());
+        scrollPane.viewportBoundsProperty().addListener((obs, oldBounds, newBounds) -> {
+            contentPane.setMinWidth(newBounds.getWidth());
+            contentPane.setMinHeight(newBounds.getHeight());
+            schedulesTable.setPrefWidth(Math.max(newBounds.getWidth(), 600));
+            if (!(placeholderOverlay != null && contentPane.getChildren().contains(placeholderOverlay))) {
+                drawTable();
+            }
+        });
     }
 
     @FXML
@@ -65,28 +90,70 @@ public class SchedulesController extends BaseController {
         stage.setScene(new Scene(root));
         controller.setMode(ScheduleDetailController.ViewMode.ADD);
         stage.showAndWait();
-        drawTable();
+        loadSchedules();
+    }
+
+    private void setPlaceholder(PlaceholderMode mode) {
+        schedulesTable.getChildren().clear();
+        contentPane.getChildren().remove(placeholderOverlay);
+        VBox vBox = null;
+        if (mode.equals(PlaceholderMode.LOADING)) {
+            ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/images/loading.png")));
+            imageView.setFitHeight(48);
+            imageView.setFitWidth(48);
+            imageView.setSmooth(true);
+            RotateTransition rotateTransition = new RotateTransition(Duration.seconds(1), imageView);
+            rotateTransition.setByAngle(360);
+            rotateTransition.setCycleCount(Animation.INDEFINITE);
+            rotateTransition.setInterpolator(Interpolator.LINEAR);
+            rotateTransition.play();
+            Label statusLabel = new Label("Loading...");
+            vBox = new VBox(15, imageView, statusLabel);
+        }
+        if (mode.equals(PlaceholderMode.EMPTY)) {
+            ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/images/empty.png")));
+            imageView.setFitHeight(48);
+            imageView.setFitWidth(48);
+            imageView.setSmooth(true);
+            Label statusLabel = new Label("Nothing here...");
+            vBox = new VBox(15, imageView, statusLabel);
+        }
+        if (mode.equals(PlaceholderMode.FAILED)) {
+            ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/images/failed.png")));
+            imageView.setFitHeight(48);
+            imageView.setFitWidth(48);
+            imageView.setSmooth(true);
+            Label statusLabel = new Label("Failed to load");
+            vBox = new VBox(15, imageView, statusLabel);
+        }
+        vBox.setAlignment(javafx.geometry.Pos.CENTER);
+        placeholderOverlay = new StackPane(vBox);
+        placeholderOverlay.setAlignment(Pos.CENTER);
+        placeholderOverlay.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        contentPane.getChildren().add(placeholderOverlay);
     }
 
     public void loadSchedules() {
-        schedulesTable.setDisable(true);
+        setPlaceholder(PlaceholderMode.LOADING);
         runAsync(
                 () -> {
                     kernel.schedule().loadSchedule();
                     return null;
                 },
                 result -> {
+                    contentPane.getChildren().remove(placeholderOverlay);
+                    placeholderOverlay = null;
+                    if (kernel.schedule().getScheduleList().isEmpty()) {
+                        setPlaceholder(PlaceholderMode.EMPTY);
+                        return;
+                    }
                     schedulesTable.widthProperty().addListener((obs, oldVal, newVal) -> drawTable());
-                    scrollPane.viewportBoundsProperty().addListener((obs, oldVal, newVal) -> {
-                        schedulesTable.setPrefWidth(Math.max(newVal.getWidth(), 600));
-                        drawTable();
-                    });
                     hourHeight.addListener((obs, oldVal, newVal) -> drawTable());
                     schedulesTable.setPrefWidth(Math.max(scrollPane.getViewportBounds().getWidth(), 600));
                     drawTable();
-                    schedulesTable.setDisable(false);
                 },
                 error -> {
+                    setPlaceholder(PlaceholderMode.FAILED);
                     Alert alert = new Alert(Alert.AlertType.ERROR, error.getMessage(), ButtonType.OK);
                     alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
                     alert.showAndWait();

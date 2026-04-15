@@ -1,25 +1,39 @@
 package com.wiseplanner.gui.controller;
 
 import com.wiseplanner.model.Course;
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
+import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.List;
 
 public class CoursesController extends BaseController {
 
     @FXML
     private FlowPane cardsPane;
+
+    @FXML
+    private ScrollPane coursesScrollPane;
+
+    private StackPane placeholderOverlay;
+
+    @FXML
+    private StackPane contentPane;
 
     private MainWindowController mainWindowController;
 
@@ -28,12 +42,64 @@ public class CoursesController extends BaseController {
             "#E74C3C", "#1ABC9C", "#F39C12", "#3498DB"
     };
 
+    private enum PlaceholderMode {
+        LOADING, EMPTY, FAILED
+    }
+
     public void setMainWindowController(MainWindowController mainWindowController) {
         this.mainWindowController = mainWindowController;
     }
 
+    @FXML
+    private void initialize() {
+        coursesScrollPane.viewportBoundsProperty().addListener((obs, oldBounds, newBounds) -> {
+            contentPane.setMinWidth(newBounds.getWidth());
+            contentPane.setMinHeight(newBounds.getHeight());
+        });
+    }
+
+    private void setPlaceholder(PlaceholderMode mode) {
+        cardsPane.getChildren().clear();
+        contentPane.getChildren().remove(placeholderOverlay);
+        VBox vBox = null;
+        if (mode.equals(PlaceholderMode.LOADING)) {
+            ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/images/loading.png")));
+            imageView.setFitHeight(48);
+            imageView.setFitWidth(48);
+            imageView.setSmooth(true);
+            RotateTransition rotateTransition = new RotateTransition(Duration.seconds(1), imageView);
+            rotateTransition.setByAngle(360);
+            rotateTransition.setCycleCount(Animation.INDEFINITE);
+            rotateTransition.setInterpolator(Interpolator.LINEAR);
+            rotateTransition.play();
+            Label statusLabel = new Label("Loading...");
+            vBox = new VBox(15, imageView, statusLabel);
+        }
+        if (mode.equals(PlaceholderMode.EMPTY)) {
+            ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/images/empty.png")));
+            imageView.setFitHeight(48);
+            imageView.setFitWidth(48);
+            imageView.setSmooth(true);
+            Label statusLabel = new Label("Nothing here...");
+            vBox = new VBox(15, imageView, statusLabel);
+        }
+        if (mode.equals(PlaceholderMode.FAILED)) {
+            ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/images/failed.png")));
+            imageView.setFitHeight(48);
+            imageView.setFitWidth(48);
+            imageView.setSmooth(true);
+            Label statusLabel = new Label("Fail to load");
+            vBox = new VBox(15, imageView, statusLabel);
+        }
+        vBox.setAlignment(Pos.CENTER);
+        placeholderOverlay = new StackPane(vBox);
+        placeholderOverlay.setAlignment(Pos.CENTER);
+        placeholderOverlay.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        contentPane.getChildren().add(placeholderOverlay);
+    }
+
     public void loadCourses() {
-        cardsPane.setDisable(true);
+        setPlaceholder(PlaceholderMode.LOADING);
         runAsync(
                 () -> {
                     kernel.canvas().updateCourses();
@@ -41,15 +107,20 @@ public class CoursesController extends BaseController {
                 },
                 result -> {
                     cardsPane.getChildren().clear();
+                    if (result == null || result.isEmpty()) {
+                        setPlaceholder(PlaceholderMode.EMPTY);
+                        return;
+                    }
+                    contentPane.getChildren().remove(placeholderOverlay);
                     for (int i = 0; i < result.size(); i++) {
                         Course course = result.get(i);
                         String color = CARD_COLORS[i % CARD_COLORS.length];
                         VBox card = createCourseCard(course, color);
                         cardsPane.getChildren().add(card);
                     }
-                    cardsPane.setDisable(false);
                 },
                 error -> {
+                    setPlaceholder(PlaceholderMode.FAILED);
                     Alert alert = new Alert(Alert.AlertType.ERROR, error.getMessage(), ButtonType.OK);
                     alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
                     alert.showAndWait();
