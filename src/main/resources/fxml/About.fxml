@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <HBox BorderPane.alignment="CENTER_LEFT">
+         <children>
+            <Label text="About">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <VBox alignment="CENTER" spacing="10" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" spacing="20">
+               <children>
+                  <!-- Title Section -->
+                  <VBox alignment="CENTER" spacing="5">
+                     <children>
+                        <Label text="WisePlanner">
+                           <font>
+                              <Font name="System Bold" size="22.0" />
+                           </font>
+                        </Label>
+                        <Label text="Version: 0.2.9 (alpha)">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Label alignment="CENTER" text="Manage Your Schedule More Intelligently." wrapText="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+
+            <Separator />
+
+            <!-- Description Section -->
+            <VBox alignment="CENTER" spacing="5">
+               <children>
+                  <Label alignment="CENTER" text="A final project for CS222 (Advanced Programming) at Ball State University." wrapText="true" />
+                  <Label alignment="CENTER" text="Based on JavaFX" />
+               </children>
+            </VBox>
+
+            <!-- Team Section -->
+            <VBox alignment="CENTER" spacing="5">
+               <children>
+                  <Label text="Development Team">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" text="Qingyang Ran | @KyrionRan (qingyang.ran@bsu.edu)" wrapText="true" />
+                  <Label alignment="CENTER" text="Ammar Hassan | @AmmarHassanX (ammar.hassan@bsu.edu)" wrapText="true" />
+                  <Label alignment="CENTER" text="Ce Zheng | @ce0309430-bot (ce.zheng@bsu.edu)" wrapText="true" />
+                  <Label alignment="CENTER" text="Yixiao Liu | @tljsjdr-13 (yixiao.liu@bsu.edu)" wrapText="true" />
+               </children>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS" />
+         </children>
+         <padding>
+            <Insets bottom="10" left="10" right="10" top="10" />
+         </padding>
+      </VBox>
+   </center>
+   <bottom>
+      <Label text="Copyright © 2026 Qingyang Ran, Ammar Hassan, Ce Zheng and Yixiao Liu. All Rights Reserved." wrapText="true" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+   </bottom>
+</BorderPane>
