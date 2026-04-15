@@ -35,7 +35,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="avatarLabel" alignment="CENTER" prefHeight="36.0" prefWidth="36.0" style="-fx-background-color: #4F6BED; -fx-background-radius: 18; -fx-text-fill: white; -fx-font-size: 16; -fx-font-weight: bold;" text="U" />
+                  <Label fx:id="avatarLabel" alignment="CENTER" prefHeight="36.0" prefWidth="36.0" style="-fx-background-radius: 18;" />
                </children>
                <HBox.margin>
                   <Insets right="20.0" />

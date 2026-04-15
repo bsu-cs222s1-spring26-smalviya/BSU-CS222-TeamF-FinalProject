@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -148,9 +150,13 @@ public class MainWindowController extends BaseController {
         if (user != null && user.getName() != null && !user.getName().isBlank()) {
             displayName = user.getName().trim();
         }
-
+        Image image = new Image(getClass().getResourceAsStream("/images/default_avatar.png"));
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(36);
+        imageView.setFitHeight(36);
+        imageView.setSmooth(true);
         userNameLabel.setText(displayName);
-        avatarLabel.setText(displayName.substring(0, 1).toUpperCase());
+        avatarLabel.setGraphic(imageView);
     }
 
     public void showCoursesPage() throws IOException {
