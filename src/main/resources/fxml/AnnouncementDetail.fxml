@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="865.0" prefWidth="1345.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.AnnouncementDetailController">
+   <children>
+      <Label fx:id="titleLabel" layoutX="14.0" layoutY="14.0" prefHeight="42.0" prefWidth="866.0" text="Announcement Detail">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+      <WebView fx:id="messageWebView" layoutX="-1.0" layoutY="69.0" prefHeight="795.0" prefWidth="1346.0" />
+      <HBox layoutX="1025.0" layoutY="14.0" prefHeight="42.0" prefWidth="310.0">
+         <children>
+            <Label prefHeight="15.0" prefWidth="62.0" text="Posted at" />
+            <Label fx:id="postedAtLabel" prefHeight="15.0" prefWidth="190.0" text="0000/00/00 00:00" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
