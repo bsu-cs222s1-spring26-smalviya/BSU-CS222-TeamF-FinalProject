@@ -25,7 +25,7 @@ tasks.test {
 
 javafx {
     version = "25.0.1"
-    modules("javafx.controls", "javafx.fxml")
+    modules("javafx.controls", "javafx.fxml","javafx.web")
 }
 
 application {
