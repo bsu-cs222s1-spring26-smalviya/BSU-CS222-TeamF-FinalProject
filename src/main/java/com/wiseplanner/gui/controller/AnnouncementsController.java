@@ -1,6 +1,7 @@
 package com.wiseplanner.gui.controller;
 
 import com.wiseplanner.model.Announcement;
+import com.wiseplanner.model.Assignment;
 import com.wiseplanner.model.Course;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
@@ -8,7 +9,10 @@ import javafx.animation.RotateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -16,7 +20,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.IOException;
+import java.util.Objects;
 
 public class AnnouncementsController extends BaseController {
 
@@ -100,6 +109,29 @@ public class AnnouncementsController extends BaseController {
 
         });
         announcementsTable.getColumns().setAll(idColumn, titleColumn, messageColumn, posted_atColumn);
+        announcementsTable.setRowFactory(table -> {
+            TableRow<Announcement> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    FXMLLoader loader = new FXMLLoader(
+                            Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/AnnouncementDetail.fxml")));
+                    Parent root = null;
+                    try {
+                        root = loader.load();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    AnnouncementDetailController announcementDetailController = loader.getController();
+                    announcementDetailController.setContent(row.getItem());
+                    Stage stage = new Stage();
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.setTitle("Announcement Detail");
+                    stage.setScene(new Scene(root));
+                    stage.showAndWait();
+                }
+            });
+            return row;
+        });
         tableConfigured = true;
     }
 

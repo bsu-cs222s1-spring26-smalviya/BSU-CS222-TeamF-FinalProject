@@ -3,6 +3,7 @@ package com.wiseplanner.gui.controller;
 import com.wiseplanner.model.Assignment;
 import com.wiseplanner.model.Course;
 import com.wiseplanner.model.Submission;
+import com.wiseplanner.model.Task;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
@@ -10,7 +11,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -18,7 +22,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.IOException;
+import java.util.Objects;
 
 public class AssignmentsController extends BaseController {
 
@@ -87,6 +96,7 @@ public class AssignmentsController extends BaseController {
         }
         assignmentsTable.setItems(assignments);
         assignmentsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -112,6 +122,29 @@ public class AssignmentsController extends BaseController {
             }
         });
         assignmentsTable.getColumns().setAll(idColumn, nameColumn, descriptionColumn, dueColumn, workflow_stateColumn);
+        assignmentsTable.setRowFactory(table -> {
+            TableRow<Assignment> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    FXMLLoader loader = new FXMLLoader(
+                            Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/AssignmentDetail.fxml")));
+                    Parent root = null;
+                    try {
+                        root = loader.load();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    AssignmentDetailController assignmentDetailController = loader.getController();
+                    assignmentDetailController.setContent(row.getItem());
+                    Stage stage = new Stage();
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.setTitle("Assignment Detail");
+                    stage.setScene(new Scene(root));
+                    stage.showAndWait();
+                }
+            });
+            return row;
+        });
         tableConfigured = true;
     }
 
