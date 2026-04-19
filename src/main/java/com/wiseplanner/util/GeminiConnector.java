@@ -38,32 +38,27 @@ public class GeminiConnector {
 
     public String generate(String prompt) throws NetworkException {
         if (!isConfigured()) {
-            throw new NetworkException("Gemini API key not configured. Set the GEMINI_API_KEY environment variable.");
+            throw new NetworkException("Gemini API key not configured. Go to Settings → User Settings to add your key.");
         }
 
         try {
             JsonObject textPart = new JsonObject();
             textPart.addProperty("text", prompt);
-
             JsonArray partsArray = new JsonArray();
             partsArray.add(textPart);
-
             JsonObject content = new JsonObject();
             content.add("parts", partsArray);
-
             JsonArray contentsArray = new JsonArray();
             contentsArray.add(content);
-
             JsonObject requestBody = new JsonObject();
             requestBody.add("contents", contentsArray);
-
             String requestJson = gson.toJson(requestBody);
 
             URI uri = new URI(GEMINI_API_URL + apiKey);
             HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setDoOutput(true); // tells Java we want to SEND data
+            connection.setDoOutput(true);
             connection.setConnectTimeout(10000);
             connection.setReadTimeout(15000);
 
@@ -75,7 +70,7 @@ public class GeminiConnector {
             int responseCode = connection.getResponseCode();
             if (responseCode != 200) {
                 String errorBody = readStream(connection.getErrorStream());
-                throw new NetworkException("Gemini API returned HTTP " + responseCode + ": " + errorBody);
+                throw new NetworkException(parseErrorMessage(responseCode, errorBody));
             }
 
             String responseJson = readStream(connection.getInputStream());
@@ -85,6 +80,41 @@ public class GeminiConnector {
             throw e;
         } catch (Exception e) {
             throw new NetworkException("Failed to connect to Gemini API: " + e.getMessage());
+        }
+    }
+
+    private String parseErrorMessage(int httpCode, String errorBody) {
+        String geminiMessage = "";
+        try {
+            JsonObject errorJson = gson.fromJson(errorBody, JsonObject.class);
+            if (errorJson != null && errorJson.has("error")) {
+                JsonObject error = errorJson.getAsJsonObject("error");
+                if (error.has("message")) {
+                    // The message can be long — take only the first sentence
+                    String raw = error.get("message").getAsString();
+                    int dot = raw.indexOf('.');
+                    geminiMessage = (dot > 0) ? raw.substring(0, dot + 1) : raw;
+                }
+            }
+        } catch (Exception ignored) {
+
+        }
+
+        switch (httpCode) {
+            case 429:
+                return "Gemini quota exceeded — you've hit the free-tier rate limit. "
+                        + "Wait a minute and click Refresh, or check your quota at ai.google.dev.";
+            case 401:
+            case 403:
+                return "Gemini API key is invalid or lacks permission. "
+                        + "Check your key in Settings → User Settings.";
+            case 400:
+                return "Gemini rejected the request (HTTP 400). "
+                        + "Your API key may be malformed — check it in Settings → User Settings.";
+            default:
+                return geminiMessage.isBlank()
+                        ? "Gemini returned an error (HTTP " + httpCode + ")."
+                        : "Gemini error: " + geminiMessage;
         }
     }
 

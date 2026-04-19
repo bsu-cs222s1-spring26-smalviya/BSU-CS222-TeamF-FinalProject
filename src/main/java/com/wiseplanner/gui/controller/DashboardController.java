@@ -55,20 +55,10 @@ public class DashboardController extends BaseController {
 
         greetingLabel.setText(dashboard.getGreeting() != null ? dashboard.getGreeting() : "");
 
-
-        gradeAnalysisLabel.setText(
-                dashboard.getGeminiGradeAnalysis() != null
-                        ? dashboard.getGeminiGradeAnalysis()
-                        : "[Info] Set a Gemini API key in Settings to enable AI features.");
-        gradeAnalysisLabel.setWrapText(true);
-
-
-        insightsLabel.setText(
-                dashboard.getGeminiInsights() != null
-                        ? dashboard.getGeminiInsights()
-                        : "[Info] Set a Gemini API key in Settings to enable AI features.");
-        insightsLabel.setWrapText(true);
-
+        setAiLabel(gradeAnalysisLabel, dashboard.getGeminiGradeAnalysis(),
+                "[Info] Set a Gemini API key in Settings → User Settings to enable AI features.");
+        setAiLabel(insightsLabel, dashboard.getGeminiInsights(),
+                "[Info] Set a Gemini API key in Settings → User Settings to enable AI features.");
 
         if (dashboard.getTodaysAssignments() == null || dashboard.getTodaysAssignments().isEmpty()) {
             assignmentsBox.getChildren().add(makeLabel("No assignments due today. Enjoy your day!"));
@@ -88,17 +78,16 @@ public class DashboardController extends BaseController {
             }
         }
 
-
         if (dashboard.getTodaysAnnouncements() == null || dashboard.getTodaysAnnouncements().isEmpty()) {
             announcementsBox.getChildren().add(makeLabel("No new announcements today."));
         } else {
             for (Announcement a : dashboard.getTodaysAnnouncements()) {
                 if ("ERR".equals(a.getId())) {
-                    announcementsBox.getChildren().add(makeLabel(a.getMessage()));
+                    announcementsBox.getChildren().add(makeErrorLabel(a.getMessage()));
                     continue;
                 }
                 Label title = makeLabel("• " + a.getTitle());
-                title.setStyle("-fx-font-weight: bold;");
+                title.setStyle("-fx-font-weight: bold; -fx-font-size: 13;");
                 announcementsBox.getChildren().add(title);
                 if (a.getMessage() != null && !a.getMessage().isBlank()) {
                     String msg = a.getMessage().replaceAll("<[^>]*>", "").trim();
@@ -107,7 +96,6 @@ public class DashboardController extends BaseController {
                 }
             }
         }
-
 
         if (dashboard.getTodoList() == null || dashboard.getTodoList().isEmpty()) {
             todoBox.getChildren().add(makeLabel("Your to-do list is empty. Add tasks from the Tasks menu."));
@@ -121,6 +109,24 @@ public class DashboardController extends BaseController {
         }
     }
 
+
+    private void setAiLabel(Label label, String content, String fallback) {
+        label.setWrapText(true);
+        if (content == null || content.isBlank()) {
+            label.setText(fallback);
+            label.setStyle("-fx-text-fill: grey; -fx-font-size: 12;");
+        } else if (content.startsWith("[Error]")) {
+            label.setText(content.substring(7).trim());
+            label.setStyle("-fx-text-fill: #c0392b; -fx-font-size: 12;");
+        } else if (content.startsWith("[Info]")) {
+            label.setText(content.substring(6).trim());
+            label.setStyle("-fx-text-fill: grey; -fx-font-size: 12;");
+        } else {
+            label.setText(content);
+            label.setStyle("-fx-text-fill: black; -fx-font-size: 13;");
+        }
+    }
+
     private Label makeLabel(String text) {
         Label l = new Label(text);
         l.setWrapText(true);
@@ -128,10 +134,18 @@ public class DashboardController extends BaseController {
         return l;
     }
 
+    private Label makeErrorLabel(String text) {
+        Label l = new Label(text);
+        l.setWrapText(true);
+        l.setStyle("-fx-font-size: 12; -fx-text-fill: #c0392b;");
+        return l;
+    }
+
     private void clearAll() {
         greetingLabel.setText("");
         gradeAnalysisLabel.setText("");
         insightsLabel.setText("");
+        statusLabel.setText("");
         assignmentsBox.getChildren().clear();
         announcementsBox.getChildren().clear();
         todoBox.getChildren().clear();
