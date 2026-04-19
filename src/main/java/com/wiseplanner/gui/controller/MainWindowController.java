@@ -2,6 +2,7 @@ package com.wiseplanner.gui.controller;
 
 import com.wiseplanner.core.WisePlannerKernel;
 import com.wiseplanner.exception.FileReadException;
+import com.wiseplanner.exception.FileWriteException;
 import com.wiseplanner.model.Course;
 import com.wiseplanner.model.User;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.MenuButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -28,14 +30,14 @@ public class MainWindowController extends BaseController {
     @FXML private VBox navigationBar;
     @FXML private StackPane pagePane;
     @FXML private Button schedulesButton;
-    @FXML private Button settingsButton;
     @FXML private Button tasksButton;
     @FXML private HBox topBar;
     @FXML private Button backButton;
-    @FXML private Label userNameLabel;
     @FXML private Label avatarLabel;
+    @FXML private MenuButton userMenuButton;
 
     private final Stack<Parent> history = new Stack<>();
+
 
     @FXML
     void onDashboardButtonClick(ActionEvent event) throws IOException {
@@ -67,18 +69,6 @@ public class MainWindowController extends BaseController {
     }
 
     @FXML
-    void onSettingsButtonClick(ActionEvent event) throws IOException {
-        history.clear();
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
-                getClass().getClassLoader().getResource("fxml/Settings.fxml")));
-        Parent node = loader.load();
-        SettingsController controller = loader.getController();
-        controller.setKernel(kernel);
-        controller.setMainWindowController(this);
-        changePage(node);
-    }
-
-    @FXML
     void onTasksButtonClick(ActionEvent event) throws IOException {
         history.clear();
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
@@ -98,6 +88,33 @@ public class MainWindowController extends BaseController {
             updateBackButton();
         }
     }
+
+
+
+    @FXML
+    void onSettingsMenuItemClick(ActionEvent event) throws IOException {
+        history.clear();
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
+                getClass().getClassLoader().getResource("fxml/Settings.fxml")));
+        Parent node = loader.load();
+        SettingsController controller = loader.getController();
+        controller.setKernel(kernel);
+        controller.setMainWindowController(this);
+        changePage(node);
+    }
+
+    @FXML
+    void onLogoutMenuItemClick(ActionEvent event) {
+        try {
+            kernel.user().logout();
+        } catch (FileWriteException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.showAndWait();
+        }
+        System.exit(0);
+    }
+
 
     public void setKernel(WisePlannerKernel kernel) {
         super.setKernel(kernel);
@@ -129,19 +146,23 @@ public class MainWindowController extends BaseController {
     }
 
     private void updateUserBadge() {
-        if (userNameLabel == null || avatarLabel == null || kernel == null) return;
+        if (userMenuButton == null || kernel == null) return;
+
         User user = kernel.user().getUser();
         String displayName = "User";
         if (user != null && user.getName() != null && !user.getName().isBlank()) {
             displayName = user.getName().trim();
         }
-        Image image = new Image(getClass().getResourceAsStream("/images/default_avatar.png"));
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(36);
-        imageView.setFitHeight(36);
-        imageView.setSmooth(true);
-        userNameLabel.setText(displayName);
-        avatarLabel.setGraphic(imageView);
+        userMenuButton.setText(displayName);
+
+        if (avatarLabel != null) {
+            Image image = new Image(getClass().getResourceAsStream("/images/default_avatar.png"));
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(32);
+            imageView.setFitHeight(32);
+            imageView.setSmooth(true);
+            avatarLabel.setGraphic(imageView);
+        }
     }
 
     public void showCoursesPage() throws IOException {

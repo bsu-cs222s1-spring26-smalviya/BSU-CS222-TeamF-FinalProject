@@ -3,6 +3,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -27,17 +31,22 @@
                <HBox.margin><Insets left="20.0"/></HBox.margin>
             </Label>
             <Region HBox.hgrow="ALWAYS"/>
-            <HBox alignment="CENTER_RIGHT" prefHeight="64.0" spacing="10.0">
-               <children>
-                  <Label fx:id="userNameLabel" text="User">
-                     <font><Font size="16.0"/></font>
-                  </Label>
+            <MenuButton fx:id="userMenuButton" text="User" contentDisplay="LEFT"
+                        style="-fx-background-color: transparent; -fx-font-size: 14px; -fx-cursor: hand;">
+               <items>
+                  <MenuItem fx:id="settingsMenuItem" text="⚙  Settings"
+                            onAction="#onSettingsMenuItemClick"/>
+                  <SeparatorMenuItem/>
+                  <MenuItem fx:id="logoutMenuItem" text="↩  Log Out"
+                            onAction="#onLogoutMenuItemClick"/>
+               </items>
+               <graphic>
                   <Label fx:id="avatarLabel" alignment="CENTER"
-                         prefHeight="36.0" prefWidth="36.0"
-                         style="-fx-background-radius: 18;"/>
-               </children>
+                         prefHeight="32.0" prefWidth="32.0"
+                         style="-fx-background-radius: 16;"/>
+               </graphic>
                <HBox.margin><Insets right="20.0"/></HBox.margin>
-            </HBox>
+            </MenuButton>
          </children>
       </HBox>
    </top>
@@ -56,9 +65,7 @@
             <Button fx:id="schedulesButton" mnemonicParsing="false"
                     onAction="#onSchedulesButtonClick"
                     prefHeight="64.0" prefWidth="238.0" text="Schedules"/>
-            <Button fx:id="settingsButton" mnemonicParsing="false"
-                    onAction="#onSettingsButtonClick"
-                    prefHeight="64.0" prefWidth="238.0" text="Settings"/>
+            <!-- Settings removed from nav bar — now lives in the user dropdown -->
          </children>
       </VBox>
    </left>
