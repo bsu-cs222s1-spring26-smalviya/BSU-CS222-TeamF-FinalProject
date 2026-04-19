@@ -41,6 +41,7 @@ public class CourseContextController extends BaseController {
     }
 
 
+
     private void loadBoth() {
         assignmentsStatusLabel.setText("Loading…");
         announcementsStatusLabel.setText("Loading…");
@@ -75,6 +76,7 @@ public class CourseContextController extends BaseController {
     }
 
 
+
     private List<Assignment> sortedAssignments(List<Assignment> list) {
         if (list == null) return List.of();
         return list.stream()
@@ -93,6 +95,7 @@ public class CourseContextController extends BaseController {
                 || s.getWorkflow_state().equalsIgnoreCase("unsubmitted");
     }
 
+
     private List<Announcement> sortedAnnouncements(List<Announcement> list) {
         if (list == null) return List.of();
         return list.stream()
@@ -101,6 +104,7 @@ public class CourseContextController extends BaseController {
                         Comparator.reverseOrder()))
                 .toList();
     }
+
 
 
     private void populateAssignments(List<Assignment> list) {
@@ -124,6 +128,8 @@ public class CourseContextController extends BaseController {
             announcementsListBox.getChildren().add(makeAnnouncementCard(a));
         }
     }
+
+
 
     private VBox makeAssignmentCard(Assignment a) {
         boolean unsubmitted = isUnsubmitted(a);
@@ -165,6 +171,26 @@ public class CourseContextController extends BaseController {
         card.setStyle("-fx-padding: 8 10 8 10; -fx-background-color: #fafafa;"
                 + "-fx-border-color: " + borderColor + "; -fx-border-radius: 6;"
                 + "-fx-background-radius: 6; -fx-border-width: 0 0 0 3;");
+
+
+        card.setOnMouseClicked(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
+                        getClass().getClassLoader().getResource("fxml/AssignmentDetail.fxml")));
+                javafx.scene.Parent root = loader.load();
+                AssignmentDetailController ctrl = loader.getController();
+                ctrl.setContent(a);
+                javafx.stage.Stage stage = new javafx.stage.Stage();
+                stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+                stage.setTitle(a.getName());
+                stage.setScene(new javafx.scene.Scene(root));
+                stage.showAndWait();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        card.setStyle(card.getStyle() + "-fx-cursor: hand;");
+
         return card;
     }
 
@@ -184,8 +210,29 @@ public class CourseContextController extends BaseController {
         card.setStyle("-fx-padding: 8 10 8 10; -fx-background-color: #fafafa;"
                 + "-fx-border-color: #dddddd; -fx-border-radius: 6;"
                 + "-fx-background-radius: 6; -fx-border-width: 0 0 0 3;");
+
+
+        card.setOnMouseClicked(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
+                        getClass().getClassLoader().getResource("fxml/AnnouncementDetail.fxml")));
+                javafx.scene.Parent root = loader.load();
+                AnnouncementDetailController ctrl = loader.getController();
+                ctrl.setContent(a);
+                javafx.stage.Stage stage = new javafx.stage.Stage();
+                stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+                stage.setTitle(a.getTitle());
+                stage.setScene(new javafx.scene.Scene(root));
+                stage.showAndWait();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        card.setStyle(card.getStyle() + "-fx-cursor: hand;");
+
         return card;
     }
+
 
     @FXML
     void onShowAllAssignmentsClick(ActionEvent event) throws IOException {
@@ -210,6 +257,7 @@ public class CourseContextController extends BaseController {
         controller.loadAnnouncements();
         mainWindowController.changePage(node);
     }
+
 
     private Label makeInfoLabel(String text) {
         Label l = new Label(text);
