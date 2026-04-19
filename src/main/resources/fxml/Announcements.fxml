@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="635.0" prefWidth="1186.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.AnnouncementsController">
-   <children>
-      <TableView fx:id="announcementsTable" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <columns>
-          <TableColumn fx:id="idColumn" prefWidth="178.39999997615814" text="ID" />
-          <TableColumn fx:id="titleColumn" prefWidth="264.800048828125" text="Title" />
-            <TableColumn fx:id="messageColumn" prefWidth="606.3999328613281" text="Message" />
-            <TableColumn fx:id="posted_atColumn" minWidth="0.0" prefWidth="133.5999755859375" text="Posted at" />
-        </columns>
-      </TableView>
-   </children>
-</AnchorPane>
+<BorderPane xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.wiseplanner.gui.controller.AnnouncementsController">
+    <top>
+        <Label text="All Announcements" style="-fx-font-size: 24; -fx-font-weight: bold;">
+            <BorderPane.margin><Insets left="14.0" top="14.0" bottom="10.0"/></BorderPane.margin>
+        </Label>
+    </top>
+    <center>
+        <TableView fx:id="announcementsTable" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="titleColumn"     text="Title"/>
+                <TableColumn fx:id="messageColumn"   text="Message"/>
+                <TableColumn fx:id="posted_atColumn" text="Posted At"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

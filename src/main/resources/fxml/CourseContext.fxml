@@ -3,35 +3,73 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="anchorPane" prefHeight="704.0" prefWidth="1302.0" stylesheets="@../css/CourseContext.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.CourseContextController">
+<BorderPane fx:id="anchorPane" prefHeight="704.0" prefWidth="1302.0"
+            stylesheets="@../css/CourseContext.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.wiseplanner.gui.controller.CourseContextController">
    <top>
       <Label fx:id="courseNameLabel" text="Course" BorderPane.alignment="CENTER_LEFT">
-         <font>
-            <Font size="36.0" />
-         </font>
-         <BorderPane.margin>
-            <Insets bottom="16.0" left="16.0" right="16.0" top="14.0" />
-         </BorderPane.margin>
+         <font><Font size="36.0"/></font>
+         <BorderPane.margin><Insets bottom="12.0" left="16.0" right="16.0" top="14.0"/></BorderPane.margin>
       </Label>
    </top>
-   <left>
-      <VBox prefHeight="626.0" prefWidth="180.0" spacing="12.0" BorderPane.alignment="TOP_LEFT">
-         <children>
-            <Button fx:id="assignmentsBtn" mnemonicParsing="false" onAction="#onAssignmentsBtnClick" prefHeight="60.0" prefWidth="188.0" text="Assignments" />
-            <Button fx:id="announcementsButton" mnemonicParsing="false" onAction="#onAnnouncementsBtnClick" prefHeight="60.0" prefWidth="188.0" text="Announcements" />
-         </children>
-      </VBox>
-   </left>
    <center>
-      <StackPane fx:id="courseContextPane" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="16.0" right="16.0" />
-         </BorderPane.margin>
-      </StackPane>
+      <HBox spacing="12.0">
+         <BorderPane.margin><Insets bottom="16.0" left="16.0" right="16.0"/></BorderPane.margin>
+
+         <VBox spacing="8.0" HBox.hgrow="ALWAYS"
+               style="-fx-background-color: white;
+                      -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8;
+                      -fx-padding: 12; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.08),6,0,0,2);">
+            <HBox alignment="CENTER_LEFT" spacing="8.0">
+               <Label text="📋  Assignments" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+               <javafx.scene.layout.Region HBox.hgrow="ALWAYS"/>
+               <Button fx:id="showAllAssignmentsBtn" text="Show All →"
+                       onAction="#onShowAllAssignmentsClick"
+                       style="-fx-background-radius: 14; -fx-padding: 4 12 4 12;
+                              -fx-font-size: 12; -fx-cursor: hand;"/>
+            </HBox>
+            <Label fx:id="assignmentsStatusLabel" text=""
+                   style="-fx-text-fill: grey; -fx-font-size: 12;"/>
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                        style="-fx-background: transparent; -fx-background-color: transparent;">
+               <content>
+                  <VBox fx:id="assignmentsListBox" spacing="6.0" style="-fx-padding: 2;"/>
+               </content>
+            </ScrollPane>
+         </VBox>
+
+
+         <VBox spacing="8.0" prefWidth="300.0" minWidth="260.0" maxWidth="340.0"
+               style="-fx-background-color: white;
+                      -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8;
+                      -fx-padding: 12; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.08),6,0,0,2);">
+            <HBox alignment="CENTER_LEFT" spacing="8.0">
+               <Label text="📢  Announcements" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+               <javafx.scene.layout.Region HBox.hgrow="ALWAYS"/>
+               <Button fx:id="showAllAnnouncementsBtn" text="Show All →"
+                       onAction="#onShowAllAnnouncementsClick"
+                       style="-fx-background-radius: 14; -fx-padding: 4 12 4 12;
+                              -fx-font-size: 12; -fx-cursor: hand;"/>
+            </HBox>
+            <Label fx:id="announcementsStatusLabel" text=""
+                   style="-fx-text-fill: grey; -fx-font-size: 12;"/>
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                        style="-fx-background: transparent; -fx-background-color: transparent;">
+               <content>
+                  <VBox fx:id="announcementsListBox" spacing="6.0" style="-fx-padding: 2;"/>
+               </content>
+            </ScrollPane>
+         </VBox>
+
+      </HBox>
    </center>
 </BorderPane>
