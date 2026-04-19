@@ -19,6 +19,7 @@ public class ConsoleUI {
     CanvasOutputFormatter canvasOutputFormatter = new CanvasOutputFormatter();
     TaskOutputFormatter taskOutputFormatter = new TaskOutputFormatter();
     ScheduleOutputFormatter scheduleOutputFormatter = new ScheduleOutputFormatter();
+    DashboardOutputFormatter dashboardOutputFormatter = new DashboardOutputFormatter();
 
     private void handleLogin() throws FileWriteException {
         System.out.println("Please enter your name: ");
@@ -39,7 +40,7 @@ public class ConsoleUI {
 
     private void showSettingsMenu() {
         while (true) {
-            System.out.println("(1) Change User Name\n(2) Change Canvas Token\n(3) Log Out\n(0) Back\nPlease enter your choice:");
+            System.out.println("(1) Dashboard\n(2) Courses\n(3) Tasks\n(4) Schedules\n(5) Settings\n(0) Exit");
             int choice = safeReadInt();
 
             switch (choice) {
