@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="400.0"
+<VBox prefHeight="520.0" prefWidth="400.0"
       fillWidth="true"
       xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -28,12 +28,18 @@
         <Label text="Canvas Token">
             <VBox.margin><Insets left="10.0"/></VBox.margin>
         </Label>
-
-        <Label text="Gemini API Key (Optional - enables AI dashboard features)">
-        <VBox.margin><Insets left="10.0" top="5.0"/></VBox.margin>>
-        </Label>>
-
         <TextField fx:id="tokenField">
+            <VBox.margin><Insets bottom="10.0" left="10.0" right="10.0" top="5.0"/></VBox.margin>
+        </TextField>
+
+        <Label text="Gemini API Key (optional — enables AI dashboard features)">
+            <VBox.margin><Insets left="10.0" top="5.0"/></VBox.margin>
+        </Label>
+        <Label text="Get a free key at: https://aistudio.google.com"
+               style="-fx-text-fill: grey; -fx-font-size: 11;">
+            <VBox.margin><Insets left="10.0" bottom="3.0"/></VBox.margin>
+        </Label>
+        <TextField fx:id="geminiKeyField" promptText="Paste your Gemini API key here">
             <VBox.margin><Insets bottom="10.0" left="10.0" right="10.0" top="5.0"/></VBox.margin>
         </TextField>
 
@@ -41,7 +47,8 @@
             <VBox.margin><Insets left="10.0" right="10.0"/></VBox.margin>
         </Label>
 
-        <Button text="Save" onAction="#onSaveButtonClick" maxWidth="1.7976931348623157E308" prefWidth="200.0">
+        <Button text="Save" onAction="#onSaveButtonClick"
+                maxWidth="1.7976931348623157E308" prefWidth="200.0">
             <VBox.margin><Insets left="10.0" right="10.0" top="10.0"/></VBox.margin>
         </Button>
     </children>

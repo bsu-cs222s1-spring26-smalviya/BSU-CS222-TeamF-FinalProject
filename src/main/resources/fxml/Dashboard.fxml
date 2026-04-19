@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToWidth="true"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.wiseplanner.gui.controller.DashboardController">
+    <content>
+        <VBox spacing="16.0" style="-fx-padding: 20;">
+
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <Label text="Dashboard" style="-fx-font-size: 28; -fx-font-weight: bold;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="refreshButton" text="⟳ Refresh" onAction="#onRefreshButtonClick"/>
+            </HBox>
+
+            <Label fx:id="statusLabel" text="" wrapText="true"
+                   style="-fx-text-fill: grey; -fx-font-size: 13;"/>
+
+            <Separator/>
+
+            <VBox spacing="4.0" style="-fx-background-color: #f0f4ff; -fx-background-radius: 8; -fx-padding: 12;">
+                <Label text="👋  Greeting" style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+                <Label fx:id="greetingLabel" text="" wrapText="true"/>
+            </VBox>
+
+            <VBox spacing="4.0" style="-fx-background-color: #f0fff4; -fx-background-radius: 8; -fx-padding: 12;">
+                <Label text="📊  Grade Analysis (Gemini)" style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+                <Label fx:id="gradeAnalysisLabel" text="" wrapText="true"/>
+            </VBox>
+
+            <VBox spacing="4.0" style="-fx-background-color: #fffbf0; -fx-background-radius: 8; -fx-padding: 12;">
+                <Label text="💡  Daily Insights (Gemini)" style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+                <Label fx:id="insightsLabel" text="" wrapText="true"/>
+            </VBox>
+
+            <VBox spacing="4.0" style="-fx-background-color: #fff0f0; -fx-background-radius: 8; -fx-padding: 12;">
+                <Label text="📅  Today's Assignments" style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+                <VBox fx:id="assignmentsBox" spacing="4.0"/>
+            </VBox>
+
+            <VBox spacing="4.0" style="-fx-background-color: #f5f0ff; -fx-background-radius: 8; -fx-padding: 12;">
+                <Label text="📢  Today's Announcements" style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+                <VBox fx:id="announcementsBox" spacing="4.0"/>
+            </VBox>
+
+
+            <VBox spacing="4.0" style="-fx-background-color: #f0f8ff; -fx-background-radius: 8; -fx-padding: 12;">
+                <Label text="✅  To-Do List" style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+                <VBox fx:id="todoBox" spacing="4.0"/>
+            </VBox>
+
+        </VBox>
+    </content>
+</ScrollPane>

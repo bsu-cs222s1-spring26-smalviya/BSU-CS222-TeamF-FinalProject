@@ -42,15 +42,11 @@ public class UserManager {
     }
 
     public void setUser(String name, String canvasToken) throws FileWriteException {
+        // Preserve the existing Gemini API key — creating a new User() would wipe it.
+        String existingGeminiKey = (user != null) ? user.getGeminiApiKey() : null;
         user = new User(name, canvasToken);
-        File userDataFile = userDataPath.toFile();
-        userDataFile.getParentFile().mkdirs();
-        String userJson = gson.toJson(user);
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(userDataFile))) {
-            bufferedWriter.write(userJson);
-        } catch (IOException e) {
-            throw (new FileWriteException("File write failed, unable to write user data."));
-        }
+        user.setGeminiApiKey(existingGeminiKey);
+        saveUser();
     }
 
     public void setGeminiApiKey(String geminiApiKey) throws FileWriteException {
@@ -69,15 +65,11 @@ public class UserManager {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(userDataFile))) {
             bufferedWriter.write(userJson);
         } catch (IOException e) {
-            throw (new FileWriteException("File write failed, unable to write user data"));
+            throw (new FileWriteException("File write failed, unable to write user data."));
         }
     }
 
-
-
-    public User getUser() {
-        return user;
-    }
+    public User getUser() { return user; }
 
     public void logout() throws FileWriteException {
         File userDataFile = userDataPath.toFile();
