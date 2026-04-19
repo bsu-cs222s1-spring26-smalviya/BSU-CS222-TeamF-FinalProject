@@ -1,6 +1,5 @@
 package com.wiseplanner.core;
 
-import com.wiseplanner.exception.FileCorruptionException;
 import com.wiseplanner.exception.FileReadException;
 import com.wiseplanner.model.User;
 import com.wiseplanner.service.DashboardService;
@@ -28,24 +27,13 @@ public class WisePlannerKernel {
         scheduleManager = new ScheduleManager();
         scheduleManager.loadSchedule();
         GeminiConnector geminiConnector = new GeminiConnector(userManager.getGeminiApiKey());
-        dashboardService = new DashboardService(canvasService, taskManager, userManager, geminiConnector, new DashboardParser());
+        dashboardService = new DashboardService(canvasService, taskManager, userManager,
+                geminiConnector, new DashboardParser());
     }
 
-    public UserManager user() {
-        return userManager;
-    }
-
-    public CanvasService canvas() {
-        return canvasService;
-    }
-
-    public TaskManager task() {
-        return taskManager;
-    }
-
-    public ScheduleManager schedule() {
-        return scheduleManager;
-    }
-
-    public DashboardService dashboard() {return dashboardService;}
+    public UserManager user()           { return userManager; }
+    public CanvasService canvas()       { return canvasService; }
+    public TaskManager task()           { return taskManager; }
+    public ScheduleManager schedule()   { return scheduleManager; }
+    public DashboardService dashboard() { return dashboardService; }
 }

@@ -52,7 +52,6 @@ public class DashboardController extends BaseController {
     }
 
     private void populate(Dashboard dashboard) {
-
         greetingLabel.setText(dashboard.getGreeting() != null ? dashboard.getGreeting() : "");
 
         setAiLabel(gradeAnalysisLabel, dashboard.getGeminiGradeAnalysis(),
@@ -108,7 +107,6 @@ public class DashboardController extends BaseController {
             }
         }
     }
-
 
     private void setAiLabel(Label label, String content, String fallback) {
         label.setWrapText(true);

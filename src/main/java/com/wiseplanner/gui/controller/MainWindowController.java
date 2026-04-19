@@ -23,7 +23,7 @@ import java.util.Stack;
 public class MainWindowController extends BaseController {
 
     @FXML private BorderPane borderPane;
-    @FXML private Button dashboardButton;  // new
+    @FXML private Button dashboardButton;
     @FXML private Button coursesButton;
     @FXML private VBox navigationBar;
     @FXML private StackPane pagePane;
@@ -44,7 +44,7 @@ public class MainWindowController extends BaseController {
                 getClass().getClassLoader().getResource("fxml/Dashboard.fxml")));
         Parent node = loader.load();
         DashboardController controller = loader.getController();
-        controller.setKernel(kernel);  // triggers loadDashboard() automatically
+        controller.setKernel(kernel);
         changePage(node);
     }
 

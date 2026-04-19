@@ -11,17 +11,10 @@ import javafx.scene.layout.Region;
 
 public class UserSettingsController extends BaseController {
 
-    @FXML
-    private TextField nameField;
-
-    @FXML
-    private TextField tokenField;
-
-    @FXML
-    private Label statusLabel;
-
-    @FXML
-    private TextField geminiKeyField;
+    @FXML private TextField nameField;
+    @FXML private TextField tokenField;
+    @FXML private TextField geminiKeyField;
+    @FXML private Label statusLabel;
 
     @Override
     public void setKernel(WisePlannerKernel kernel) {
@@ -37,9 +30,10 @@ public class UserSettingsController extends BaseController {
 
     @FXML
     void onSaveButtonClick(ActionEvent event) {
-        String newName = nameField.getText().trim();
-        String newToken = tokenField.getText().trim().replaceAll("\\s+", "");
+        String newName      = nameField.getText().trim();
+        String newToken     = tokenField.getText().trim().replaceAll("\\s+", "");
         String newGeminiKey = geminiKeyField.getText().trim().replaceAll("\\s+", "");
+
         if (newName.isEmpty() || newToken.isEmpty()) {
             statusLabel.setStyle("-fx-text-fill: red;");
             statusLabel.setText("Name and token cannot be empty.");
@@ -53,8 +47,6 @@ public class UserSettingsController extends BaseController {
             }
 
             kernel.initialize();
-
-
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);

@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 public class GeminiConnector {
 
     private static final String GEMINI_API_URL =
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=";
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent";
 
     private final String apiKey;
     private final Gson gson = new Gson();
@@ -40,7 +40,6 @@ public class GeminiConnector {
         }
 
         try {
-
             JsonObject textPart = new JsonObject();
             textPart.addProperty("text", prompt);
             JsonArray partsArray = new JsonArray();
@@ -53,10 +52,12 @@ public class GeminiConnector {
             requestBody.add("contents", contentsArray);
             String requestJson = gson.toJson(requestBody);
 
-            URI uri = new URI(GEMINI_API_URL + apiKey);
+            URI uri = new URI(GEMINI_API_URL);
             HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
+            // API key goes in the header, not the URL — per current Google docs
+            connection.setRequestProperty("x-goog-api-key", apiKey);
             connection.setDoOutput(true);
             connection.setConnectTimeout(10000);
             connection.setReadTimeout(15000);
@@ -82,7 +83,6 @@ public class GeminiConnector {
         }
     }
 
-
     private String parseErrorMessage(int httpCode, String errorBody) {
         String geminiMessage = "";
         try {
@@ -90,15 +90,12 @@ public class GeminiConnector {
             if (errorJson != null && errorJson.has("error")) {
                 JsonObject error = errorJson.getAsJsonObject("error");
                 if (error.has("message")) {
-
                     String raw = error.get("message").getAsString();
                     int dot = raw.indexOf('.');
                     geminiMessage = (dot > 0) ? raw.substring(0, dot + 1) : raw;
                 }
             }
-        } catch (Exception ignored) {
-
-        }
+        } catch (Exception ignored) {}
 
         switch (httpCode) {
             case 429:
@@ -120,7 +117,6 @@ public class GeminiConnector {
 
     private String parseGeminiResponse(String responseJson) throws NetworkException {
         try {
-
             JsonObject response = gson.fromJson(responseJson, JsonObject.class);
             JsonArray candidates = response.getAsJsonArray("candidates");
             if (candidates == null || candidates.isEmpty()) {

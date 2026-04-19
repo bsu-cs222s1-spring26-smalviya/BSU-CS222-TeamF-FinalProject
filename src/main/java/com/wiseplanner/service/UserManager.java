@@ -42,7 +42,6 @@ public class UserManager {
     }
 
     public void setUser(String name, String canvasToken) throws FileWriteException {
-        // Preserve the existing Gemini API key — creating a new User() would wipe it.
         String existingGeminiKey = (user != null) ? user.getGeminiApiKey() : null;
         user = new User(name, canvasToken);
         user.setGeminiApiKey(existingGeminiKey);
