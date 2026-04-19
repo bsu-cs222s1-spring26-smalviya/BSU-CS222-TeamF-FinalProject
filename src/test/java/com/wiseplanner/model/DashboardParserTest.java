@@ -64,7 +64,6 @@ public class DashboardParserTest {
         Assertions.assertEquals(2, d.getTodoList().size());
     }
 
-    // --- assignments ---
 
     @Test
     public void buildDashboard_assignmentDueToday_isIncluded() {
@@ -125,7 +124,6 @@ public class DashboardParserTest {
         Assertions.assertEquals(0, d.getTodaysAssignments().size());
     }
 
-    // --- announcements ---
 
     @Test
     public void buildDashboard_announcementPostedToday_isIncluded() {
@@ -168,8 +166,6 @@ public class DashboardParserTest {
         Dashboard d = parser.buildDashboard("Alice", new ArrayList<>(), ann, new ArrayList<>(), "", "");
         Assertions.assertEquals(2, d.getTodaysAnnouncements().size());
     }
-
-    // --- todo list edge cases ---
 
     @Test
     public void buildDashboard_nullTodoList_returnsEmptyList() {

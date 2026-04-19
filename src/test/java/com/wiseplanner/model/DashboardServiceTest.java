@@ -12,8 +12,6 @@ import java.util.List;
 
 public class DashboardServiceTest {
 
-    // --- Stubs ---
-
     private static class StubCanvasService extends CanvasService {
         private final boolean shouldThrow;
         private final List<Course> courses;
@@ -65,8 +63,6 @@ public class DashboardServiceTest {
         }
     }
 
-    // --- Setup ---
-
     private StubUserManager stubUser;
     private StubTaskManager stubTaskManager;
 
@@ -78,7 +74,6 @@ public class DashboardServiceTest {
         stubTaskManager = new StubTaskManager(tasks);
     }
 
-    // --- Happy path ---
 
     @Test
     public void getDashboard_returnsNonNullDashboard() {
@@ -116,7 +111,6 @@ public class DashboardServiceTest {
         Assertions.assertNotNull(d.getGeminiGradeAnalysis());
     }
 
-    // --- Error handling: modules fail independently ---
 
     @Test
     public void getDashboard_canvasThrows_dashboardStillReturns() {

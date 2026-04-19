@@ -30,8 +30,6 @@ public class GeminiConnectorTest {
         Assertions.assertTrue(ex.getMessage().contains("GEMINI_API_KEY"));
     }
 
-    // --- Stub to test behaviour without a real network ---
-
     private static class StubGeminiConnector extends GeminiConnector {
         private final String fakeResponse;
         private final boolean shouldThrow;

@@ -23,12 +23,10 @@ public class DashboardService {
     private final GeminiConnector geminiConnector;
     private final DashboardParser dashboardParser;
 
-    // Short constructor — used by WisePlannerKernel in production
     public DashboardService(CanvasService canvasService, TaskManager taskManager, UserManager userManager) {
         this(canvasService, taskManager, userManager, new GeminiConnector(), new DashboardParser());
     }
 
-    // Full constructor — used in tests so stubs can be injected
     public DashboardService(CanvasService canvasService, TaskManager taskManager,
                             UserManager userManager, GeminiConnector geminiConnector,
                             DashboardParser dashboardParser) {
