@@ -17,36 +17,62 @@
     <content>
         <VBox spacing="16.0" style="-fx-padding: 20;">
 
+
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                 <Label text="Dashboard" style="-fx-font-size: 28; -fx-font-weight: bold;"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 <Button fx:id="refreshButton" text="⟳ Refresh" onAction="#onRefreshButtonClick"/>
             </HBox>
 
+
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <VBox.margin><Insets bottom="-8.0"/></VBox.margin>
+                <Button fx:id="coursesNavButton" text="📚  Courses"
+                        onAction="#onCoursesNavButtonClick"
+                        style="-fx-background-radius: 20; -fx-padding: 6 18 6 18;
+                               -fx-font-size: 13; -fx-cursor: hand;"/>
+                <Button fx:id="tasksNavButton" text="✅  Tasks"
+                        onAction="#onTasksNavButtonClick"
+                        style="-fx-background-radius: 20; -fx-padding: 6 18 6 18;
+                               -fx-font-size: 13; -fx-cursor: hand;"/>
+                <Button fx:id="schedulesNavButton" text="📅  Schedules"
+                        onAction="#onSchedulesNavButtonClick"
+                        style="-fx-background-radius: 20; -fx-padding: 6 18 6 18;
+                               -fx-font-size: 13; -fx-cursor: hand;"/>
+            </HBox>
+
+
             <Label fx:id="statusLabel" text="" wrapText="true"
-                   style="-fx-text-fill: grey; -fx-font-size: 13;"/>
+                   style="-fx-text-fill: grey; -fx-font-size: 13;">
+                <VBox.margin><Insets top="-4.0"/></VBox.margin>
+            </Label>
 
             <Separator/>
+
 
             <VBox spacing="4.0" style="-fx-background-color: #f0f4ff; -fx-background-radius: 8; -fx-padding: 12;">
                 <Label text="👋  Greeting" style="-fx-font-weight: bold; -fx-font-size: 14;"/>
                 <Label fx:id="greetingLabel" text="" wrapText="true"/>
             </VBox>
 
+
             <VBox spacing="4.0" style="-fx-background-color: #f0fff4; -fx-background-radius: 8; -fx-padding: 12;">
                 <Label text="📊  Grade Analysis (Gemini)" style="-fx-font-weight: bold; -fx-font-size: 14;"/>
                 <Label fx:id="gradeAnalysisLabel" text="" wrapText="true"/>
             </VBox>
+
 
             <VBox spacing="4.0" style="-fx-background-color: #fffbf0; -fx-background-radius: 8; -fx-padding: 12;">
                 <Label text="💡  Daily Insights (Gemini)" style="-fx-font-weight: bold; -fx-font-size: 14;"/>
                 <Label fx:id="insightsLabel" text="" wrapText="true"/>
             </VBox>
 
+
             <VBox spacing="4.0" style="-fx-background-color: #fff0f0; -fx-background-radius: 8; -fx-padding: 12;">
                 <Label text="📅  Today's Assignments" style="-fx-font-weight: bold; -fx-font-size: 14;"/>
                 <VBox fx:id="assignmentsBox" spacing="4.0"/>
             </VBox>
+
 
             <VBox spacing="4.0" style="-fx-background-color: #f5f0ff; -fx-background-radius: 8; -fx-padding: 12;">
                 <Label text="📢  Today's Announcements" style="-fx-font-weight: bold; -fx-font-size: 14;"/>

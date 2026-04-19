@@ -51,25 +51,9 @@
       </HBox>
    </top>
    <left>
-      <VBox fx:id="navigationBar" prefHeight="704.0" prefWidth="80.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="dashboardButton" mnemonicParsing="false"
-                    onAction="#onDashboardButtonClick"
-                    prefHeight="64.0" prefWidth="238.0" text="Dashboard"/>
-            <Button fx:id="coursesButton" mnemonicParsing="false"
-                    onAction="#onCoursesButtonClick"
-                    prefHeight="64.0" prefWidth="238.0" text="Courses"/>
-            <Button fx:id="tasksButton" mnemonicParsing="false"
-                    onAction="#onTasksButtonClick"
-                    prefHeight="64.0" prefWidth="238.0" text="Tasks"/>
-            <Button fx:id="schedulesButton" mnemonicParsing="false"
-                    onAction="#onSchedulesButtonClick"
-                    prefHeight="64.0" prefWidth="238.0" text="Schedules"/>
-            <!-- Settings removed from nav bar — now lives in the user dropdown -->
-         </children>
-      </VBox>
+      <VBox fx:id="navigationBar" prefHeight="704.0" prefWidth="0.0" BorderPane.alignment="CENTER"/>
    </left>
    <center>
-      <StackPane fx:id="pagePane" prefWidth="1242.0" BorderPane.alignment="CENTER"/>
+      <StackPane fx:id="pagePane" prefWidth="1366.0" BorderPane.alignment="CENTER"/>
    </center>
 </BorderPane>

@@ -25,12 +25,8 @@ import java.util.Stack;
 public class MainWindowController extends BaseController {
 
     @FXML private BorderPane borderPane;
-    @FXML private Button dashboardButton;
-    @FXML private Button coursesButton;
     @FXML private VBox navigationBar;
     @FXML private StackPane pagePane;
-    @FXML private Button schedulesButton;
-    @FXML private Button tasksButton;
     @FXML private HBox topBar;
     @FXML private Button backButton;
     @FXML private Label avatarLabel;
@@ -40,60 +36,7 @@ public class MainWindowController extends BaseController {
 
 
     @FXML
-    void onDashboardButtonClick(ActionEvent event) throws IOException {
-        history.clear();
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
-                getClass().getClassLoader().getResource("fxml/Dashboard.fxml")));
-        Parent node = loader.load();
-        DashboardController controller = loader.getController();
-        controller.setKernel(kernel);
-        changePage(node);
-    }
-
-    @FXML
-    void onCoursesButtonClick(ActionEvent event) throws IOException {
-        history.clear();
-        showCoursesPage();
-    }
-
-    @FXML
-    void onSchedulesButtonClick(ActionEvent event) throws IOException {
-        history.clear();
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
-                getClass().getClassLoader().getResource("fxml/Schedules.fxml")));
-        Parent node = loader.load();
-        SchedulesController controller = loader.getController();
-        controller.setKernel(kernel);
-        controller.loadSchedules();
-        changePage(node);
-    }
-
-    @FXML
-    void onTasksButtonClick(ActionEvent event) throws IOException {
-        history.clear();
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
-                getClass().getClassLoader().getResource("fxml/Tasks.fxml")));
-        Parent node = loader.load();
-        TasksController controller = loader.getController();
-        controller.setKernel(kernel);
-        controller.loadTasks();
-        changePage(node);
-    }
-
-    @FXML
-    void onBackButtonClick(ActionEvent event) {
-        if (!history.isEmpty()) {
-            Parent previousPage = history.pop();
-            pagePane.getChildren().setAll(previousPage);
-            updateBackButton();
-        }
-    }
-
-
-
-    @FXML
     void onSettingsMenuItemClick(ActionEvent event) throws IOException {
-        history.clear();
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
                 getClass().getClassLoader().getResource("fxml/Settings.fxml")));
         Parent node = loader.load();
@@ -115,6 +58,14 @@ public class MainWindowController extends BaseController {
         System.exit(0);
     }
 
+    @FXML
+    void onBackButtonClick(ActionEvent event) {
+        if (!history.isEmpty()) {
+            Parent previousPage = history.pop();
+            pagePane.getChildren().setAll(previousPage);
+            updateBackButton();
+        }
+    }
 
     public void setKernel(WisePlannerKernel kernel) {
         super.setKernel(kernel);
@@ -127,6 +78,14 @@ public class MainWindowController extends BaseController {
         }
         updateUserBadge();
         updateBackButton();
+        try {
+            showDashboardPage();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR,
+                    "Failed to load dashboard: " + e.getMessage(), ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.showAndWait();
+        }
     }
 
     public void changePage(Parent node) {
@@ -147,14 +106,12 @@ public class MainWindowController extends BaseController {
 
     private void updateUserBadge() {
         if (userMenuButton == null || kernel == null) return;
-
         User user = kernel.user().getUser();
         String displayName = "User";
         if (user != null && user.getName() != null && !user.getName().isBlank()) {
             displayName = user.getName().trim();
         }
         userMenuButton.setText(displayName);
-
         if (avatarLabel != null) {
             Image image = new Image(getClass().getResourceAsStream("/images/default_avatar.png"));
             ImageView imageView = new ImageView(image);
@@ -165,6 +122,19 @@ public class MainWindowController extends BaseController {
         }
     }
 
+    public void showDashboardPage() throws IOException {
+        history.clear();
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
+                getClass().getClassLoader().getResource("fxml/Dashboard.fxml")));
+        Parent node = loader.load();
+        DashboardController controller = loader.getController();
+        controller.setMainWindowController(this);
+        controller.setKernel(kernel);
+        stretchToFill(node);
+        pagePane.getChildren().setAll(node);
+        updateBackButton();
+    }
+
     public void showCoursesPage() throws IOException {
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
                 getClass().getClassLoader().getResource("fxml/Courses.fxml")));
@@ -173,6 +143,26 @@ public class MainWindowController extends BaseController {
         controller.setKernel(kernel);
         controller.setMainWindowController(this);
         controller.loadCourses();
+        changePage(node);
+    }
+
+    public void showTasksPage() throws IOException {
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
+                getClass().getClassLoader().getResource("fxml/Tasks.fxml")));
+        Parent node = loader.load();
+        TasksController controller = loader.getController();
+        controller.setKernel(kernel);
+        controller.loadTasks();
+        changePage(node);
+    }
+
+    public void showSchedulesPage() throws IOException {
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
+                getClass().getClassLoader().getResource("fxml/Schedules.fxml")));
+        Parent node = loader.load();
+        SchedulesController controller = loader.getController();
+        controller.setKernel(kernel);
+        controller.loadSchedules();
         changePage(node);
     }
 

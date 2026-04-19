@@ -11,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
+
 public class DashboardController extends BaseController {
 
     @FXML private Label greetingLabel;
@@ -21,11 +23,34 @@ public class DashboardController extends BaseController {
     @FXML private VBox  announcementsBox;
     @FXML private VBox  todoBox;
 
+    private MainWindowController mainWindowController;
+
+    public void setMainWindowController(MainWindowController mainWindowController) {
+        this.mainWindowController = mainWindowController;
+    }
+
     @Override
     public void setKernel(WisePlannerKernel kernel) {
         super.setKernel(kernel);
         loadDashboard();
     }
+
+
+    @FXML
+    void onCoursesNavButtonClick(ActionEvent event) throws IOException {
+        if (mainWindowController != null) mainWindowController.showCoursesPage();
+    }
+
+    @FXML
+    void onTasksNavButtonClick(ActionEvent event) throws IOException {
+        if (mainWindowController != null) mainWindowController.showTasksPage();
+    }
+
+    @FXML
+    void onSchedulesNavButtonClick(ActionEvent event) throws IOException {
+        if (mainWindowController != null) mainWindowController.showSchedulesPage();
+    }
+
 
     @FXML
     void onRefreshButtonClick(ActionEvent event) {
