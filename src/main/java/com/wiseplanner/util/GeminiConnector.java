@@ -12,10 +12,8 @@ import java.nio.charset.StandardCharsets;
 
 public class GeminiConnector {
 
-    private static final String GEMINI_MODEL = "gemini-2.0-flash";
     private static final String GEMINI_API_URL =
-            "https://generativelanguage.googleapis.com/v1beta/models/"
-                    + GEMINI_MODEL + ":generateContent?key=";
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=";
 
     private final String apiKey;
     private final Gson gson = new Gson();
@@ -42,6 +40,7 @@ public class GeminiConnector {
         }
 
         try {
+
             JsonObject textPart = new JsonObject();
             textPart.addProperty("text", prompt);
             JsonArray partsArray = new JsonArray();
@@ -83,6 +82,7 @@ public class GeminiConnector {
         }
     }
 
+
     private String parseErrorMessage(int httpCode, String errorBody) {
         String geminiMessage = "";
         try {
@@ -90,7 +90,7 @@ public class GeminiConnector {
             if (errorJson != null && errorJson.has("error")) {
                 JsonObject error = errorJson.getAsJsonObject("error");
                 if (error.has("message")) {
-                    // The message can be long — take only the first sentence
+
                     String raw = error.get("message").getAsString();
                     int dot = raw.indexOf('.');
                     geminiMessage = (dot > 0) ? raw.substring(0, dot + 1) : raw;
@@ -120,6 +120,7 @@ public class GeminiConnector {
 
     private String parseGeminiResponse(String responseJson) throws NetworkException {
         try {
+
             JsonObject response = gson.fromJson(responseJson, JsonObject.class);
             JsonArray candidates = response.getAsJsonArray("candidates");
             if (candidates == null || candidates.isEmpty()) {
