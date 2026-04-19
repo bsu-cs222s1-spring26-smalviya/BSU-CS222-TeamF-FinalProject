@@ -40,7 +40,7 @@ public class ConsoleUI {
 
     private void showSettingsMenu() {
         while (true) {
-            System.out.println("(1) Dashboard\n(2) Courses\n(3) Tasks\n(4) Schedules\n(5) Settings\n(0) Exit");
+            System.out.println("(1) Change User Name\n(2) Change Canvas Token\n(3) Set Gemini API Key\n(4) Log Out\n(0) Back\nPlease enter your choice:");
             int choice = safeReadInt();
 
             switch (choice) {
@@ -49,10 +49,7 @@ public class ConsoleUI {
                 case 1:
                     System.out.println("Please enter new user name:");
                     String newName = scanner.nextLine();
-                    if (newName.isBlank()) {
-                        System.out.println("User name cannot be empty.");
-                        break;
-                    }
+                    if (newName.isBlank()) { System.out.println("User name cannot be empty."); break; }
                     try {
                         String currentToken = wisePlannerKernel.user().getUser().getCanvasToken();
                         wisePlannerKernel.user().setUser(newName, currentToken);
@@ -65,10 +62,7 @@ public class ConsoleUI {
                 case 2:
                     System.out.println("Please enter new Canvas LMS Access Token:");
                     String newToken = scanner.nextLine();
-                    if (newToken.isBlank()) {
-                        System.out.println("Canvas token cannot be empty.");
-                        break;
-                    }
+                    if (newToken.isBlank()) { System.out.println("Canvas token cannot be empty."); break; }
                     try {
                         String currentName = wisePlannerKernel.user().getUser().getName();
                         wisePlannerKernel.user().setUser(currentName, newToken);
@@ -79,6 +73,25 @@ public class ConsoleUI {
                     }
                     break;
                 case 3:
+                    String existingKey = wisePlannerKernel.user().getGeminiApiKey();
+                    if (existingKey != null && !existingKey.isBlank()) {
+                        System.out.println("A Gemini API key is already saved. Enter a new one to replace it, or press Enter to keep it.");
+                    } else {
+                        System.out.println("No Gemini API key saved yet.");
+                        System.out.println("Get a free key at: https://aistudio.google.com");
+                    }
+                    System.out.println("Please enter your Gemini API key (or press Enter to cancel):");
+                    String geminiKey = scanner.nextLine().trim();
+                    if (geminiKey.isBlank()) { System.out.println("No changes made."); break; }
+                    try {
+                        wisePlannerKernel.user().setGeminiApiKey(geminiKey);
+                        wisePlannerKernel.initialize();
+                        System.out.println("Gemini API key saved successfully. AI features are now enabled.");
+                    } catch (FileWriteException | FileReadException e) {
+                        System.err.println("[Error] " + e.getMessage());
+                    }
+                    break;
+                case 4:
                     try {
                         wisePlannerKernel.user().logout();
                         System.out.println("Logged out successfully.");

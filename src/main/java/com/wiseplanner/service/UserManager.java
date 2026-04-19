@@ -53,6 +53,28 @@ public class UserManager {
         }
     }
 
+    public void setGeminiApiKey(String geminiApiKey) throws FileWriteException {
+        user.setGeminiApiKey(geminiApiKey);
+        saveUser();
+    }
+
+    public String getGeminiApiKey() {
+        return user != null ? user.getGeminiApiKey() : null;
+    }
+
+    private void saveUser() throws FileWriteException {
+        File userDataFile = userDataPath.toFile();
+        userDataFile.getParentFile().mkdirs();
+        String userJson = gson.toJson(user);
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(userDataFile))) {
+            bufferedWriter.write(userJson);
+        } catch (IOException e) {
+            throw (new FileWriteException("File write failed, unable to write user data"));
+        }
+    }
+
+
+
     public User getUser() {
         return user;
     }

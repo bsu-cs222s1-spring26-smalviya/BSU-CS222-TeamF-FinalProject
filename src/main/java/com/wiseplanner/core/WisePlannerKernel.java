@@ -5,6 +5,8 @@ import com.wiseplanner.exception.FileReadException;
 import com.wiseplanner.model.User;
 import com.wiseplanner.service.DashboardService;
 import com.wiseplanner.service.*;
+import com.wiseplanner.util.GeminiConnector;
+import com.wiseplanner.util.parser.DashboardParser;
 
 public class WisePlannerKernel {
     private UserManager userManager = new UserManager();
@@ -25,7 +27,8 @@ public class WisePlannerKernel {
         taskManager.loadTask();
         scheduleManager = new ScheduleManager();
         scheduleManager.loadSchedule();
-        dashboardService = new DashboardService(canvasService, taskManager, userManager);
+        GeminiConnector geminiConnector = new GeminiConnector(userManager.getGeminiApiKey());
+        dashboardService = new DashboardService(canvasService, taskManager, userManager, geminiConnector, new DashboardParser());
     }
 
     public UserManager user() {

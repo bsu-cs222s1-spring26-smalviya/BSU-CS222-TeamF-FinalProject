@@ -20,17 +20,26 @@ public class UserSettingsController extends BaseController {
     @FXML
     private Label statusLabel;
 
+    @FXML
+    private TextField geminiKeyField;
+
     @Override
     public void setKernel(WisePlannerKernel kernel) {
         super.setKernel(kernel);
         nameField.setText(kernel.user().getUser().getName());
         tokenField.setText(kernel.user().getUser().getCanvasToken());
+
+        String savedKey = kernel.user().getGeminiApiKey();
+        if (savedKey != null && !savedKey.isBlank()) {
+            geminiKeyField.setText(savedKey);
+        }
     }
 
     @FXML
     void onSaveButtonClick(ActionEvent event) {
         String newName = nameField.getText().trim();
         String newToken = tokenField.getText().trim().replaceAll("\\s+", "");
+        String newGeminiKey = geminiKeyField.getText().trim().replaceAll("\\s+", "");
         if (newName.isEmpty() || newToken.isEmpty()) {
             statusLabel.setStyle("-fx-text-fill: red;");
             statusLabel.setText("Name and token cannot be empty.");
@@ -38,7 +47,14 @@ public class UserSettingsController extends BaseController {
         }
         try {
             kernel.user().setUser(newName, newToken);
+
+            if (!newGeminiKey.isEmpty()) {
+                kernel.user().setGeminiApiKey(newGeminiKey);
+            }
+
             kernel.initialize();
+
+
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);

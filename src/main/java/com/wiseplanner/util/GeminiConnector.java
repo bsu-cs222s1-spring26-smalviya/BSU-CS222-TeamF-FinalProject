@@ -21,8 +21,15 @@ public class GeminiConnector {
     private final Gson gson = new Gson();
 
     public GeminiConnector() {
-        // Read from environment variable — safer than hardcoding in source code
         this.apiKey = System.getenv("GEMINI_API_KEY");
+    }
+
+    public GeminiConnector(String savedKey) {
+        if (savedKey != null && !savedKey.isBlank()) {
+            this.apiKey = savedKey;
+        } else {
+            this.apiKey = System.getenv("GEMINI_API_KEY");
+        }
     }
 
     public boolean isConfigured() {
@@ -35,8 +42,6 @@ public class GeminiConnector {
         }
 
         try {
-            // Build the JSON body Gemini expects:
-            // { "contents": [ { "parts": [ { "text": "..." } ] } ] }
             JsonObject textPart = new JsonObject();
             textPart.addProperty("text", prompt);
 
@@ -54,7 +59,6 @@ public class GeminiConnector {
 
             String requestJson = gson.toJson(requestBody);
 
-            // Open connection and POST the JSON
             URI uri = new URI(GEMINI_API_URL + apiKey);
             HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
             connection.setRequestMethod("POST");
@@ -86,7 +90,6 @@ public class GeminiConnector {
 
     private String parseGeminiResponse(String responseJson) throws NetworkException {
         try {
-            // Response structure: { "candidates": [{ "content": { "parts": [{ "text": "..." }] } }] }
             JsonObject response = gson.fromJson(responseJson, JsonObject.class);
             JsonArray candidates = response.getAsJsonArray("candidates");
             if (candidates == null || candidates.isEmpty()) {
