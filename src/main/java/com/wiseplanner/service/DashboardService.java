@@ -1,7 +1,11 @@
 package com.wiseplanner.service;
 
 import com.wiseplanner.exception.NetworkException;
-import com.wiseplanner.model.*;
+import com.wiseplanner.model.Announcement;
+import com.wiseplanner.model.Assignment;
+import com.wiseplanner.model.Course;
+import com.wiseplanner.model.Dashboard;
+import com.wiseplanner.model.Task;
 import com.wiseplanner.util.GeminiConnector;
 import com.wiseplanner.util.parser.DashboardParser;
 
@@ -10,24 +14,34 @@ import java.util.List;
 
 public class DashboardService {
 
+    private static final int MAX_ASSIGNMENTS_FOR_PROMPT = 20;
+    private static final int MAX_TASKS_FOR_PROMPT = 10;
+
     private final CanvasService canvasService;
     private final TaskManager taskManager;
     private final UserManager userManager;
     private final GeminiConnector geminiConnector;
     private final DashboardParser dashboardParser;
 
+    // Short constructor — used by WisePlannerKernel in production
     public DashboardService(CanvasService canvasService, TaskManager taskManager, UserManager userManager) {
+        this(canvasService, taskManager, userManager, new GeminiConnector(), new DashboardParser());
+    }
+
+    // Full constructor — used in tests so stubs can be injected
+    public DashboardService(CanvasService canvasService, TaskManager taskManager,
+                            UserManager userManager, GeminiConnector geminiConnector,
+                            DashboardParser dashboardParser) {
         this.canvasService = canvasService;
         this.taskManager = taskManager;
         this.userManager = userManager;
-        this.geminiConnector = new GeminiConnector();
-        this.dashboardParser = new DashboardParser();
+        this.geminiConnector = geminiConnector;
+        this.dashboardParser = dashboardParser;
     }
 
     public Dashboard getDashboard() {
         String userName = userManager.getUser().getName();
 
-        // --- Module 1: Canvas data (each module has its own try/catch) ---
         List<Assignment> allAssignments = new ArrayList<>();
         List<Announcement> allAnnouncements = new ArrayList<>();
         String canvasError = null;
@@ -47,13 +61,10 @@ public class DashboardService {
         if (canvasError != null) {
             allAssignments = new ArrayList<>();
             allAnnouncements = new ArrayList<>();
-            allAnnouncements.add(new Announcement("ERR", "Canvas Sync Error", canvasError, null));
         }
 
-        // --- Module 2: Tasks (already loaded from disk) ---
         List<Task> todoList = taskManager.getTaskList();
 
-        // --- Module 3: Gemini grade analysis ---
         String geminiGradeAnalysis;
         try {
             geminiGradeAnalysis = fetchGradeAnalysis(allAssignments);
@@ -61,12 +72,15 @@ public class DashboardService {
             geminiGradeAnalysis = "[Error] Could not load grade analysis: " + e.getMessage();
         }
 
-        // --- Module 4: Gemini daily insights ---
         String geminiInsights;
         try {
             geminiInsights = fetchDailyInsights(allAssignments, todoList);
         } catch (NetworkException e) {
             geminiInsights = "[Error] Could not load daily insights: " + e.getMessage();
+        }
+
+        if (canvasError != null) {
+            allAnnouncements.add(new Announcement("ERR", "Canvas Sync Error", canvasError, null));
         }
 
         return dashboardParser.buildDashboard(
@@ -81,8 +95,8 @@ public class DashboardService {
         StringBuilder summary = new StringBuilder("Here is a student's current assignment status:\n");
         int count = 0;
         for (Assignment a : assignments) {
-            if (count++ >= 20) break;
-            String status  = a.getSubmission() != null ? a.getSubmission().getWorkflow_state() : "unsubmitted";
+            if (count >= MAX_ASSIGNMENTS_FOR_PROMPT) break;
+            String status   = a.getSubmission() != null ? a.getSubmission().getWorkflow_state() : "unsubmitted";
             boolean late    = a.getSubmission() != null && a.getSubmission().getLate();
             boolean missing = a.getSubmission() != null && a.getSubmission().getMissing();
             String due = (a.getDue_at() == null || a.getDue_at().equalsIgnoreCase("null"))
@@ -90,6 +104,7 @@ public class DashboardService {
             summary.append("- ").append(a.getName()).append(": ").append(status)
                     .append(late ? " (LATE)" : "").append(missing ? " (MISSING)" : "")
                     .append(", due: ").append(due).append("\n");
+            count++;
         }
         summary.append("\nGive a brief 2-3 sentence grade analysis with key concerns and encouragement. Be concise.");
         return geminiConnector.generate(summary.toString());
@@ -105,9 +120,10 @@ public class DashboardService {
         } else {
             int count = 0;
             for (Task t : tasks) {
-                if (count++ >= 10) break;
+                if (count >= MAX_TASKS_FOR_PROMPT) break;
                 prompt.append("- ").append(t.getTitle())
                         .append(" (deadline: ").append(t.getDeadline()).append(")\n");
+                count++;
             }
         }
         long dueToday = assignments.stream().filter(a -> {
