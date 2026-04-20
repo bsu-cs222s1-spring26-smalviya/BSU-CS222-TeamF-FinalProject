@@ -42,7 +42,22 @@ public class UserManager {
     }
 
     public void setUser(String name, String canvasToken) throws FileWriteException {
+        String existingGeminiKey = (user != null) ? user.getGeminiApiKey() : null;
         user = new User(name, canvasToken);
+        user.setGeminiApiKey(existingGeminiKey);
+        saveUser();
+    }
+
+    public void setGeminiApiKey(String geminiApiKey) throws FileWriteException {
+        user.setGeminiApiKey(geminiApiKey);
+        saveUser();
+    }
+
+    public String getGeminiApiKey() {
+        return user != null ? user.getGeminiApiKey() : null;
+    }
+
+    private void saveUser() throws FileWriteException {
         File userDataFile = userDataPath.toFile();
         userDataFile.getParentFile().mkdirs();
         String userJson = gson.toJson(user);
@@ -53,9 +68,7 @@ public class UserManager {
         }
     }
 
-    public User getUser() {
-        return user;
-    }
+    public User getUser() { return user; }
 
     public void logout() throws FileWriteException {
         File userDataFile = userDataPath.toFile();

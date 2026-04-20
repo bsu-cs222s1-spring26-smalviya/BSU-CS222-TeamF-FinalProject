@@ -6,32 +6,33 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.LoginController">
+<VBox fx:id="vBox" alignment="CENTER"
+      prefHeight="280.0" prefWidth="360.0" spacing="6.0"
+      style="-fx-background-color: #FFFFFF; -fx-background-radius: 12;
+             -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 14, 0, 0, 4);
+             -fx-padding: 32;"
+      xmlns="http://javafx.com/javafx/25"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.wiseplanner.gui.controller.LoginController">
    <children>
-      <Label fx:id="nameLabel" text="Name" textAlignment="CENTER">
-         <VBox.margin>
-            <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
-         </VBox.margin>
+      <Label text="WisePlanner"
+             style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #E66000;">
+         <VBox.margin><Insets bottom="18.0"/></VBox.margin>
       </Label>
-      <TextField fx:id="nameField">
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" />
-         </VBox.margin>
+
+      <Label fx:id="nameLabel" text="Name"
+             style="-fx-font-weight: bold; -fx-text-fill: #2D3B45; -fx-font-size: 13px;"/>
+      <TextField fx:id="nameField" promptText="Enter your name">
+         <VBox.margin><Insets bottom="12.0" top="4.0"/></VBox.margin>
       </TextField>
-      <Label fx:id="canvasTokenLabel" text="Canvas LMS Token">
-         <VBox.margin>
-            <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
-         </VBox.margin>
-      </Label>
-      <TextField fx:id="canvasTokenField">
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" />
-         </VBox.margin>
+
+      <Label fx:id="canvasTokenLabel" text="Canvas LMS Token"
+             style="-fx-font-weight: bold; -fx-text-fill: #2D3B45; -fx-font-size: 13px;"/>
+      <TextField fx:id="canvasTokenField" promptText="Paste your Canvas access token">
+         <VBox.margin><Insets bottom="18.0" top="4.0"/></VBox.margin>
       </TextField>
-      <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onLoginButtonClick" prefHeight="23.0" prefWidth="200.0" text="Login">
-         <VBox.margin>
-            <Insets left="50.0" />
-         </VBox.margin>
-      </Button>
+
+      <Button fx:id="loginButton" text="Log In" onAction="#onLoginButtonClick"
+              maxWidth="1.7976931348623157E308"/>
    </children>
 </VBox>

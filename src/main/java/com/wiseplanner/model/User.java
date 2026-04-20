@@ -3,6 +3,7 @@ package com.wiseplanner.model;
 public class User {
     private String name;
     private String canvasToken;
+    private String geminiApiKey;
 
     public User(String name, String canvasToken) {
         this.name = name;
@@ -24,4 +25,8 @@ public class User {
     public String getCanvasToken() {
         return this.canvasToken;
     }
+
+    public String getGeminiApiKey() {return geminiApiKey; }
+
+    public void setGeminiApiKey(String geminiApiKey) {this.geminiApiKey = geminiApiKey; }
 }

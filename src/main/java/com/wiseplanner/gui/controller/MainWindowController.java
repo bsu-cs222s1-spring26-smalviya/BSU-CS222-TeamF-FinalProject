@@ -2,6 +2,7 @@ package com.wiseplanner.gui.controller;
 
 import com.wiseplanner.core.WisePlannerKernel;
 import com.wiseplanner.exception.FileReadException;
+import com.wiseplanner.exception.FileWriteException;
 import com.wiseplanner.model.Course;
 import com.wiseplanner.model.User;
 import javafx.event.ActionEvent;
@@ -11,14 +12,11 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.MenuButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -26,64 +24,21 @@ import java.util.Stack;
 
 public class MainWindowController extends BaseController {
 
-    @FXML
-    private BorderPane borderPane;
-
-    @FXML
-    private Button coursesButton;
-
-    @FXML
-    private VBox navigationBar;
-
-    @FXML
-    private StackPane pagePane;
-
-    @FXML
-    private Button schedulesButton;
-
-    @FXML
-    private Button settingsButton;
-
-    @FXML
-    private Button tasksButton;
-
-    @FXML
-    private HBox topBar;
-
-    @FXML
-    private Button backButton;
-
-    @FXML
-    private Label userNameLabel;
-
-    @FXML
-    private Label avatarLabel;
+    @FXML private BorderPane borderPane;
+    @FXML private VBox navigationBar;
+    @FXML private StackPane pagePane;
+    @FXML private HBox topBar;
+    @FXML private Button backButton;
+    @FXML private Label avatarLabel;
+    @FXML private MenuButton userMenuButton;
 
     private final Stack<Parent> history = new Stack<>();
 
-    @FXML
-    void onCoursesButtonClick(ActionEvent event) throws IOException {
-        history.clear();
-        showCoursesPage();
-    }
 
     @FXML
-    void onSchedulesButtonClick(ActionEvent event) throws IOException {
-        history.clear();
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/Schedules.fxml")));
-        Parent node = loader.load();
-        SchedulesController controller = loader.getController();
-        controller.setKernel(kernel);
-        controller.loadSchedules();
-        changePage(node);
-    }
-
-    @FXML
-    void onSettingsButtonClick(ActionEvent event) throws IOException {
-        history.clear();
-        FXMLLoader loader = new FXMLLoader(
-                Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/Settings.fxml"))
-        );
+    void onSettingsMenuItemClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
+                getClass().getClassLoader().getResource("fxml/Settings.fxml")));
         Parent node = loader.load();
         SettingsController controller = loader.getController();
         controller.setKernel(kernel);
@@ -92,14 +47,15 @@ public class MainWindowController extends BaseController {
     }
 
     @FXML
-    void onTasksButtonClick(ActionEvent event) throws IOException {
-        history.clear();
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/Tasks.fxml")));
-        Parent node = loader.load();
-        TasksController controller = loader.getController();
-        controller.setKernel(kernel);
-        controller.loadTasks();
-        changePage(node);
+    void onLogoutMenuItemClick(ActionEvent event) {
+        try {
+            kernel.user().logout();
+        } catch (FileWriteException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.showAndWait();
+        }
+        System.exit(0);
     }
 
     @FXML
@@ -122,6 +78,14 @@ public class MainWindowController extends BaseController {
         }
         updateUserBadge();
         updateBackButton();
+        try {
+            showDashboardPage();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR,
+                    "Failed to load dashboard: " + e.getMessage(), ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.showAndWait();
+        }
     }
 
     public void changePage(Parent node) {
@@ -141,28 +105,39 @@ public class MainWindowController extends BaseController {
     }
 
     private void updateUserBadge() {
-        if (userNameLabel == null || avatarLabel == null || kernel == null) {
-            return;
-        }
-
+        if (userMenuButton == null || kernel == null) return;
         User user = kernel.user().getUser();
         String displayName = "User";
         if (user != null && user.getName() != null && !user.getName().isBlank()) {
             displayName = user.getName().trim();
         }
-        Image image = new Image(getClass().getResourceAsStream("/images/default_avatar.png"));
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(36);
-        imageView.setFitHeight(36);
-        imageView.setSmooth(true);
-        userNameLabel.setText(displayName);
-        avatarLabel.setGraphic(imageView);
+        userMenuButton.setText(displayName);
+        if (avatarLabel != null) {
+            Image image = new Image(getClass().getResourceAsStream("/images/default_avatar.png"));
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(32);
+            imageView.setFitHeight(32);
+            imageView.setSmooth(true);
+            avatarLabel.setGraphic(imageView);
+        }
+    }
+
+    public void showDashboardPage() throws IOException {
+        history.clear();
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
+                getClass().getClassLoader().getResource("fxml/Dashboard.fxml")));
+        Parent node = loader.load();
+        DashboardController controller = loader.getController();
+        controller.setMainWindowController(this);
+        controller.setKernel(kernel);
+        stretchToFill(node);
+        pagePane.getChildren().setAll(node);
+        updateBackButton();
     }
 
     public void showCoursesPage() throws IOException {
-        FXMLLoader loader = new FXMLLoader(
-                Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/Courses.fxml"))
-        );
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
+                getClass().getClassLoader().getResource("fxml/Courses.fxml")));
         Parent node = loader.load();
         CoursesController controller = loader.getController();
         controller.setKernel(kernel);
@@ -171,10 +146,29 @@ public class MainWindowController extends BaseController {
         changePage(node);
     }
 
+    public void showTasksPage() throws IOException {
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
+                getClass().getClassLoader().getResource("fxml/Tasks.fxml")));
+        Parent node = loader.load();
+        TasksController controller = loader.getController();
+        controller.setKernel(kernel);
+        controller.loadTasks();
+        changePage(node);
+    }
+
+    public void showSchedulesPage() throws IOException {
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
+                getClass().getClassLoader().getResource("fxml/Schedules.fxml")));
+        Parent node = loader.load();
+        SchedulesController controller = loader.getController();
+        controller.setKernel(kernel);
+        controller.loadSchedules();
+        changePage(node);
+    }
+
     public void showCourseContextPage(Course course) throws IOException {
-        FXMLLoader loader = new FXMLLoader(
-                Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/CourseContext.fxml"))
-        );
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
+                getClass().getClassLoader().getResource("fxml/CourseContext.fxml")));
         Parent node = loader.load();
         CourseContextController controller = loader.getController();
         controller.setKernel(kernel);

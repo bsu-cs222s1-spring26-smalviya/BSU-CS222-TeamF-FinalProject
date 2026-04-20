@@ -1,38 +1,250 @@
-#coursesButton {
-    -fx-graphic: url("../images/course.png");
-    -fx-content-display: top;
-}
-#coursesButton .image-view{
-    -fx-fit-width:48px;
-    -fx-fit-height:48px;
+.root {
+    -fx-background-color: #F5F5F5;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2D3B45;
 }
 
-#tasksButton{
-    -fx-graphic: url("../images/task.png");
-    -fx-content-display: top;
+#topBar {
+    -fx-background-color: #2D3B45;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 8, 0, 0, 2);
+}
+#topBar .label {
+    -fx-text-fill: #FFFFFF;
+}
+#topBar > .label {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
 }
 
-#tasksButton .image-view{
-    -fx-fit-width:48px;
-    -fx-fit-height:48px;
+#backButton {
+    -fx-background-color: rgba(255,255,255,0.12);
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-padding: 4 10 4 10;
+}
+#backButton:hover {
+    -fx-background-color: rgba(255,255,255,0.22);
 }
 
-#schedulesButton{
-    -fx-graphic: url("../images/schedule.png");
-    -fx-content-display: top;
+#userMenuButton {
+    -fx-background-color: rgba(255,255,255,0.10);
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: rgba(255,255,255,0.25);
+    -fx-border-width: 1;
+    -fx-padding: 6 14 6 10;
+    -fx-cursor: hand;
+}
+#userMenuButton:hover {
+    -fx-background-color: rgba(255,255,255,0.20);
+}
+#userMenuButton .arrow-button {
+    -fx-background-color: transparent;
+}
+#userMenuButton .arrow-button .arrow {
+    -fx-background-color: #FFFFFF;
 }
 
-#schedulesButton .image-view{
-    -fx-fit-width:48px;
-    -fx-fit-height:48px;
+
+#pagePane {
+    -fx-background-color: #F5F5F5;
 }
 
-#settingsButton{
-    -fx-graphic: url("../images/setting.png");
-    -fx-content-display: top;
+.button {
+    -fx-background-color: #E66000;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-padding: 7 18 7 18;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+.button:hover {
+    -fx-background-color: #CF5500;
+}
+.button:pressed {
+    -fx-background-color: #B84B00;
 }
 
-#settingsButton .image-view{
-    -fx-fit-width:48px;
-    -fx-fit-height:48px;
+#coursesNavButton, #tasksNavButton, #schedulesNavButton {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #2D3B45;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-width: 1;
+    -fx-font-weight: bold;
+    -fx-padding: 7 20 7 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 4, 0, 0, 1);
+}
+#coursesNavButton:hover, #tasksNavButton:hover, #schedulesNavButton:hover {
+    -fx-background-color: #E66000;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: #E66000;
+}
+
+#refreshButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: #0770A3;
+    -fx-border-color: #0770A3;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 5 14 5 14;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+#refreshButton:hover {
+    -fx-background-color: #EBF5FB;
+}
+
+#addButton {
+    -fx-background-color: #E66000;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 8 22 8 22;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+#addButton:hover {
+    -fx-background-color: #CF5500;
+}
+
+#showAllAssignmentsBtn, #showAllAnnouncementsBtn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #0770A3;
+    -fx-border-color: #0770A3;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-padding: 4 12 4 12;
+    -fx-font-size: 11px;
+    -fx-cursor: hand;
+}
+#showAllAssignmentsBtn:hover, #showAllAnnouncementsBtn:hover {
+    -fx-background-color: #EBF5FB;
+}
+
+.text-field {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2D3B45;
+    -fx-prompt-text-fill: #9CA3AF;
+}
+.text-field:focused {
+    -fx-border-color: #0770A3;
+    -fx-effect: dropshadow(gaussian, rgba(7,112,163,0.15), 4, 0, 0, 0);
+}
+
+
+.separator .line {
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 1 0 0 0;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+.scroll-bar:vertical .track,
+.scroll-bar:horizontal .track {
+    -fx-background-color: #F0F0F0;
+    -fx-background-radius: 4;
+}
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #C4C9D4;
+    -fx-background-radius: 4;
+}
+.scroll-bar:vertical .thumb:hover,
+.scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #A0A8B5;
+}
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.table-view {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-border-width: 1;
+}
+.table-view .column-header-background {
+    -fx-background-color: #2D3B45;
+    -fx-background-radius: 10 10 0 0;
+}
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-size: 40;
+}
+.table-view .column-header .label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-padding: 0 8 0 8;
+}
+.table-row-cell {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #F3F4F6;
+    -fx-border-width: 0 0 1 0;
+    -fx-cell-size: 40px;
+}
+.table-row-cell:odd {
+    -fx-background-color: #FAFAFA;
+}
+.table-row-cell:hover {
+    -fx-background-color: #EBF5FB;
+}
+.table-row-cell:selected {
+    -fx-background-color: #D6EAF8;
+    -fx-text-fill: #2D3B45;
+}
+.table-cell {
+    -fx-text-fill: #2D3B45;
+    -fx-padding: 4 8 4 8;
+    -fx-border-color: transparent;
+}
+
+.context-menu {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 10, 0, 0, 4);
+    -fx-padding: 4;
+}
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 6;
+}
+.menu-item:hover, .menu-item:focused {
+    -fx-background-color: #F0F7FF;
+}
+.menu-item .label {
+    -fx-text-fill: #2D3B45;
+    -fx-font-size: 13px;
+}
+.separator.menu-separator .line {
+    -fx-border-color: #E5E7EB;
 }
