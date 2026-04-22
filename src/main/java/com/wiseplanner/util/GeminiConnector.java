@@ -56,7 +56,6 @@ public class GeminiConnector {
             HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
-            // API key goes in the header, not the URL — per current Google docs
             connection.setRequestProperty("x-goog-api-key", apiKey);
             connection.setDoOutput(true);
             connection.setConnectTimeout(10000);

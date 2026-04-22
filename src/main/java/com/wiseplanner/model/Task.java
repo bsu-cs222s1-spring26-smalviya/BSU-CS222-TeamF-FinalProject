@@ -6,59 +6,47 @@ public class Task {
     private String deadline;
     private String title;
     private String content;
+    private String courseId;
+    private boolean done;
 
     public Task(String deadline, String title, String content) {
         this.deadline = deadline;
-        this.title = title;
-        this.content = content;
+        this.title    = title;
+        this.content  = content;
+        this.done     = false;
     }
 
-    public void setDeadline(String deadline) {
-        this.deadline = deadline;
-    }
+    public String getDeadline()              { return deadline; }
+    public void   setDeadline(String d)      { this.deadline = d; }
 
-    public String getDeadline() {
-        return this.deadline;
-    }
+    public String getTitle()                 { return title; }
+    public void   setTitle(String t)         { this.title = t; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public String getContent()               { return content; }
+    public void   setContent(String c)       { this.content = c; }
 
-    public String getTitle() {
-        return this.title;
-    }
+    public String getCourseId()              { return courseId; }
+    public void   setCourseId(String id)     { this.courseId = id; }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getContent() {
-        return this.content;
-    }
+    public boolean isDone()                  { return done; }
+    public void    setDone(boolean done)     { this.done = done; }
 
     @Override
     public String toString() {
-        return String.format("%s %s %s\n",
-                deadline, title, content);
-
-}
-
-@Override
-public boolean equals(Object object) {
-    if (this == object) {
-        return true;
+        return String.format("%s %s %s%n", deadline, title, content);
     }
-    if (!(object instanceof Task task)) {
-        return false;
-    }
-    return Objects.equals(deadline, task.deadline)
-            && Objects.equals(title, task.title)
-            && Objects.equals(content, task.content);
-}
 
-@Override
-public int hashCode() {
-    return Objects.hash(deadline, title, content);
-}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Task t)) return false;
+        return Objects.equals(deadline, t.deadline)
+                && Objects.equals(title, t.title)
+                && Objects.equals(content, t.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(deadline, title, content);
+    }
 }

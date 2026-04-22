@@ -34,7 +34,7 @@ public class ConsoleUI {
         try {
             return Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
-            return -1; //
+            return -1;
         }
     }
 
