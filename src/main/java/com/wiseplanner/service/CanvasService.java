@@ -39,12 +39,6 @@ public class CanvasService {
         List<String> jsonData = new CanvasConnector(user).fetchAssignments(course);
         AssignmentParser parser = new AssignmentParser(jsonData);
 
-        // Sort by due date (nulls last) BUG: Crash when no due date.
-//        assignments.sort((a, b) -> {
-//            if (a.getDue_at().equals("null")) return 1;
-//            if (b.getDue_at().equals("null")) return -1;
-//            return a.getDue_at().compareTo(b.getDue_at());
-//        });
 
         course.setAssignments(parser.getAssignments());
     }

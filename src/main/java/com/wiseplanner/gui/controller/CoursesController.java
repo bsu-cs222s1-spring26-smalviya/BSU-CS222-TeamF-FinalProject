@@ -24,17 +24,11 @@ import java.io.IOException;
 
 public class CoursesController extends BaseController {
 
-    @FXML
-    private FlowPane cardsPane;
-
-    @FXML
-    private ScrollPane coursesScrollPane;
+    @FXML private FlowPane cardsPane;
+    @FXML private ScrollPane coursesScrollPane;
+    @FXML private StackPane contentPane;
 
     private StackPane placeholderOverlay;
-
-    @FXML
-    private StackPane contentPane;
-
     private MainWindowController mainWindowController;
 
     private static final String[] CARD_COLORS = {
@@ -42,9 +36,7 @@ public class CoursesController extends BaseController {
             "#E74C3C", "#1ABC9C", "#F39C12", "#3498DB"
     };
 
-    private enum PlaceholderMode {
-        LOADING, EMPTY, FAILED
-    }
+    private enum PlaceholderMode { LOADING, EMPTY, FAILED }
 
     public void setMainWindowController(MainWindowController mainWindowController) {
         this.mainWindowController = mainWindowController;
@@ -126,7 +118,6 @@ public class CoursesController extends BaseController {
                     alert.showAndWait();
                 }
         );
-
     }
 
     private VBox createCourseCard(Course course, String color) {
@@ -134,7 +125,6 @@ public class CoursesController extends BaseController {
         colorBanner.setFill(Color.web(color));
         colorBanner.setArcWidth(10);
         colorBanner.setArcHeight(10);
-
 
         Label codeLabel = new Label(
                 course.getCourse_code() != null ? course.getCourse_code() : "N/A"
@@ -146,14 +136,13 @@ public class CoursesController extends BaseController {
         Label nameLabel = new Label(course.getName());
         nameLabel.setWrapText(true);
         nameLabel.setMaxWidth(200);
-        nameLabel.setStyle("-fx-font-size: 13px; -fx-font-weight: bold;");
 
+        nameLabel.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #2D3B45;");
 
         Label termLabel = new Label(
                 "Term: " + (course.getEnrollment_term_id() != null ? course.getEnrollment_term_id() : "N/A")
         );
         termLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #666666;");
-
 
         VBox card = new VBox(8, banner, nameLabel, termLabel);
         card.setPrefWidth(220);
@@ -167,7 +156,6 @@ public class CoursesController extends BaseController {
         );
         card.setAlignment(Pos.TOP_LEFT);
 
-
         card.setOnMouseClicked(event -> {
             try {
                 mainWindowController.showCourseContextPage(course);
@@ -175,7 +163,6 @@ public class CoursesController extends BaseController {
                 throw new RuntimeException(e);
             }
         });
-
 
         card.setOnMouseEntered(e -> card.setStyle(
                 "-fx-background-color: #f0f7ff;" +

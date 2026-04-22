@@ -1,239 +1,175 @@
 package com.wiseplanner.gui.controller;
 
 import com.wiseplanner.exception.DeleteException;
+import com.wiseplanner.model.Course;
 import com.wiseplanner.model.Task;
-import javafx.animation.Animation;
-import javafx.animation.Interpolator;
-import javafx.animation.RotateTransition;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class TasksController extends BaseController {
 
-    @FXML
-    private Button addButton;
+    @FXML private Button addButton;
+    @FXML private VBox   taskListBox;
+    @FXML private ComboBox<String> courseFilterCombo;
 
-    @FXML
-    private BorderPane borderPane;
-
-    @FXML
-    private TableColumn<Task, String> contentColumn;
-
-    @FXML
-    private TableColumn<Task, String> deadlineColumn;
-
-    @FXML
-    private TableColumn<Task, Void> deleteColumn;
-
-    @FXML
-    private TableColumn<Task, Void> modifyColumn;
-
-    @FXML
-    private TableView<Task> tasksTable;
-
-    @FXML
-    private TableColumn<Task, String> titleColumn;
-
-    @FXML
-    private Label titleLabel;
-
-    private final ObservableList<Task> tasks = FXCollections.observableArrayList();
-    private boolean tableConfigured = false;
-
-    private enum PlaceholderMode {
-        LOADING, EMPTY, FAILED
-    }
+    private List<Course> courses = new ArrayList<>();
+    private Map<String, String> courseIdToName = new LinkedHashMap<>();
+    private String currentFilter = null;
 
     @FXML
     private void initialize() {
-        configureTable();
-        addButton.setOnAction(event -> openTaskDetail(TaskDetailController.Mode.ADD, null));
+        courseFilterCombo.setOnAction(e -> {
+            String sel = courseFilterCombo.getValue();
+            if (sel == null || "All Courses".equals(sel)) {
+                currentFilter = null;
+            } else if ("Unassigned".equals(sel)) {
+                currentFilter = "UNASSIGNED";
+            } else {
+                currentFilter = courseIdToName.entrySet().stream()
+                        .filter(en -> en.getValue().equals(sel))
+                        .map(Map.Entry::getKey).findFirst().orElse(null);
+            }
+            renderTasks();
+        });
     }
 
-    private void setPlaceholder(PlaceholderMode mode) {
-        if (mode.equals(PlaceholderMode.LOADING)) {
-            Image image = new Image(getClass().getResourceAsStream("/images/loading.png"));
-            ImageView imageView = new ImageView(image);
-            imageView.setFitHeight(48);
-            imageView.setFitWidth(48);
-            imageView.setSmooth(true);
-            RotateTransition rotateTransition = new RotateTransition(Duration.seconds(1), imageView);
-            rotateTransition.setByAngle(360);
-            rotateTransition.setCycleCount(Animation.INDEFINITE);
-            rotateTransition.setInterpolator(Interpolator.LINEAR);
-            rotateTransition.play();
-            Label statusLabel = new Label("Loading...");
-            VBox vBox = new VBox(15);
-            vBox.setAlignment(Pos.CENTER);
-            vBox.getChildren().addAll(imageView, statusLabel);
-            tasksTable.setPlaceholder(vBox);
-        }
-        if (mode.equals(PlaceholderMode.EMPTY)) {
-            Image image = new Image(getClass().getResourceAsStream("/images/empty.png"));
-            ImageView imageView = new ImageView(image);
-            imageView.setFitHeight(48);
-            imageView.setFitWidth(48);
-            imageView.setSmooth(true);
-            Label statusLabel = new Label("Nothing here...");
-            VBox vBox = new VBox(15);
-            vBox.setAlignment(Pos.CENTER);
-            vBox.getChildren().addAll(imageView, statusLabel);
-            tasksTable.setPlaceholder(vBox);
-        }
-        if (mode.equals(PlaceholderMode.FAILED)) {
-            Image image = new Image(getClass().getResourceAsStream("/images/failed.png"));
-            ImageView imageView = new ImageView(image);
-            imageView.setFitHeight(48);
-            imageView.setFitWidth(48);
-            imageView.setSmooth(true);
-            Label statusLabel = new Label("Failed to load");
-            VBox vBox = new VBox(15);
-            vBox.setAlignment(Pos.CENTER);
-            vBox.getChildren().addAll(imageView, statusLabel);
-            tasksTable.setPlaceholder(vBox);
-        }
-    }
+    @FXML void onAddButtonClick(ActionEvent e) { openTaskDetail(TaskDetailController.Mode.ADD, null); }
 
     public void loadTasks() {
-        setPlaceholder(PlaceholderMode.LOADING);
-        runAsync(
-                () -> {
-                    kernel.task().loadTask();
-                    return kernel.task().getTaskList();
-                },
-                result -> {
-                    tasks.setAll(kernel.task().getTaskList());
-                    tasksTable.setItems(tasks);
-                    setPlaceholder(PlaceholderMode.EMPTY);
-                },
-                error -> {
-                    setPlaceholder(PlaceholderMode.FAILED);
-                    Alert alert = new Alert(Alert.AlertType.ERROR, error.getMessage(), ButtonType.OK);
-                    alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-                    alert.showAndWait();
-                }
-        );
+        try {
+            kernel.canvas().updateCourses();
+            courses = kernel.canvas().getCourses();
+            courseIdToName.clear();
+            for (Course c : courses)
+                courseIdToName.put(String.valueOf(c.getId()),
+                        c.getCourse_code() != null ? c.getCourse_code() : c.getName());
+        } catch (Exception ignored) {}
+
+        List<String> opts = new ArrayList<>();
+        opts.add("All Courses");
+        opts.addAll(courseIdToName.values());
+        opts.add("Unassigned");
+        courseFilterCombo.setItems(FXCollections.observableArrayList(opts));
+        courseFilterCombo.getSelectionModel().selectFirst();
+
+        try { kernel.task().loadTask(); } catch (Exception ignored) {}
+        renderTasks();
     }
 
-    public void configureTable() {
-        if (tableConfigured) {
-            return;
+    private void renderTasks() {
+        taskListBox.getChildren().clear();
+        List<Task> all = kernel.task().getTaskList();
+        if (all == null || all.isEmpty()) {
+            taskListBox.getChildren().add(styledLabel("No tasks yet. Click + Add Task to create one.")); return;
         }
-        tasksTable.setItems(tasks);
-        tasksTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        tasksTable.setRowFactory(table -> {
-            TableRow<Task> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && !row.isEmpty()) {
-                    openTaskDetail(TaskDetailController.Mode.VIEW, row.getItem());
-                }
-            });
-            return row;
-        });
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        contentColumn.setCellValueFactory(new PropertyValueFactory<>("content"));
-        deadlineColumn.setCellValueFactory(new PropertyValueFactory<>("deadline"));
+        List<Task> filtered = all.stream().filter(t -> {
+            if (currentFilter == null) return true;
+            if ("UNASSIGNED".equals(currentFilter)) return t.getCourseId() == null || t.getCourseId().isBlank();
+            return currentFilter.equals(t.getCourseId());
+        }).collect(Collectors.toList());
 
-        modifyColumn.setCellFactory(createActionCellFactory("Modify", task -> openTaskDetail(TaskDetailController.Mode.MODIFY, task)));
-        deleteColumn.setCellFactory(createActionCellFactory("Delete", task -> {
-            Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmAlert.setTitle("Confirm Delete");
-            confirmAlert.setHeaderText("Delete this task?");
-            confirmAlert.setContentText(task.getTitle());
-            confirmAlert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    try {
-                        kernel.task().deleteTask(task);
-                        tasks.remove(task);
-                    } catch (DeleteException e) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
-                        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-                        alert.showAndWait();
-                    }
-                }
-            });
-        }));
+        if (filtered.isEmpty()) {
+            taskListBox.getChildren().add(styledLabel("No tasks for this filter.")); return;
+        }
 
-        tasksTable.getColumns().setAll(titleColumn, contentColumn, deadlineColumn, modifyColumn, deleteColumn);
-        tableConfigured = true;
+        Map<String, List<Task>> grouped = new LinkedHashMap<>();
+        for (Task t : filtered) {
+            String key = (t.getCourseId() == null || t.getCourseId().isBlank()) ? "UNASSIGNED" : t.getCourseId();
+            grouped.computeIfAbsent(key, k -> new ArrayList<>()).add(t);
+        }
+
+        for (Map.Entry<String, List<Task>> entry : grouped.entrySet()) {
+            String groupKey = entry.getKey();
+            String groupName = "UNASSIGNED".equals(groupKey) ? "📌 Unassigned"
+                    : "📚 " + courseIdToName.getOrDefault(groupKey, groupKey);
+            Label header = new Label(groupName);
+            header.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #2D3B45; -fx-padding: 8 0 4 0;");
+            taskListBox.getChildren().add(header);
+            for (Task t : entry.getValue()) taskListBox.getChildren().add(makeTaskCard(t));
+        }
     }
 
-    private Callback<TableColumn<Task, Void>, TableCell<Task, Void>> createActionCellFactory(String text,
-                                                                                             java.util.function.Consumer<Task> action) {
-        return param -> new TableCell<>() {
-            private final Button actionButton = new Button(text);
-
-            {
-                actionButton.setOnAction(event -> {
-                    Task task = getTableView().getItems().get(getIndex());
-                    action.accept(task);
-                    tasksTable.refresh();
-                });
-                actionButton.setMaxWidth(Double.MAX_VALUE);
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(actionButton);
+    private HBox makeTaskCard(Task t) {
+        CheckBox cb = new CheckBox();
+        cb.setSelected(t.isDone());
+        Label title = new Label(t.getTitle());
+        title.setWrapText(true);
+        title.setStyle(t.isDone()
+                ? "-fx-font-size: 13px; -fx-text-fill: #aaa; -fx-strikethrough: true;"
+                : "-fx-font-size: 13px; -fx-text-fill: #2D3B45; -fx-font-weight: bold;");
+        String courseLabel = t.getCourseId() != null
+                ? courseIdToName.getOrDefault(t.getCourseId(), "") : "";
+        Label meta = new Label((t.getDeadline() != null ? t.getDeadline() : "")
+                + (!courseLabel.isBlank() ? "  |  " + courseLabel : ""));
+        meta.setStyle("-fx-font-size: 11px; -fx-text-fill: #6B7280;");
+        cb.setOnAction(e -> {
+            t.setDone(cb.isSelected());
+            title.setStyle(cb.isSelected()
+                    ? "-fx-font-size: 13px; -fx-text-fill: #aaa; -fx-strikethrough: true;"
+                    : "-fx-font-size: 13px; -fx-text-fill: #2D3B45; -fx-font-weight: bold;");
+            try { kernel.task().saveTask(); } catch (Exception ignored) {}
+        });
+        VBox textCol = new VBox(2, title, meta);
+        HBox.setHgrow(textCol, Priority.ALWAYS);
+        Button modBtn = new Button("✏");
+        modBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #0770A3; -fx-cursor: hand; -fx-font-size: 13px;");
+        modBtn.setOnAction(e -> openTaskDetail(TaskDetailController.Mode.MODIFY, t));
+        Button delBtn = new Button("🗑");
+        delBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #c0392b; -fx-cursor: hand; -fx-font-size: 13px;");
+        delBtn.setOnAction(e -> {
+            Alert c = new Alert(Alert.AlertType.CONFIRMATION, "Delete \"" + t.getTitle() + "\"?", ButtonType.OK, ButtonType.CANCEL);
+            c.showAndWait().ifPresent(r -> {
+                if (r == ButtonType.OK) {
+                    try { kernel.task().deleteTask(t); renderTasks(); }
+                    catch (DeleteException ex) { new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait(); }
                 }
-            }
-        };
+            });
+        });
+        HBox card = new HBox(10, cb, textCol, modBtn, delBtn);
+        card.setAlignment(Pos.CENTER_LEFT);
+        card.setStyle("-fx-background-color: white; -fx-border-color: #E5E7EB;"
+                + "-fx-border-radius: 8; -fx-background-radius: 8;"
+                + "-fx-padding: 10 14 10 14;"
+                + "-fx-effect: dropshadow(gaussian,rgba(0,0,0,0.04),4,0,0,1);");
+        return card;
     }
 
     private void openTaskDetail(TaskDetailController.Mode mode, Task task) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/TaskDetail.fxml")));
+            FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
+                    getClass().getClassLoader().getResource("fxml/TaskDetail.fxml")));
             Parent root = loader.load();
-            TaskDetailController taskDetailController = loader.getController();
-            taskDetailController.setKernel(kernel);
-            taskDetailController.setOnTaskCreated(tasks::add);
-
-            if (mode == TaskDetailController.Mode.ADD) {
-                taskDetailController.setupForAdd();
-            } else if (mode == TaskDetailController.Mode.MODIFY && task != null) {
-                taskDetailController.setupForModify(task);
-            } else if (mode == TaskDetailController.Mode.VIEW && task != null) {
-                taskDetailController.setupForView(task);
-            }
-
+            TaskDetailController ctrl = loader.getController();
+            ctrl.setKernel(kernel);
+            ctrl.setCourses(courses);
+            ctrl.setOnTaskCreated(t -> renderTasks());
+            if (mode == TaskDetailController.Mode.ADD) ctrl.setupForAdd();
+            else if (mode == TaskDetailController.Mode.MODIFY && task != null) ctrl.setupForModify(task);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle(mode == TaskDetailController.Mode.ADD ? "Add Task" : "Task Detail");
+            stage.setTitle(mode == TaskDetailController.Mode.ADD ? "Add Task" : "Edit Task");
             stage.setScene(new Scene(root));
             stage.showAndWait();
-            tasksTable.refresh();
-        } catch (IOException ignored) {
-        }
+            renderTasks();
+        } catch (IOException ignored) {}
+    }
+
+    private Label styledLabel(String text) {
+        Label l = new Label(text);
+        l.setStyle("-fx-text-fill: #6B7280; -fx-font-size: 13px;");
+        return l;
     }
 }

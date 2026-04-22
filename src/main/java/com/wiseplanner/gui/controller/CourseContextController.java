@@ -76,7 +76,6 @@ public class CourseContextController extends BaseController {
     }
 
 
-
     private List<Assignment> sortedAssignments(List<Assignment> list) {
         if (list == null) return List.of();
         return list.stream()
@@ -133,7 +132,7 @@ public class CourseContextController extends BaseController {
 
     private VBox makeAssignmentCard(Assignment a) {
         boolean unsubmitted = isUnsubmitted(a);
-        String state   = a.getSubmission() != null && a.getSubmission().getWorkflow_state() != null
+        String state = a.getSubmission() != null && a.getSubmission().getWorkflow_state() != null
                 ? a.getSubmission().getWorkflow_state() : "unsubmitted";
         boolean late    = a.getSubmission() != null && a.getSubmission().getLate();
         boolean missing = a.getSubmission() != null && a.getSubmission().getMissing();
@@ -144,11 +143,11 @@ public class CourseContextController extends BaseController {
         String borderColor = unsubmitted ? "#e67e22" : "#dddddd";
 
         Label titleLabel = new Label(a.getName());
-        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 13;");
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #2D3B45;");
         titleLabel.setWrapText(true);
 
         Label descLabel = new Label(stripHtml(a.getDescription()));
-        descLabel.setStyle("-fx-font-size: 11; -fx-text-fill: #555;");
+        descLabel.setStyle("-fx-font-size: 11; -fx-text-fill: #555555;");
         descLabel.setWrapText(true);
 
         String dueText = (a.getDue_at() == null || a.getDue_at().equalsIgnoreCase("null"))
@@ -172,7 +171,6 @@ public class CourseContextController extends BaseController {
                 + "-fx-border-color: " + borderColor + "; -fx-border-radius: 6;"
                 + "-fx-background-radius: 6; -fx-border-width: 0 0 0 3;");
 
-
         card.setOnMouseClicked(event -> {
             try {
                 FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
@@ -190,13 +188,12 @@ public class CourseContextController extends BaseController {
             }
         });
         card.setStyle(card.getStyle() + "-fx-cursor: hand;");
-
         return card;
     }
 
     private VBox makeAnnouncementCard(Announcement a) {
         Label titleLabel = new Label(a.getTitle());
-        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 13;");
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #2D3B45;");
         titleLabel.setWrapText(true);
 
         Label msgLabel = new Label(stripHtml(a.getMessage()));
@@ -210,7 +207,6 @@ public class CourseContextController extends BaseController {
         card.setStyle("-fx-padding: 8 10 8 10; -fx-background-color: #fafafa;"
                 + "-fx-border-color: #dddddd; -fx-border-radius: 6;"
                 + "-fx-background-radius: 6; -fx-border-width: 0 0 0 3;");
-
 
         card.setOnMouseClicked(event -> {
             try {
@@ -229,9 +225,9 @@ public class CourseContextController extends BaseController {
             }
         });
         card.setStyle(card.getStyle() + "-fx-cursor: hand;");
-
         return card;
     }
+
 
 
     @FXML
@@ -257,6 +253,7 @@ public class CourseContextController extends BaseController {
         controller.loadAnnouncements();
         mainWindowController.changePage(node);
     }
+
 
 
     private Label makeInfoLabel(String text) {

@@ -11,13 +11,13 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="anchorPane" prefHeight="704.0" prefWidth="1302.0"
-            stylesheets="@../css/CourseContext.css"
+            stylesheets="@../css/MainWindow.css, @../css/CourseContext.css"
             xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.wiseplanner.gui.controller.CourseContextController">
    <top>
-      <Label fx:id="courseNameLabel" text="Course" BorderPane.alignment="CENTER_LEFT">
-         <font><Font size="36.0"/></font>
+      <Label fx:id="courseNameLabel" text="Course" BorderPane.alignment="CENTER_LEFT"
+             style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2D3B45;">
          <BorderPane.margin><Insets bottom="12.0" left="16.0" right="16.0" top="14.0"/></BorderPane.margin>
       </Label>
    </top>
@@ -25,20 +25,20 @@
       <HBox spacing="12.0">
          <BorderPane.margin><Insets bottom="16.0" left="16.0" right="16.0"/></BorderPane.margin>
 
+
          <VBox spacing="8.0" HBox.hgrow="ALWAYS"
                style="-fx-background-color: white;
-                      -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8;
-                      -fx-padding: 12; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.08),6,0,0,2);">
+                      -fx-border-color: #E5E7EB; -fx-border-radius: 10; -fx-background-radius: 10;
+                      -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.06),6,0,0,2);">
             <HBox alignment="CENTER_LEFT" spacing="8.0">
-               <Label text="📋  Assignments" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+               <Label text="📋  Assignments"
+                      style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #2D3B45;"/>
                <javafx.scene.layout.Region HBox.hgrow="ALWAYS"/>
                <Button fx:id="showAllAssignmentsBtn" text="Show All →"
-                       onAction="#onShowAllAssignmentsClick"
-                       style="-fx-background-radius: 14; -fx-padding: 4 12 4 12;
-                              -fx-font-size: 12; -fx-cursor: hand;"/>
+                       onAction="#onShowAllAssignmentsClick"/>
             </HBox>
             <Label fx:id="assignmentsStatusLabel" text=""
-                   style="-fx-text-fill: grey; -fx-font-size: 12;"/>
+                   style="-fx-text-fill: #6B7280; -fx-font-size: 12px;"/>
             <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
                         style="-fx-background: transparent; -fx-background-color: transparent;">
                <content>
@@ -50,18 +50,17 @@
 
          <VBox spacing="8.0" prefWidth="300.0" minWidth="260.0" maxWidth="340.0"
                style="-fx-background-color: white;
-                      -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8;
-                      -fx-padding: 12; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.08),6,0,0,2);">
+                      -fx-border-color: #E5E7EB; -fx-border-radius: 10; -fx-background-radius: 10;
+                      -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.06),6,0,0,2);">
             <HBox alignment="CENTER_LEFT" spacing="8.0">
-               <Label text="📢  Announcements" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+               <Label text="📢  Announcements"
+                      style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #2D3B45;"/>
                <javafx.scene.layout.Region HBox.hgrow="ALWAYS"/>
                <Button fx:id="showAllAnnouncementsBtn" text="Show All →"
-                       onAction="#onShowAllAnnouncementsClick"
-                       style="-fx-background-radius: 14; -fx-padding: 4 12 4 12;
-                              -fx-font-size: 12; -fx-cursor: hand;"/>
+                       onAction="#onShowAllAnnouncementsClick"/>
             </HBox>
             <Label fx:id="announcementsStatusLabel" text=""
-                   style="-fx-text-fill: grey; -fx-font-size: 12;"/>
+                   style="-fx-text-fill: #6B7280; -fx-font-size: 12px;"/>
             <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
                         style="-fx-background: transparent; -fx-background-color: transparent;">
                <content>
