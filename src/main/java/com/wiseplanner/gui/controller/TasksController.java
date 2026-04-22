@@ -144,6 +144,12 @@ public class TasksController extends BaseController {
                 + "-fx-border-radius: 8; -fx-background-radius: 8;"
                 + "-fx-padding: 10 14 10 14;"
                 + "-fx-effect: dropshadow(gaussian,rgba(0,0,0,0.04),4,0,0,1);");
+        card.setOnMouseClicked(e -> {
+            Object target = e.getTarget();
+            if (target != cb && target != modBtn && target != delBtn) {
+                openTaskDetail(TaskDetailController.Mode.VIEW, t);
+            }
+        });
         return card;
     }
 
@@ -158,9 +164,11 @@ public class TasksController extends BaseController {
             ctrl.setOnTaskCreated(t -> renderTasks());
             if (mode == TaskDetailController.Mode.ADD) ctrl.setupForAdd();
             else if (mode == TaskDetailController.Mode.MODIFY && task != null) ctrl.setupForModify(task);
+            else if (mode == TaskDetailController.Mode.VIEW && task != null) ctrl.setupForView(task);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle(mode == TaskDetailController.Mode.ADD ? "Add Task" : "Edit Task");
+            stage.setTitle(mode == TaskDetailController.Mode.ADD ? "Add Task"
+                    : mode == TaskDetailController.Mode.MODIFY ? "Edit Task" : "Task");
             stage.setScene(new Scene(root));
             stage.showAndWait();
             renderTasks();
