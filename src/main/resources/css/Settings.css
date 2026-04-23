@@ -1,0 +1,19 @@
+#userSettings{
+    -fx-graphic: url("../images/settings_user.png");
+}
+
+#userSettings .image-view{
+    -fx-fit-width:32px;
+    -fx-fit-height:32px;
+    -fx-smooth: true;
+}
+
+#about{
+    -fx-graphic: url("../images/about.png");
+}
+
+#about .image-view{
+    -fx-fit-width:32px;
+    -fx-fit-height:32px;
+    -fx-smooth: true;
+}

@@ -175,7 +175,7 @@ public class AssignmentsController extends BaseController {
             rt.setByAngle(360); rt.setCycleCount(Animation.INDEFINITE);
             rt.setInterpolator(Interpolator.LINEAR); rt.play();
         }
-        VBox vBox = new VBox(15, iv, new Label(labelText));
+        VBox vBox = new VBox(15, iv, createPlaceholderLabel(labelText));
         vBox.setAlignment(Pos.CENTER);
         assignmentsTable.setPlaceholder(vBox);
     }

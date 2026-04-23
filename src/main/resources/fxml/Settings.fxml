@@ -5,29 +5,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="500.0" spacing="10.0"
-      style="-fx-background-color: #F5F5F5; -fx-padding: 28;"
-      xmlns="http://javafx.com/javafx/25"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wiseplanner.gui.controller.SettingsController">
+<VBox prefHeight="400.0" prefWidth="500.0" spacing="10.0" style="-fx-background-color: #ffffff; -fx-padding: 28;" stylesheets="@../css/Settings.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.SettingsController">
     <children>
-        <Label text="Settings"
-               style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2D3B45;">
-            <VBox.margin><Insets bottom="16.0"/></VBox.margin>
+        <Label style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2D3B45;" text="Settings">
+            <VBox.margin><Insets bottom="16.0" /></VBox.margin>
         </Label>
 
-        <Button text="👤  User Settings" onAction="#onUserSettingsButtonClick"
-                maxWidth="1.7976931348623157E308"
-                style="-fx-background-color: #FFFFFF; -fx-text-fill: #2D3B45;
-                       -fx-border-color: #E0E0E0; -fx-border-radius: 8; -fx-background-radius: 8;
-                       -fx-padding: 12 20 12 20; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;
-                       -fx-cursor: hand;"/>
+        <Button fx:id="userSettings" maxWidth="1.7976931348623157E308" onAction="#onUserSettingsButtonClick" style="-fx-background-color: #FFFFFF; -fx-text-fill: #2D3B45;                        -fx-border-color: #E0E0E0; -fx-border-radius: 8; -fx-background-radius: 8;                        -fx-padding: 12 20 12 20; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;                        -fx-cursor: hand;" text="User Settings" />
 
-        <Button text="ℹ  About" onAction="#onAboutButtonClick"
-                maxWidth="1.7976931348623157E308"
-                style="-fx-background-color: #FFFFFF; -fx-text-fill: #2D3B45;
-                       -fx-border-color: #E0E0E0; -fx-border-radius: 8; -fx-background-radius: 8;
-                       -fx-padding: 12 20 12 20; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;
-                       -fx-cursor: hand;"/>
+        <Button fx:id="about" maxWidth="1.7976931348623157E308" onAction="#onAboutButtonClick" style="-fx-background-color: #FFFFFF; -fx-text-fill: #2D3B45;                        -fx-border-color: #E0E0E0; -fx-border-radius: 8; -fx-background-radius: 8;                        -fx-padding: 12 20 12 20; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;                        -fx-cursor: hand;" text="About" />
     </children>
 </VBox>

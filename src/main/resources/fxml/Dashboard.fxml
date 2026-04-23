@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -8,119 +7,81 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fitToWidth="true"
-            style="-fx-background-color: #F5F5F5; -fx-background: #F5F5F5;"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.wiseplanner.gui.controller.DashboardController">
+<ScrollPane fitToWidth="true" style="-fx-background-color: #ffffff; -fx-background: #ffffff;" stylesheets="@../css/Common.css, @../css/Dashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.DashboardController">
     <content>
         <VBox spacing="0" style="-fx-background-color: #F5F5F5;">
 
 
-            <VBox style="-fx-padding: 20 24 12 24; -fx-background-color: #F5F5F5;">
+            <VBox style="-fx-padding: 20 24 12 24; -fx-background-color: #FFFFFF;">
                 <HBox alignment="CENTER_LEFT" spacing="12.0">
-                    <Label text="Dashboard"
-                           style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2D3B45;"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Button fx:id="refreshButton" text="⟳  Refresh" onAction="#onRefreshButtonClick"/>
+                    <Label style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2D3B45;" text="Dashboard" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button fx:id="refreshButton" onAction="#onRefreshButtonClick" text="Refresh" />
                 </HBox>
-                <HBox spacing="10.0" alignment="CENTER_LEFT" style="-fx-padding: 10 0 0 0;">
-                    <Button fx:id="coursesNavButton"   text="📚  Courses"   onAction="#onCoursesNavButtonClick"/>
-                    <Button fx:id="tasksNavButton"     text="✅  Tasks"     onAction="#onTasksNavButtonClick"/>
-                    <Button fx:id="schedulesNavButton" text="📅  Schedules" onAction="#onSchedulesNavButtonClick"/>
+                <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 10 0 0 0;">
+                    <Button fx:id="coursesNavButton" onAction="#onCoursesNavButtonClick" text="Courses" />
+                    <Button fx:id="tasksNavButton" onAction="#onTasksNavButtonClick" text="Tasks" />
+                    <Button fx:id="schedulesNavButton" onAction="#onSchedulesNavButtonClick" text="Schedules" />
                 </HBox>
-                <Label fx:id="statusLabel" text="" wrapText="true"
-                       style="-fx-text-fill: #6B7280; -fx-font-size: 12px; -fx-padding: 6 0 0 0;"/>
+                <Label fx:id="statusLabel" style="-fx-text-fill: #6B7280; -fx-font-size: 12px; -fx-padding: 6 0 0 0;" text="" wrapText="true" />
             </VBox>
 
 
-            <HBox spacing="16.0" style="-fx-padding: 0 24 24 24;">
+            <HBox spacing="16.0" style="-fx-padding: 0 24 24 24; -fx-background-color: #ffffff;">
 
 
                 <VBox spacing="14.0" HBox.hgrow="ALWAYS">
 
 
-                    <VBox spacing="6.0"
-                          style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;
-                                 -fx-border-radius: 10; -fx-border-color: #E5E7EB; -fx-border-width: 1;
-                                 -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2);">
-                        <Label text="👋  Greeting"
-                               style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2D3B45;"/>
-                        <Label fx:id="greetingLabel" text="" wrapText="true"
-                               style="-fx-text-fill: #2D3B45; -fx-font-size: 13px;"/>
+                    <VBox spacing="6.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;                                  -fx-border-radius: 10; -fx-border-color: #E5E7EB; -fx-border-width: 1;                                  -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2);">
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2D3B45;" text="👋  Greeting" />
+                        <Label fx:id="greetingLabel" style="-fx-text-fill: #2D3B45; -fx-font-size: 13px;" text="" wrapText="true" />
                     </VBox>
 
 
-                    <VBox spacing="6.0"
-                          style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;
-                                 -fx-border-radius: 10; -fx-border-color: #E5E7EB; -fx-border-width: 1;
-                                 -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2);">
-                        <Label text="💡  Daily Insights (Gemini)"
-                               style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2D3B45;"/>
-                        <Label fx:id="insightsLabel" text="" wrapText="true"/>
+                    <VBox spacing="6.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;                                  -fx-border-radius: 10; -fx-border-color: #E5E7EB; -fx-border-width: 1;                                  -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2);">
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2D3B45;" text="💡  Daily Insights (Gemini)" />
+                        <Label fx:id="insightsLabel" text="" wrapText="true" />
                     </VBox>
 
 
-                    <VBox spacing="8.0"
-                          style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;
-                                 -fx-border-radius: 10; -fx-border-color: #E5E7EB; -fx-border-width: 1;
-                                 -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2);">
-                        <Label text="📊  Grade &amp; Performance"
-                               style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2D3B45;"/>
-                        <VBox fx:id="gradeChartBox" spacing="8.0"/>
-                        <Label fx:id="gradeAnalysisLabel" text="" wrapText="true"/>
+                    <VBox spacing="8.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;                                  -fx-border-radius: 10; -fx-border-color: #E5E7EB; -fx-border-width: 1;                                  -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2);">
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2D3B45;" text="📊  Grade &amp; Performance" />
+                        <VBox fx:id="gradeChartBox" spacing="8.0" />
+                        <Label fx:id="gradeAnalysisLabel" text="" wrapText="true" />
                     </VBox>
 
 
-                    <VBox spacing="6.0"
-                          style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;
-                                 -fx-border-radius: 10; -fx-border-color: #E5E7EB; -fx-border-width: 1;
-                                 -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2);">
-                        <Label text="📅  Today's Assignments"
-                               style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2D3B45;"/>
-                        <VBox fx:id="assignmentsBox" spacing="6.0"/>
+                    <VBox spacing="6.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;                                  -fx-border-radius: 10; -fx-border-color: #E5E7EB; -fx-border-width: 1;                                  -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2);">
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2D3B45;" text="📅  Today's Assignments" />
+                        <VBox fx:id="assignmentsBox" spacing="6.0" />
                     </VBox>
 
                 </VBox>
 
 
-                <VBox spacing="14.0" prefWidth="320.0" minWidth="280.0" maxWidth="380.0">
+                <VBox maxWidth="380.0" minWidth="280.0" prefWidth="320.0" spacing="14.0">
 
 
-                    <VBox spacing="6.0"
-                          style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;
-                                 -fx-border-radius: 10; -fx-border-color: #E5E7EB; -fx-border-width: 1;
-                                 -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2);">
+                    <VBox spacing="6.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;                                  -fx-border-radius: 10; -fx-border-color: #E5E7EB; -fx-border-width: 1;                                  -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2);">
                         <HBox alignment="CENTER_LEFT">
-                            <Label text="✅  To-Do List"
-                                   style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2D3B45;"/>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Button fx:id="addTaskBtn" text="+ Add" onAction="#onAddTaskClick"
-                                    style="-fx-background-color: #E66000; -fx-text-fill: white;
-                                           -fx-background-radius: 14; -fx-border-radius: 14;
-                                           -fx-padding: 3 10 3 10; -fx-font-size: 11px; -fx-cursor: hand;"/>
+                            <Label style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2D3B45;" text="✅  To-Do List" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Button fx:id="addTaskBtn" onAction="#onAddTaskClick" style="-fx-text-fill: white; -fx-border-radius: 14; -fx-padding: 3 10 3 10; -fx-font-size: 11px; -fx-cursor: hand;" text="Add" />
                         </HBox>
-                        <VBox fx:id="todoBox" spacing="4.0"/>
+                        <VBox fx:id="todoBox" spacing="4.0" />
                     </VBox>
 
 
-                    <VBox spacing="6.0"
-                          style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;
-                                 -fx-border-radius: 10; -fx-border-color: #E5E7EB; -fx-border-width: 1;
-                                 -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2);">
-                        <Label text="📢  Recent Announcements"
-                               style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2D3B45;"/>
-                        <VBox fx:id="announcementsBox" spacing="6.0"/>
+                    <VBox spacing="6.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;                                  -fx-border-radius: 10; -fx-border-color: #E5E7EB; -fx-border-width: 1;                                  -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2);">
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2D3B45;" text="📢  Recent Announcements" />
+                        <VBox fx:id="announcementsBox" spacing="6.0" />
                     </VBox>
 
 
-                    <VBox spacing="6.0"
-                          style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;
-                                 -fx-border-radius: 10; -fx-border-color: #E5E7EB; -fx-border-width: 1;
-                                 -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2);">
-                        <Label text="🕐  Today's Schedule"
-                               style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2D3B45;"/>
-                        <VBox fx:id="scheduleBox" spacing="6.0"/>
+                    <VBox spacing="6.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;                                  -fx-border-radius: 10; -fx-border-color: #E5E7EB; -fx-border-width: 1;                                  -fx-padding: 14; -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.05),6,0,0,2);">
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2D3B45;" text="🕐  Today's Schedule" />
+                        <VBox fx:id="scheduleBox" spacing="6.0" />
                     </VBox>
 
                 </VBox>

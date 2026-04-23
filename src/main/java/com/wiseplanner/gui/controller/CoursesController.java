@@ -64,7 +64,7 @@ public class CoursesController extends BaseController {
             rotateTransition.setCycleCount(Animation.INDEFINITE);
             rotateTransition.setInterpolator(Interpolator.LINEAR);
             rotateTransition.play();
-            Label statusLabel = new Label("Loading...");
+            Label statusLabel = createPlaceholderLabel("Loading...");
             vBox = new VBox(15, imageView, statusLabel);
         }
         if (mode.equals(PlaceholderMode.EMPTY)) {
@@ -72,7 +72,7 @@ public class CoursesController extends BaseController {
             imageView.setFitHeight(48);
             imageView.setFitWidth(48);
             imageView.setSmooth(true);
-            Label statusLabel = new Label("Nothing here...");
+            Label statusLabel = createPlaceholderLabel("Nothing here...");
             vBox = new VBox(15, imageView, statusLabel);
         }
         if (mode.equals(PlaceholderMode.FAILED)) {
@@ -80,7 +80,7 @@ public class CoursesController extends BaseController {
             imageView.setFitHeight(48);
             imageView.setFitWidth(48);
             imageView.setSmooth(true);
-            Label statusLabel = new Label("Fail to load");
+            Label statusLabel = createPlaceholderLabel("Fail to load");
             vBox = new VBox(15, imageView, statusLabel);
         }
         vBox.setAlignment(Pos.CENTER);
@@ -131,7 +131,16 @@ public class CoursesController extends BaseController {
         );
         codeLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;");
 
-        StackPane banner = new StackPane(colorBanner, codeLabel);
+        Image iconImage = new Image(getClass().getResourceAsStream("/images/course_white.png"));
+        ImageView assignmentIcon = new ImageView(iconImage);
+        assignmentIcon.setFitWidth(100);
+        assignmentIcon.setFitHeight(100);
+        assignmentIcon.setPreserveRatio(true);
+        assignmentIcon.setSmooth(true);
+        assignmentIcon.setOpacity(0.3);
+        StackPane banner = new StackPane(colorBanner,assignmentIcon, codeLabel);
+        banner.setMargin(codeLabel, new javafx.geometry.Insets(0, 90, 0, 10));
+        banner.setAlignment(assignmentIcon, Pos.BOTTOM_RIGHT);
 
         Label nameLabel = new Label(course.getName());
         nameLabel.setWrapText(true);
@@ -151,7 +160,7 @@ public class CoursesController extends BaseController {
                         "-fx-border-color: #dddddd;" +
                         "-fx-border-radius: 8;" +
                         "-fx-background-radius: 8;" +
-                        "-fx-padding: 0 10 10 10;" +
+                        "-fx-padding: 10 10 10 10;" +
                         "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0, 0, 2);"
         );
         card.setAlignment(Pos.TOP_LEFT);
@@ -169,7 +178,7 @@ public class CoursesController extends BaseController {
                         "-fx-border-color: #4A90D9;" +
                         "-fx-border-radius: 8;" +
                         "-fx-background-radius: 8;" +
-                        "-fx-padding: 0 10 10 10;" +
+                        "-fx-padding: 10 10 10 10;" +
                         "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 8, 0, 0, 3);" +
                         "-fx-cursor: hand;"
         ));
@@ -178,7 +187,7 @@ public class CoursesController extends BaseController {
                         "-fx-border-color: #dddddd;" +
                         "-fx-border-radius: 8;" +
                         "-fx-background-radius: 8;" +
-                        "-fx-padding: 0 10 10 10;" +
+                        "-fx-padding: 10 10 10 10;" +
                         "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0, 0, 2);"
         ));
 

@@ -1,0 +1,12 @@
+#anchorPane {
+    -fx-background-color: #F5F5F5;
+}
+
+#coursesScrollPane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+#contentPane {
+    -fx-background-color: #F5F5F5;
+}

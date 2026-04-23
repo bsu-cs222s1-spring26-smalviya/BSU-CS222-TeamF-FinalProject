@@ -1,0 +1,76 @@
+#coursesNavButton, #tasksNavButton, #schedulesNavButton {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #2D3B45;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-width: 1;
+    -fx-font-weight: bold;
+    -fx-padding: 7 20 7 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 4, 0, 0, 1);
+}
+
+#coursesNavButton:hover, #tasksNavButton:hover, #schedulesNavButton:hover {
+    -fx-background-color: #007fb5;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: #007fb5;
+}
+
+#coursesNavButton{
+    -fx-graphic: url("../images/course.png");
+}
+#coursesNavButton .image-view{
+    -fx-fit-width:24px;
+    -fx-fit-height:24px;
+    -fx-smooth: true;
+}
+
+#tasksNavButton{
+    -fx-graphic: url("../images/task.png");
+}
+
+#tasksNavButton .image-view{
+    -fx-fit-width:24px;
+    -fx-fit-height:24px;
+    -fx-smooth: true;
+}
+
+#schedulesNavButton{
+    -fx-graphic: url("../images/schedule.png");
+}
+
+#schedulesNavButton .image-view{
+    -fx-fit-width:24px;
+    -fx-fit-height:24px;
+    -fx-smooth: true;
+}
+
+#refreshButton .image-view{
+    -fx-fit-width:24px;
+    -fx-fit-height:24px;
+    -fx-smooth: true;
+}
+
+#refreshButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: #008ad8;
+    -fx-border-color: #008ad8;
+    -fx-border-radius: 32;
+    -fx-background-radius: 32;
+    -fx-padding: 5 14 5 14;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+#refreshButton:hover {
+    -fx-background-color: #EBF5FB;
+}
+
+#addTaskBtn {
+    -fx-graphic: url("../images/add.png");
+}
+
+#addTaskBtn .image-view {
+    -fx-fit-width:24px;
+    -fx-fit-height:24px;
+    -fx-smooth: true;
+}

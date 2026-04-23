@@ -5,9 +5,9 @@ import com.wiseplanner.model.Schedule;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 import javafx.stage.Stage;
 
@@ -19,7 +19,7 @@ import java.util.Set;
 public class ScheduleDetailController extends BaseController {
 
     @FXML
-    private AnchorPane anchorPane;
+    private VBox anchorPane;
 
     @FXML
     private Button cancelButton;

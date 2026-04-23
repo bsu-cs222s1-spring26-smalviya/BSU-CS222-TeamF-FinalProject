@@ -11,6 +11,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -93,8 +95,8 @@ public class TasksController extends BaseController {
 
         for (Map.Entry<String, List<Task>> entry : grouped.entrySet()) {
             String groupKey = entry.getKey();
-            String groupName = "UNASSIGNED".equals(groupKey) ? "📌 Unassigned"
-                    : "📚 " + courseIdToName.getOrDefault(groupKey, groupKey);
+            String groupName = "UNASSIGNED".equals(groupKey) ? "Unassigned"
+                    : courseIdToName.getOrDefault(groupKey, groupKey);
             Label header = new Label(groupName);
             header.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #2D3B45; -fx-padding: 8 0 4 0;");
             taskListBox.getChildren().add(header);
@@ -124,11 +126,15 @@ public class TasksController extends BaseController {
         });
         VBox textCol = new VBox(2, title, meta);
         HBox.setHgrow(textCol, Priority.ALWAYS);
-        Button modBtn = new Button("✏");
-        modBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #0770A3; -fx-cursor: hand; -fx-font-size: 13px;");
+        Button modBtn = new Button();
+        modBtn.setGraphic(createIcon("/images/edit.png", 22));
+        modBtn.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        modBtn.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-padding: 6;");
         modBtn.setOnAction(e -> openTaskDetail(TaskDetailController.Mode.MODIFY, t));
-        Button delBtn = new Button("🗑");
-        delBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #c0392b; -fx-cursor: hand; -fx-font-size: 13px;");
+        Button delBtn = new Button();
+        delBtn.setGraphic(createIcon("/images/delete.png", 22));
+        delBtn.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        delBtn.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-padding: 6;");
         delBtn.setOnAction(e -> {
             Alert c = new Alert(Alert.AlertType.CONFIRMATION, "Delete \"" + t.getTitle() + "\"?", ButtonType.OK, ButtonType.CANCEL);
             c.showAndWait().ifPresent(r -> {
@@ -151,6 +157,16 @@ public class TasksController extends BaseController {
             }
         });
         return card;
+    }
+
+    private ImageView createIcon(String resourcePath, double size) {
+        ImageView imageView = new ImageView(new Image(Objects.requireNonNull(
+                getClass().getResourceAsStream(resourcePath))));
+        imageView.setFitWidth(size);
+        imageView.setFitHeight(size);
+        imageView.setPreserveRatio(true);
+        imageView.setSmooth(true);
+        return imageView;
     }
 
     private void openTaskDetail(TaskDetailController.Mode mode, Task task) {

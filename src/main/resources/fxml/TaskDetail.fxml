@@ -11,45 +11,40 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefWidth="440.0" spacing="8.0"
-      style="-fx-background-color: #FFFFFF; -fx-padding: 24;"
-      xmlns="http://javafx.com/javafx/25"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wiseplanner.gui.controller.TaskDetailController">
+<VBox prefWidth="440.0" spacing="8.0" style="-fx-background-color: #FFFFFF; -fx-padding: 24;" stylesheets="@../css/Common.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.TaskDetailController">
    <children>
-      <Label fx:id="formTitleLabel" text="Add Task"
-             style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2D3B45;">
-         <VBox.margin><Insets bottom="8.0"/></VBox.margin>
+      <Label fx:id="formTitleLabel" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2D3B45;" text="Add Task">
+         <VBox.margin><Insets bottom="8.0" /></VBox.margin>
       </Label>
 
-      <Label text="Title" style="-fx-font-weight: bold; -fx-text-fill: #2D3B45;"/>
+      <Label style="-fx-font-weight: bold; -fx-text-fill: #2D3B45;" text="Title" />
       <TextField fx:id="titleTextField" promptText="Task title">
-         <VBox.margin><Insets bottom="6.0"/></VBox.margin>
+         <VBox.margin><Insets bottom="6.0" /></VBox.margin>
       </TextField>
 
-      <Label text="Description" style="-fx-font-weight: bold; -fx-text-fill: #2D3B45;"/>
+      <Label style="-fx-font-weight: bold; -fx-text-fill: #2D3B45;" text="Description" />
       <TextArea fx:id="contentTextArea" prefHeight="90.0" promptText="Optional details…" wrapText="true">
-         <VBox.margin><Insets bottom="6.0"/></VBox.margin>
+         <VBox.margin><Insets bottom="6.0" /></VBox.margin>
       </TextArea>
 
-      <Label text="Deadline" style="-fx-font-weight: bold; -fx-text-fill: #2D3B45;"/>
-      <HBox spacing="8.0" alignment="CENTER_LEFT">
-         <DatePicker fx:id="deadlineDate" prefWidth="170.0"/>
-         <Spinner fx:id="deadlineHour" editable="true" prefWidth="64.0"/>
-         <Label text="h" style="-fx-text-fill: #6B7280;"/>
-         <Spinner fx:id="deadlineMinute" editable="true" prefWidth="64.0"/>
-         <Label text="m" style="-fx-text-fill: #6B7280;"/>
-         <VBox.margin><Insets bottom="6.0"/></VBox.margin>
+      <Label style="-fx-font-weight: bold; -fx-text-fill: #2D3B45;" text="Deadline" />
+      <HBox alignment="CENTER_LEFT" spacing="8.0">
+         <DatePicker fx:id="deadlineDate" prefHeight="40.0" prefWidth="170.0" />
+         <Spinner fx:id="deadlineHour" editable="true" prefHeight="40.0" prefWidth="85.0" />
+         <Label style="-fx-text-fill: #6B7280;" text="h" />
+         <Spinner fx:id="deadlineMinute" editable="true" prefHeight="40.0" prefWidth="85.0" />
+         <Label style="-fx-text-fill: #6B7280;" text="m" />
+         <VBox.margin><Insets bottom="6.0" /></VBox.margin>
       </HBox>
 
-      <Label text="Assign to Course (optional)" style="-fx-font-weight: bold; -fx-text-fill: #2D3B45;"/>
+      <Label style="-fx-font-weight: bold; -fx-text-fill: #2D3B45;" text="Assign to Course (optional)" />
       <ComboBox fx:id="courseCombo" maxWidth="1.7976931348623157E308" promptText="None (Unassigned)">
-         <VBox.margin><Insets bottom="10.0"/></VBox.margin>
+         <VBox.margin><Insets bottom="10.0" /></VBox.margin>
       </ComboBox>
 
       <HBox alignment="CENTER_RIGHT" spacing="10.0">
-         <Button fx:id="cancelButton" text="Cancel" onAction="#onCancelButtonClick"/>
-         <Button fx:id="okButton" text="Save" onAction="#onOKButtonClick"/>
+         <Button fx:id="cancelButton" onAction="#onCancelButtonClick" text="Cancel" />
+         <Button fx:id="okButton" onAction="#onOKButtonClick" text="Save" />
       </HBox>
    </children>
 </VBox>
