@@ -1,10 +1,11 @@
 # WisePlanner
+Manage Your Schedule More Intelligently.
 
 ## Team Members
-Qingyang Ran  
-Ammar Hassan  
-Yixiao Liu  
-Ce Zheng
+Qingyang Ran (@KyrionRan)  
+Ammar Hassan (@AmmarHassanX)  
+Yixiao Liu (@tljsjdr-13)  
+Ce Zheng (@ce0309430-bot)
 
 ## Project Overview
 ### What is it?
@@ -16,6 +17,18 @@ Authenticates with Canvas API using the student's personal access token. Fetches
 
 ### Gemini!
 Integrates Google Gemini API to provide daily grade analysis per course and personlised motivational insights.
+
+## How to Run
+Clone the repository  
+
+To run the application, use Gradle command for GUI 
+```Bash
+run
+```
+use for CLI
+```Bash
+run --args="--console"
+```
 
 ## System Architecture
 
@@ -38,4 +51,3 @@ Canvas API + Gemini API + JSON Files
 * JSON Parser: Gson
 * API: Canvas API/Google Gemini
 * Testing: JUnit
-
