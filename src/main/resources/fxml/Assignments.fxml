@@ -5,23 +5,20 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.wiseplanner.gui.controller.AssignmentsController">
+<BorderPane stylesheets="@../css/Common.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wiseplanner.gui.controller.AssignmentsController">
     <top>
-        <Label text="All Assignments" style="-fx-font-size: 24; -fx-font-weight: bold;">
-            <BorderPane.margin><Insets left="14.0" top="14.0" bottom="10.0"/></BorderPane.margin>
+        <Label style="-fx-font-size: 26; -fx-font-weight: bold;" text="All Assignments">
+            <BorderPane.margin><Insets bottom="10.0" left="14.0" top="14.0" /></BorderPane.margin>
         </Label>
     </top>
     <center>
         <TableView fx:id="assignmentsTable" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn fx:id="nameColumn"           text="Name"/>
-                <TableColumn fx:id="descriptionColumn"    text="Description"/>
-                <TableColumn fx:id="dueColumn"            text="Due Date"/>
-                <TableColumn fx:id="workflow_stateColumn" text="Status"/>
+                <TableColumn fx:id="nameColumn" text="Name" />
+                <TableColumn fx:id="descriptionColumn" text="Description" />
+                <TableColumn fx:id="dueColumn" text="Due Date" />
+                <TableColumn fx:id="workflow_stateColumn" text="Status" />
             </columns>
         </TableView>
     </center>

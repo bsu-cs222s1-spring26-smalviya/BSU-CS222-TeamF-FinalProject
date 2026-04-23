@@ -4,6 +4,21 @@
     -fx-text-fill: #2D3B45;
 }
 
+#showAllAssignmentsBtn, #showAllAnnouncementsBtn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #0770A3;
+    -fx-border-color: #0770A3;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-padding: 4 12 4 12;
+    -fx-font-size: 11px;
+    -fx-cursor: hand;
+}
+
+#showAllAssignmentsBtn:hover, #showAllAnnouncementsBtn:hover {
+    -fx-background-color: #EBF5FB;
+}
+
 .panel-section-title {
     -fx-font-size: 15px;
     -fx-font-weight: bold;

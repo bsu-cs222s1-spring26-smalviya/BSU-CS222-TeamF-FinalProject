@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -20,6 +21,7 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/Login.fxml"));
         Parent root = loader.load();
         LoginController controller = loader.getController();
+        loginStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/launcher.png")));
         loginStage.setTitle("Login");
         loginStage.setScene(new Scene(root));
         loginStage.setMinWidth(300);
@@ -37,6 +39,7 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/MainWindow.fxml")));
         Parent root = loader.load();
         MainWindowController controller = loader.getController();
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/launcher.png")));
         primaryStage.setTitle("Wise Planner");
         primaryStage.setScene(new Scene(root, 1366, 768));
         primaryStage.setMinWidth(960);

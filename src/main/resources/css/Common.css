@@ -1,0 +1,261 @@
+.root {
+    -fx-background-color: #F5F5F5;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2D3B45;
+}
+
+.button {
+    -fx-background-color: #008ad8;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 16;
+    -fx-border-radius: 8;
+    -fx-padding: 7 18 7 18;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+.button:hover {
+    -fx-background-color: #007fb5;
+}
+.button:pressed {
+    -fx-background-color: #005277;
+}
+
+.text-field,
+.text-area,
+.combo-box,
+.date-picker,
+.spinner {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2D3B45;
+}
+
+.text-field,
+.combo-box,
+.date-picker,
+.spinner {
+    -fx-padding: 8 12 8 12;
+}
+
+.text-area .content {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+}
+
+.text-field,
+.text-area,
+.combo-box-base,
+.date-picker,
+.spinner {
+    -fx-prompt-text-fill: #9CA3AF;
+}
+
+.text-field:focused,
+.text-area:focused,
+.combo-box:focused,
+.date-picker:focused,
+.spinner:focused {
+    -fx-border-color: #008ad8;
+    -fx-effect: dropshadow(gaussian, rgba(7,112,163,0.15), 4, 0, 0, 0);
+}
+
+.combo-box > .list-cell,
+.date-picker > .text-field,
+.spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-text-fill: #2D3B45;
+    -fx-padding: 0;
+}
+
+.combo-box > .arrow-button,
+.date-picker > .arrow-button,
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #F3F4F6;
+    -fx-background-radius: 6;
+    -fx-border-color: transparent;
+    -fx-padding: 0 10 0 10;
+    -fx-min-width: 28;
+    -fx-pref-width: 30;
+}
+
+.combo-box > .arrow-button:hover,
+.date-picker > .arrow-button:hover,
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: #E5E7EB;
+}
+
+.combo-box > .arrow-button .arrow,
+.date-picker > .arrow-button .arrow,
+.spinner .increment-arrow-button .increment-arrow,
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: #4B5563;
+    -fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;
+}
+
+.spinner {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.spinner .text-field {
+    -fx-alignment: CENTER;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 4;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2D3B45;
+    -fx-background-radius: 6;
+    -fx-padding: 8 10 8 10;
+}
+
+.combo-box-popup .list-cell:hover,
+.combo-box-popup .list-cell:filled:selected,
+.combo-box-popup .list-cell:filled:focused {
+    -fx-background-color: #EBF5FB;
+    -fx-text-fill: #2D3B45;
+}
+
+.date-picker-popup {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D1D5DB;
+}
+
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #F8FAFC;
+}
+
+.date-picker-popup .day-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2D3B45;
+    -fx-background-radius: 6;
+}
+
+.date-picker-popup .day-cell:hover {
+    -fx-background-color: #EBF5FB;
+}
+
+.date-picker-popup .day-cell:selected,
+.date-picker-popup .day-cell:focused {
+    -fx-background-color: #008ad8;
+    -fx-text-fill: #FFFFFF;
+}
+
+.separator .line {
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 1 0 0 0;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-padding: 2;
+}
+.scroll-bar:vertical {
+    -fx-pref-width: 12;
+}
+.scroll-bar:horizontal {
+    -fx-pref-height: 12;
+}
+.scroll-bar:vertical .track,
+.scroll-bar:horizontal .track {
+    -fx-background-color: #EEF2F7;
+    -fx-background-radius: 999;
+    -fx-border-color: transparent;
+}
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #B7C2D0;
+    -fx-background-insets: 1;
+    -fx-background-radius: 999;
+}
+.scroll-bar:vertical .thumb:hover,
+.scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #94A3B8;
+}
+.scroll-bar:vertical .thumb:pressed,
+.scroll-bar:horizontal .thumb:pressed {
+    -fx-background-color: #6B7A90;
+}
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 1;
+    -fx-pref-width: 12;
+    -fx-pref-height: 12;
+}
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.table-view {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-border-width: 1;
+}
+.table-view .column-header-background {
+    -fx-background-color: #202020;
+    -fx-background-radius: 10 10 0 0;
+}
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-size: 40;
+}
+.table-view .column-header .label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-padding: 0 8 0 8;
+}
+.table-row-cell {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #F3F4F6;
+    -fx-border-width: 0 0 1 0;
+    -fx-cell-size: 40px;
+}
+.table-row-cell:odd {
+    -fx-background-color: #FAFAFA;
+}
+.table-row-cell:hover {
+    -fx-background-color: #EBF5FB;
+}
+.table-row-cell:selected {
+    -fx-background-color: #D6EAF8;
+    -fx-text-fill: #2D3B45;
+}
+.table-cell {
+    -fx-text-fill: #2D3B45;
+    -fx-padding: 4 8 4 8;
+    -fx-border-color: transparent;
+}

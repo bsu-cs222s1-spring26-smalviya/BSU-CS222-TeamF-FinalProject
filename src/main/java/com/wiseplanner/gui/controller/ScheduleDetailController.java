@@ -5,9 +5,10 @@ import com.wiseplanner.model.Schedule;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.stage.Window;
 import javafx.stage.Stage;
 
 import java.time.DayOfWeek;
@@ -18,7 +19,7 @@ import java.util.Set;
 public class ScheduleDetailController extends BaseController {
 
     @FXML
-    private AnchorPane anchorPane;
+    private VBox anchorPane;
 
     @FXML
     private Button cancelButton;
@@ -123,21 +124,20 @@ public class ScheduleDetailController extends BaseController {
     }
 
     public void setMode(ViewMode mode) {
-        Stage stage = (Stage) okButton.getScene().getWindow();
+        this.currentMode = mode;
         switch (mode) {
             case ADD:
-                this.currentMode = ViewMode.ADD;
-                stage.setTitle("Add Schedule");
+                setWindowTitle("Add Schedule");
                 titleLabel.setText("Add Schedule");
+                okButton.setText("OK");
                 break;
             case MODIFY:
-                this.currentMode = ViewMode.MODIFY;
-                stage.setTitle("Modify Schedule");
+                setWindowTitle("Modify Schedule");
                 titleLabel.setText("Modify Schedule");
+                okButton.setText("OK");
                 break;
             case VIEW:
-                this.currentMode = ViewMode.VIEW;
-                stage.setTitle("View Schedule");
+                setWindowTitle("View Schedule");
                 titleLabel.setText("View Schedule");
                 nameField.setEditable(false);
                 mondayBox.setDisable(true);
@@ -165,8 +165,31 @@ public class ScheduleDetailController extends BaseController {
                 professorField.setEditable(false);
                 locationField.setEditable(false);
                 cancelButton.setVisible(false);
+                cancelButton.setManaged(false);
+                okButton.setText("Close");
                 break;
         }
+    }
+
+    private void setWindowTitle(String title) {
+        if (okButton.getScene() != null && okButton.getScene().getWindow() instanceof Stage stage) {
+            stage.setTitle(title);
+            return;
+        }
+        okButton.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                Window window = newScene.getWindow();
+                if (window instanceof Stage stage) {
+                    stage.setTitle(title);
+                } else {
+                    newScene.windowProperty().addListener((windowObs, oldWindow, newWindow) -> {
+                        if (newWindow instanceof Stage delayedStage) {
+                            delayedStage.setTitle(title);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     private void addSchedule() {

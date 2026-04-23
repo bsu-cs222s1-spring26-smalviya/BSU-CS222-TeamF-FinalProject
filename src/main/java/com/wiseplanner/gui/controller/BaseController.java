@@ -3,6 +3,7 @@ package com.wiseplanner.gui.controller;
 import com.wiseplanner.core.WisePlannerKernel;
 import javafx.application.Platform;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 
 import java.util.concurrent.Callable;
@@ -33,6 +34,12 @@ public abstract class BaseController {
             region.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         }
         return node;
+    }
+
+    protected Label createPlaceholderLabel(String text) {
+        Label label = new Label(text);
+        label.setStyle("-fx-text-fill: #2D3B45; -fx-font-size: 13px;");
+        return label;
     }
 
     // Fetch data in background
